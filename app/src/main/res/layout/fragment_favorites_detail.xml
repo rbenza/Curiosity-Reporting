@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            type="nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel" />
+
+        <variable
+            name="FavoritesDetailViewModel"
+            type="nl.rvbsoftdev.curiosityreporting.viewmodels.FavoritesDetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragment_explore_detail_constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.jsibbold.zoomage.ZoomageView
+            android:id="@+id/selected_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            app:zoomage_minScale="1"
+            app:zoomage_maxScale="15"
+            app:zoomage_restrictBounds="true"
+            app:zoomage_translatable="true"
+            app:imageUrl="@{FavoritesDetailViewModel.selectedPhoto.img_src}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fillColor="?attr/icon_color_preferences"
+            android:padding="16dp"
+            android:src="@drawable/icon_back_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/share_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fillColor="?attr/icon_color_preferences"
+            android:padding="16dp"
+            android:src="@drawable/icon_share"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/delete_favorite_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fillColor="?attr/icon_color_preferences"
+            android:padding="16dp"
+            android:src="@drawable/icon_delete"
+            android:tint="?attr/text_color_toolbar"
+            app:layout_constraintEnd_toStartOf="@id/share_button"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/photo_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:padding="16dp"
+            android:shadowColor="?attr/text_shadow_color"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="@{`Curiosity captured this image with it's ` + FavoritesDetailViewModel.selectedPhoto.camera.full_name + ` on ` + SharedViewModel.DateFormatter.formatDate(FavoritesDetailViewModel.selectedPhoto.earth_date) + ` (Mars solar day ` + FavoritesDetailViewModel.selectedPhoto.sol + ` since Curiosity landed on Mars).`}"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Placeholder Text" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/background_fragments">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_mission_detail1"
+            style="@style/MissionDetailFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:isScrollContainer="true"
+            >
+
+            <ImageView
+                android:id="@+id/mission_photo"
+                android:layout_width="match_parent"
+                android:layout_height="275dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/image_curiosity_missile_launch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/image_spacex_to_mars" />
+
+            <TextView
+                android:id="@+id/mission_photo_text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="18dp"
+                android:textSize="16sp"
+                android:textStyle="normal"
+                android:text="@string/mission_curiosity_description1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mission_photo"
+                tools:text="@string/mission_curiosity_description1" />
+
+            <ImageView
+                android:id="@+id/mission_photo2"
+                android:layout_width="match_parent"
+                android:layout_height="275dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/image_curiosity_mars_decent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mission_photo_text1"
+                tools:src="@drawable/image_spacex_to_mars" />
+
+            <TextView
+                android:id="@+id/mission_photo_text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="18dp"
+                android:textSize="16sp"
+                android:textStyle="normal"
+                android:text="@string/mission_curiosity_description1a"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mission_photo2"
+                tools:text="@string/mission_curiosity_description2" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <data>
+
+        <variable
+            name="SharedViewModel"
+            type="nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel" />
+    </data>
+</layout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mission_fragment"
+        android:icon="@drawable/icon_mission"
+        android:title="Mission" />
+    <item
+        android:id="@+id/explore_fragment"
+        android:icon="@drawable/icon_explore"
+        android:title="Explore" />
+    <item
+        android:id="@+id/facts_fragment"
+        android:icon="@drawable/icon_mars_facts"
+        android:title="Facts" />
+    <item
+        android:id="@+id/favorites_fragment"
+        android:icon="@drawable/icon_star_selected"
+        android:title="Favorites" />
+    <item
+        android:id="@+id/more_fragment"
+        android:icon="@drawable/icon_more"
+        android:title="More" />
+</menu>

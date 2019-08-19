@@ -1,0 +1,6 @@
+<vector android:height="30dp" android:viewportHeight="100"
+    android:viewportWidth="100" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="?attr/color_camera_menu_icon" android:pathData="M93.5,26.375c0,2.761 -2.238,5 -5,5h-77c-2.762,0 -5,-2.239 -5,-5v-4.667c0,-2.761 2.238,-5 5,-5h77c2.762,0 5,2.239 5,5V26.375z"/>
+    <path android:fillColor="?attr/color_camera_menu_icon" android:pathData="M78.5,52.333c0,2.762 -2.238,5 -5,5h-47c-2.762,0 -5,-2.238 -5,-5v-4.666c0,-2.762 2.238,-5 5,-5h47c2.762,0 5,2.238 5,5V52.333z"/>
+    <path android:fillColor="?attr/color_camera_menu_icon" android:pathData="M63.5,78.292c0,2.761 -2.238,5 -5,5h-17c-2.762,0 -5,-2.239 -5,-5v-4.667c0,-2.761 2.238,-5 5,-5h17c2.762,0 5,2.239 5,5V78.292z"/>
+</vector>

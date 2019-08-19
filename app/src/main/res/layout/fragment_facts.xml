@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/Black"
+            android:padding="12dp"
+            tools:context=".ui_fragment_destinations.FactsFragment">
+
+            <ImageView
+                android:id="@+id/mars_and_earth_img"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:src="@drawable/image_earth_and_mars"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/mars_planet_img"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:padding="32dp"
+                android:src="@drawable/image_mars_planet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column9a" />
+
+            <ImageView
+                android:id="@+id/spacex_img"
+                android:layout_width="match_parent"
+                android:layout_height="275dp"
+                android:scaleType="fitXY"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="18dp"
+                android:src="@drawable/image_spacex_to_mars"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:foreground="@drawable/icon_info"
+                android:foregroundTint="@color/YellowSand"
+                android:foregroundGravity="top|right"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_facts2" />
+
+            <ImageView
+                android:id="@+id/mars_dust_storm"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="18dp"
+                android:paddingBottom="18dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/image_dust_storm"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_facts3" />
+
+            <ImageView
+                android:id="@+id/mars_life"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="18dp"
+                android:paddingBottom="18dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/image_travel_to_mars"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_facts4" />
+
+            <TextView
+                android:id="@+id/text_table_column1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/YellowSand"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mars_and_earth_img" />
+
+            <TextView
+                android:id="@+id/text_table_column2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Temperature"
+                android:textColor="@color/YellowSand"
+                android:textSize="14sp"
+                android:textStyle="bold|italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column1" />
+
+            <TextView
+                android:id="@+id/text_table_column3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From Sun"
+                android:textColor="@color/YellowSand"
+                android:textSize="14sp"
+                android:textStyle="bold|italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column2" />
+
+            <TextView
+                android:id="@+id/text_table_column4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Diameter"
+                android:textColor="@color/YellowSand"
+                android:textSize="14sp"
+                android:textStyle="bold|italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column3" />
+
+            <TextView
+                android:id="@+id/text_table_column5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Year"
+                android:textColor="@color/YellowSand"
+                android:textSize="14sp"
+                android:textStyle="bold|italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column4" />
+
+            <TextView
+                android:id="@+id/text_table_column6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gravity"
+                android:textColor="@color/YellowSand"
+                android:textSize="14sp"
+                android:textStyle="bold|italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column5" />
+
+            <TextView
+                android:id="@+id/text_table_column7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Air O2/CO2"
+                android:textColor="@color/YellowSand"
+                android:textSize="14sp"
+                android:textStyle="bold|italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column6" />
+
+            <TextView
+                android:id="@+id/text_table_column8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Water"
+                android:textColor="@color/YellowSand"
+                android:textSize="14sp"
+                android:textStyle="bold|italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column7" />
+
+            <TextView
+                android:id="@+id/text_table_column9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Travel to in"
+                android:textColor="@color/YellowSand"
+                android:textSize="14sp"
+                android:textStyle="bold|italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column8" />
+
+
+            <TextView
+                android:id="@+id/text_table_column1a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:text="Mars"
+                android:textColor="@color/Orange"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/text_table_column1"
+                app:layout_constraintTop_toBottomOf="@id/mars_and_earth_img" />
+
+
+            <TextView
+                android:id="@+id/text_table_column2a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:text="20C to -153C"
+                android:textColor="@color/DeepOrange"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column2"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column1a" />
+
+            <TextView
+                android:id="@+id/text_table_column3a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:text="228 million km"
+                android:textColor="@color/DeepOrange"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column3"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column2a" />
+
+            <TextView
+                android:id="@+id/text_table_column4a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:text="6.779 km"
+                android:textColor="@color/DeepOrange"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column4"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column3a" />
+
+            <TextView
+                android:id="@+id/text_table_column5a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:text="687 Earth days"
+                android:textColor="@color/DeepOrange"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column5"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column4a" />
+
+            <TextView
+                android:id="@+id/text_table_column6a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:text="37%"
+                android:textColor="@color/DeepOrange"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column6"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column5a" />
+
+
+            <TextView
+                android:id="@+id/text_table_column7a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:text="0.1% / 95%"
+                android:textColor="@color/DeepOrange"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column7"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column6a" />
+
+            <TextView
+                android:id="@+id/text_table_column8a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:text="0% of surface"
+                android:textColor="@color/DeepOrange"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column9"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column7a" />
+
+            <TextView
+                android:id="@+id/text_table_column9a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:text="~ 8 months"
+                android:textColor="@color/DeepOrange"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column9"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column8a" />
+
+            <TextView
+                android:id="@+id/text_table_column1b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125dp"
+                android:text="Earth"
+                android:textColor="@color/LightBlue"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column1a"
+                app:layout_constraintTop_toBottomOf="@id/mars_and_earth_img" />
+
+
+            <TextView
+                android:id="@+id/text_table_column2b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125dp"
+                android:text="58C to -88C"
+                android:textColor="@color/Blue"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column2a"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column1a" />
+
+
+            <TextView
+                android:id="@+id/text_table_column3b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125dp"
+                android:text="150 million km"
+                android:textColor="@color/Blue"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column3a"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column2a" />
+
+
+            <TextView
+                android:id="@+id/text_table_column4b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125dp"
+                android:text="12.742 km"
+                android:textColor="@color/Blue"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column4a"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column3a" />
+
+            <TextView
+                android:id="@+id/text_table_column5b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125dp"
+                android:text="365 days"
+                android:textColor="@color/Blue"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column5a"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column4a" />
+
+            <TextView
+                android:id="@+id/text_table_column6b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125dp"
+                android:text="100%"
+                android:textColor="@color/Blue"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column6a"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column5a" />
+
+            <TextView
+                android:id="@+id/text_table_column7b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125dp"
+                android:text="21% / 0.1%"
+                android:textColor="@color/Blue"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column7a"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column6a" />
+
+            <TextView
+                android:id="@+id/text_table_column8b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125dp"
+                android:text="71% of surface"
+                android:textColor="@color/Blue"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column8a"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column7a" />
+
+            <TextView
+                android:id="@+id/text_table_column9b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125dp"
+                android:text="-"
+                android:textColor="@color/Blue"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_table_column9a"
+                app:layout_constraintTop_toBottomOf="@id/text_table_column8a" />
+
+
+            <TextView
+                android:id="@+id/text_facts1_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Climate"
+                android:textColor="@color/YellowSand"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mars_planet_img" />
+
+
+            <TextView
+                android:id="@+id/text_facts1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/facts_mars_text2"
+                android:textColor="@color/YellowSand"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_facts1_title" />
+
+            <TextView
+                android:id="@+id/text_facts2_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mission to Mars"
+                android:textColor="@color/YellowSand"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_facts1" />
+
+
+            <TextView
+                android:id="@+id/text_facts2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/facts_mars_text3"
+                android:textColor="@color/YellowSand"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_facts2_title" />
+
+
+            <TextView
+                android:id="@+id/text_facts3_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Hostile enviroment"
+                android:textColor="@color/YellowSand"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spacex_img" />
+
+            <TextView
+                android:id="@+id/text_facts3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/facts_mars_text4"
+                android:textColor="@color/YellowSand"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_facts3_title" />
+
+
+            <TextView
+                android:id="@+id/text_facts4_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Life on Mars"
+                android:textColor="@color/YellowSand"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mars_dust_storm" />
+
+
+            <TextView
+                android:id="@+id/text_facts4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/facts_mars_text5"
+                android:textColor="@color/YellowSand"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_facts4_title" />
+
+
+            <TextView
+                android:id="@+id/text_facts5_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Future"
+                android:textColor="@color/YellowSand"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mars_life" />
+
+            <TextView
+                android:id="@+id/text_facts5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/facts_mars_text6"
+                android:textColor="@color/YellowSand"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_facts5_title" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <data>
+
+    </data>
+</layout>

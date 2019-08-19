@@ -1,0 +1,46 @@
+<resources>
+
+    <!-- settings fragment string arrays -->
+    <string-array name="theme_entries">
+        <item>Dark</item>
+        <item>Light</item>
+    </string-array>
+
+    <string-array name="theme_setting">
+        <item>Dark</item>
+        <item>Light</item>
+    </string-array>
+
+    <string-array name="explore_photo_layout">
+        <item>Grid</item>
+        <item>List</item>
+    </string-array>
+
+    <string-array name="explore_photo_layout_settings">
+        <item>Grid</item>
+        <item>List</item>
+    </string-array>
+
+    <string-array name="favorite_photo_layout">
+        <item>Grid</item>
+        <item>List</item>
+    </string-array>
+
+    <string-array name="favorite_photo_layout_settings">
+        <item>Grid</item>
+        <item>List</item>
+    </string-array>
+
+    <string-array name="photo_quality">
+        <item>High</item>
+        <item>Normal</item>
+        <item>Low</item>
+    </string-array>
+
+    <string-array name="photo_quality_setting">
+        <item>High</item>
+        <item>Normal</item>
+        <item>Low</item>
+    </string-array>
+
+</resources>

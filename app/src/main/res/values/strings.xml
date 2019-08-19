@@ -1,0 +1,82 @@
+<resources>
+    <string name="app_name">Curiosity Reporting</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="theme_preference">App theme</string>
+
+    <!--facts fragment strings-->
+    <string name="facts_mars_text2">"Mars has a thin atmosphere composed primarily of carbon dioxide (CO2). Although Mars is only 11% of Earth\'s mass and 50% farther from the Sun, its climate has important similarities, such as the presence of polar ice caps, seasonal changes and observable weather patterns.\n"</string>
+    <string name="facts_mars_text3">"A human mission to Mars has been the subject of science fiction, aerospace engineering, and scientific proposals since the 19th century. Plans include landing on Mars for exploration at a minimum, with the possibility of sending settlers and terraforming the planet. Elon Musk\'s company SpaceX targets 2024 for the first human mission to land on Mars."</string>
+    <string name="facts_mars_text4">"Mars has the largest dust storms in the solar system. They can last for months and cover the entire planet. The seasons are extreme because its elliptical (oval-shaped) orbital path around the Sun is more elongated than most other planets in the solar system."</string>
+    <string name="facts_mars_text5">"Living on Mars for humans is extremely difficult. Mars has no oxygen to breath, water to drink or food to eat. The cosmic radiation is far stronger since Mars lacks an ozonlayer or magnetic field like Earth has. This can lead to skin cancer and other diseases.\n\nMoreover gravity on Mars is only 37% compared to Earth, which leads to decrease in bone density and loss of muscle tissue. This means humans needed to wear very protective spacesuits all the time. Secondly humans need to find solutions for providing oxygen, water and food."</string>
+    <string name="facts_mars_text6">"The largest limiting factor for sending humans to Mars is funding. The estimated cost is roughly 500 billion U.S. dollars, though the actual costs are likely to be more. Critics argue that the immediate benefits of establishing a human presence on Mars are outweighed by the immense cost, and that funds could be better redirected towards other programs, such as robotic exploration.\n\nProponents of human space exploration contend that the symbolism of establishing a presence in space may garner public interest to join the cause and spark global cooperation. There are also claims that a long-term investment in space travel is necessary for humanity\'s survival."</string>
+
+    <!--settings fragment strings-->
+    <string name="nasa_key_warning">"This app is limited to 1000 database requests per hour for all users combined. Get your free personal key at the NASA website!"</string>
+    <string name="personal_key_applied">Personal key applied. If photos stop loading, check your key or clear the text field to reuse default key.</string>
+    <string name="def_key">Default key applied.</string>
+    <string name="photo_fav_grid_msg">Photos in \'Favorites\' are now shown in a 3 row grid</string>
+    <string name="photo_fav_list_msg">Photos in \'Favorites\' are now shown in a list</string>
+    <string name="photo_expl_grid_msg">Photos in \'Explore\' are now shown in a 4 row grid</string>
+    <string name="photo_expl_list_msg">Photos in \'Explore\' are now shown in a list</string>
+    <string name="low_pic_qlty">Low picture quality enabled for best loading performance</string>
+    <string name="normal_pic_qlty">Normal picture quality enabled for better loading performance</string>
+    <string name="high_pic_qlty">Highest picture quality enabled!</string>
+    <string name="noti_new_pics">You will now receive a notification when Curiosity transmitted photos back to Earth (max. once a week).</string>
+    <string name="dark_theme_applied">Dark theme applied</string>
+    <string name="light_theme_applied">Light theme applied</string>
+
+    <!--mission detail fragments strings-->
+    <string name="mission_curiosity_description1">"<b>Launch</b>\nCuriosity was launched from Cape Canaveral on November 26th 2011. It took over 8 months to complete it\'s 560 million kilometer journey and successfully land on Mars on August 6th 2012.\n\n<b>Challenges landing on Mars</b>\nLanding a large mass on Mars is particularly challenging as the atmosphere is too thin for parachutes and aerobraking alone to be effective, while remaining thick enough to create stability and impingement problems when decelerating with retrorockets.\n\nAlthough some previous missions have used airbags to cushion the shock of landing, Curiosity rover is too heavy for this to be an option. Instead, Curiosity was set down on the Martian surface using a new high-accuracy entry, descent, and landing (EDL) system that was part of the MSL spacecraft descent stage. </string>
+    <string name="mission_curiosity_description1a">"<b>Live on NASA TV</b>\nOn August 6th 2012 NASA TV live broadcasted Curiosity landing on Mars. Over 3.2 million people worldwide watched the landing. Click the Youtube icon to relive this amazing moment."</string>
+    <string name="mission_curiosity_description2">"<b>Mars Exploration Program</b>\nThe main scientific goals of the Mars Exploration Program (MSL) are to help determine whether Mars could ever have supported life, as well as determining the role of water, and to study the climate and geology of Mars. The mission results will also help prepare for human exploration. To contribute to these goals, MSL has 8 main scientific objectives:
+\n\n<b>Biological</b>
+\n1. Determine the nature and inventory of organic carbon compounds
+\n2. Investigate the chemical building blocks of life (carbon, hydrogen, nitrogen, oxygen, phosphorus, and sulfur)
+\n3. Identify features that may represent the effects of biological processes (biosignatures and biomolecules)
+</string>
+    <string name="mission_curiosity_description2a">"<b>Geological and geochemical</b>\n4. Investigate the chemical, isotopic, and mineralogical composition of the Martian surface and near-surface geological materials\n5. Interpret the processes that have formed and modified rocks and soils
+    \n\n<b>Planetary process</b>
+    \n6. Assess long-timescale (i.e., 4-billion-year) Martian atmospheric evolution processes
+    \n\n<b>Surface radiation</b>
+    \n7. Determine present state, distribution, and cycling of water and carbon dioxide.
+    \n8. Characterize the broad spectrum of surface radiation, including galactic and cosmic radiation, solar proton events and secondary neutrons.\n\nAs part of its exploration, it also measured the radiation exposure in the interior of the spacecraft as it traveled to Mars, and it is continuing radiation measurements as it explores the surface of Mars. This data would be important for a future crewed mission."</string>
+
+    <string name="mission_curiosity_description3">"<b>Dimensions and Power</b>\nCuriosity weighs 899kg and is 2.9m long, 2.7m wide and 2.2m high. Curiosity is powered by a radioisotope thermoelectric generator. Radioisotope power systems are generators that produce electricity from the decay of radioactive isotopes, such as plutonium-238, which is a non-fissile isotope of plutonium.\n\n<b>Cameras</b>\nCuriosity is equipped with a total of 17 cameras.
+        As of August 2019 Curiosity took over 364.000 photos which were transmitted back to Earth."</string>
+    <string name="mission_curiosity_description3a">The image above shows the locations of the cameras on NASA\'s Curiosity rover. The rover\'s mast features seven cameras: the Remote Micro Imager, part of the Chemistry and Camera suite; four black-and-white Navigation Cameras (two on the left and two on the right) and two color Mast Cameras (Mastcams). The left Mastcam has a 34-millimeter lens and the right Mastcam has a 100-millimeter lens.\n\nThere is one camera on the end of a robotic arm that is stowed in this graphic; it is called the Mars Hand Lens Imager (MAHLI).
+        There are nine cameras hard-mounted to the rover: two pairs of black-and-white Hazard Avoidance Cameras in the front, another two pair mounted to the rear of the rover, (dashed arrows in the graphic) and the color Mars Descent Imager (MARDI).</string>
+
+    <!--more fragment strings-->
+    <string name="no_internet_app">No internet app found!\n\nGo to www.nasa.gov/mission_pages to find out more</string>
+    <string name="no_internet_app2">No internet app found!</string>
+
+    <!--about fragment strings-->
+    <string name="version_description">Version 1.0 - August 2019</string>
+    <string name="developer_description">Developed by Remy Benza</string>
+    <string name="email_toast1">No email app found!\nYou can send an e-mail to:\n\nrvbsoftdev@gmail.com</string>
+    <string name="about_app_description">"This app is developed for educational purposes and a fascination for Mars. Suggestions or comments can be send to the developer.</string>
+    <string name="send_email_to_developer">Send email</string>
+    <string name="privacy_policy">"\n\'Curiosity Reporting\' is a completely free Android app. The app is intended for use as is. This policy is used to inform users of the app regarding the policy with the collection, use, and disclosure of personal information while using the app.
+\n<b>Consent to collect personal information</b>
+\nIf you choose to use the app, then you agree to the collection and use of personal information in relation to this policy. The personal information that the app collects is used for providing and improving the app. Personal information will only be used for this purpose.\n
+\n<b>Information Collection</b>
+\nThe app uses third party plugins like Firebase Analytics, Google Play Apps and Firebase Crashlytics. These plugins may collect personal information about the users of the app .
+\nIt will be logged whenever the app crashes or produces an error. This log data may include information such as your device Internet Protocol (“IP”) address, device name, Android version, the configuration of the app when utilizing app, the time, date and location of your use of the app and other statistics.\n
+\n<b>Changes to this Privacy Policy</b>
+\nThis Privacy Policy may be updated from time to time. Thus, you are advised to review this page periodically for any changes. Any changes will be available on this page and are effective immediately.\n
+\n<b>Contact</b>
+\nIf you have any questions about this Privacy Policy feel free to contact the developer of the app.
+"</string>
+
+    <!--explore & favorites fragment strings-->
+    <string name="connecting_nasa_db">Connecting to the NASA database...</string>
+    <string name="no_conn_nasa_db">Could not connect to the NASA database. Check your internet connection or applied personal key in the settings menu.</string>
+    <string name="no_photos_added_to_favorites">No photos added to favorites</string>
+    <string name="no_photos_in_nasa_db">No photos in the database available to display. Try selecting a different date, camera filter or roll the dice!</string>
+    <string name="photo_add_to_fav">Photo added to favorites!</string>
+    <string name="photo_removed_from_fav">Photo removed from favorites</string>
+    <string name="no_app_installed">No app installed to share this photo!</string>
+    <string name="disk_access_required">Access to storage is required to share this photo</string>
+    <string name="most_recent_date_not_available">Curiosity most recent photo date not available. Select a date manually.</string>
+
+</resources>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mission_fragment">
+
+    <fragment
+        android:id="@+id/explore_fragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations.ExploreFragment"
+        android:label="Curiosity at Mars"
+        tools:layout="@layout/fragment_explore">
+        <action
+            android:id="@+id/action_explore_fragment_to_explore_detail_fragment"
+            app:destination="@+id/explore_detail_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/explore_detail_fragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations.ExploreDetailFragment"
+        android:label="Photo details"
+        tools:layout="@layout/fragment_explore_detail">
+        <action
+            android:id="@+id/action_explore_detail_fragment_to_explore_fragment"
+            app:destination="@id/explore_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <argument
+            android:name="selectedPhoto"
+            app:argType="nl.rvbsoftdev.curiosityreporting.domain.Photo" />
+    </fragment>
+    <fragment
+        android:id="@+id/mission_fragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations.MissionFragment"
+        android:label="Curiosity Reporting"
+        tools:layout="@layout/fragment_mission">
+        <action
+            android:id="@+id/action_mission_fragment_to_mission_detail_fragment1"
+            app:destination="@+id/mission_detail_fragment1"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_mission_fragment_to_mission_detail_fragment2"
+            app:destination="@id/mission_detail_fragment2"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_mission_fragment_to_mission_detail_fragment3"
+            app:destination="@id/mission_detail_fragment3"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/facts_fragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations.FactsFragment"
+        android:label="Mars Facts"
+        tools:layout="@layout/fragment_facts" />
+    <fragment
+        android:id="@+id/more_fragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations.MoreFragment"
+        android:label="More"
+        tools:layout="@layout/fragment_more">
+        <action
+            android:id="@+id/action_more_fragment_to_settings_fragment"
+            app:destination="@id/settings_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/more_fragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_more_fragment_to_about_fragment"
+            app:destination="@id/about_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/more_fragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations.SettingsFragment"
+        android:label="Settings" />
+    <fragment
+        android:id="@+id/about_fragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations.AboutFragment"
+        android:label="About this app" >
+        <action
+            android:id="@+id/action_about_fragment_to_privacyPolicyFragment"
+            app:destination="@id/fragment_privacy_policy"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/mission_detail_fragment1"
+        android:name="nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations.MissionDetailFragment1"
+        android:label="Journey to Mars"
+        tools:layout="@layout/fragment1_mission_detail">
+        <argument
+            android:name="img_ref"
+            app:argType="reference" />
+    </fragment>
+    <fragment
+        android:id="@+id/favorites_fragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations.FavoritesFragment"
+        android:label="Your favorite photos"
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favorites_fragment_to_favoritesDetailFragment"
+            app:destination="@+id/favorites_detail_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/favorites_detail_fragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations.FavoritesDetailFragment"
+        android:label="Favorite photo details"
+        tools:layout="@layout/fragment_favorites_detail">
+        <argument
+            android:name="selectedPhoto"
+            app:argType="nl.rvbsoftdev.curiosityreporting.domain.Photo" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_privacy_policy"
+        android:name="nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations.PrivacyPolicyFragment"
+        android:label="Privacy "
+        tools:layout="@layout/fragment_privacy_policy" />
+    <fragment
+        android:id="@+id/mission_detail_fragment2"
+        android:name="nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations.MissionDetailFragment2"
+        android:label="Goals of the mission"
+        tools:layout="@layout/fragment2_mission_detail" />
+    <fragment
+        android:id="@+id/mission_detail_fragment3"
+        android:name="nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations.MissionDetailFragment3"
+        android:label="Equipment of Curiosity"
+        tools:layout="@layout/fragment3_mission_detail" />
+
+</navigation>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/title">
+        <item
+            android:id="@+id/date_info"
+            android:title="SELECT CAMERA FILTER :"
+            app:showAsAction="never"
+            android:gravity="right"/>
+    </group>
+    <group android:id="@+id/options"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/all_cameras"
+            android:checked="true"
+            android:title="Show all"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/FHAZ"
+            android:title="Front Hazard Avoidance Camera"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/RHAZ"
+
+            android:title="Rear Hazard Avoidance Camera"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/MAST"
+
+            android:title="Mast Camera"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/CHEMCAM"
+            android:title="Chemistry and Camera Complex"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/MAHLI"
+            android:title="Mars Hand Lens Imager"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/MARDI"
+            android:title="Mars Descent Imager"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/NAVCAM"
+            android:title="Navigation Camera"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/select_random_date"
+            android:icon="@drawable/icon_dice"
+            android:title="Select capture date"
+            android:visible="true"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/launch_date_picker_dialog"
+            android:icon="@drawable/icon_calender"
+            android:title="Select capture date"
+            android:visible="true"
+            app:showAsAction="ifRoom" />
+
+
+    </group>
+</menu>

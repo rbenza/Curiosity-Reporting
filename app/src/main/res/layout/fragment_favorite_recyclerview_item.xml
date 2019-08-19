@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="Photo"
+            type="nl.rvbsoftdev.curiosityreporting.domain.Photo" />
+
+        <variable
+            name="FavoritesViewModel"
+            type="nl.rvbsoftdev.curiosityreporting.viewmodels.FavoritesViewModel" />
+
+        <import
+            type="nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/photo_curiosity"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:adjustViewBounds="true"
+            android:padding="1dp"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{Photo.img_src}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/image_mars_hill" />
+
+        <TextView
+            android:id="@+id/photo_curiosity_date_captured"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:shadowColor="@color/Black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="@{SharedViewModel.DateFormatterCompact.formatDate(Photo.earth_date)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?attr/color_camera_menu_icon"
+            android:textSize="12sp"
+            android:textStyle="italic|bold"
+            app:layout_constraintBottom_toBottomOf="@id/photo_curiosity"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="4 Jul 2016" />
+
+        <TextView
+            android:id="@+id/photo_curiosity_camera_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:shadowColor="@color/Black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="@{Photo.camera.name}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?attr/color_camera_menu_icon"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="NAVCAM" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

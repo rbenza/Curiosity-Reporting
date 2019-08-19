@@ -1,0 +1,124 @@
+<resources>
+
+    <style name="AppThemeDark" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorControlNormal">@color/DeepOrange</item>
+        <item name="android:textColor">@color/YellowSand</item>
+
+        <item name="android:statusBarColor">@color/NearerBlack</item>
+        <item name="android:navigationBarColor">@color/Black</item>
+        <item name="android:actionMenuTextColor">@color/DeepOrange</item>
+        <item name="colorAccent">@color/DeepOrange</item>
+        <item name="background_fragments">@drawable/background_fragments_dark</item>
+        <item name="background_mission_cards">@drawable/background_mission_cards_dark</item>
+        <item name="background_color_bottom_nav">@color/DarkerGrey</item>
+        <item name="background_color_side_nav">@color/DarkerGrey</item>
+        <item name="icon_color_bottom_nav">@drawable/background_bottom_nav_selector_color_dark
+        </item>
+        <item name="icon_color_side_nav">@drawable/background_bottom_nav_selector_color_dark</item>
+        <item name="image_collapsing_toolbar">@drawable/image_collapsing_toolbar_dark</item>
+        <item name="background_color_toolbar">@color/DarkerGrey</item>
+        <item name="text_color_toolbar">@color/DeepOrange</item>
+        <item name="icon_color_preferences">@color/DeepOrange</item>
+        <item name="android:itemBackground">@color/DarkerGrey</item>
+        <item name="alertDialogTheme">@style/AppCompatAlertDark</item>
+        <item name="text_shadow_color">@color/Black</item>
+        <item name="android:actionOverflowButtonStyle">@style/CameraMenuIcon</item>
+        <item name="color_camera_menu_icon">@color/DeepOrange</item>
+        <item name="collapsed_toolbar">@color/DeepOrange</item>
+
+    </style>
+
+    <style name="AppThemeLight" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorControlNormal">@color/DarkBrown</item>
+        <item name="android:textColor">@color/DarkBrown</item>
+        <item name="android:statusBarColor">@color/YellowDarkSand</item>
+        <item name="image_collapsing_toolbar">@drawable/image_collapsing_toolbar_light</item>
+        <item name="android:navigationBarColor">@color/Black</item>
+        <item name="colorAccent">@color/DarkBrown</item>
+        <item name="background_fragments">@drawable/background_fragment_light</item>
+        <item name="background_mission_cards">@drawable/background_mission_cards_light</item>
+        <item name="background_color_bottom_nav">@color/YellowSand</item>
+        <item name="background_color_side_nav">@color/YellowSand</item>
+        <item name="icon_color_bottom_nav">@drawable/background_bottom_nav_selector_color_light
+        </item>
+        <item name="icon_color_side_nav">@drawable/background_bottom_nav_selector_color_light</item>
+        <item name="background_color_toolbar">@color/YellowSand</item>
+        <item name="text_color_toolbar">@color/DarkBrown</item>
+        <item name="icon_color_preferences">@color/DarkBrown</item>
+        <item name="android:itemBackground">@color/YellowSand</item>
+        <item name="alertDialogTheme">@style/AppCompatAlertLight</item>
+        <item name="text_shadow_color">@color/LightGrey</item>
+        <item name="color_camera_menu_icon">@color/DarkBrown</item>
+        <item name="android:actionOverflowButtonStyle">@style/CameraMenuIcon</item>
+        <item name="collapsed_toolbar">@color/DarkBrown</item>
+
+    </style>
+
+    <style name="AppThemeDark.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+
+    <style name="AppCompatAlertDark" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:colorBackground">@color/DarkerGrey</item>
+        <item name="android:colorControlActivated">@color/DeepOrange</item>
+    </style>
+
+    <style name="AppCompatAlertLight" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:colorBackground">@color/YellowSand</item>
+        <item name="android:colorControlActivated">@color/DarkBrown</item>
+    </style>
+
+    <style name="CameraMenuIcon" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/icon_filter</item>
+        <item name="android:layout_margin">12dp</item>
+
+        <item name="android:layout_marginTop">8dp</item>
+
+    </style>
+
+    <style name="MissionDetailFragment" parent="AppThemeDark">
+        <item name="android:statusBarColor">@color/White</item>
+    </style>
+
+    <style name="collapsed_toolbar" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">?attr/text_color_toolbar</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="expanded_toolbar" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">?attr/text_color_toolbar</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">@color/DarkGrey</item>
+        <item name="android:shadowDx">-3</item>
+        <item name="android:shadowDy">-3</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="ToastStyleDark">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">@color/DeepOrange</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/NearerBlack</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stStrokeWidth">1dp</item>
+        <item name="stGravity">center</item>
+        <item name="stStrokeColor">@color/DeepOrange</item>
+        <item name="stRadius">25dp</item>
+    </style>
+
+    <style name="ToastStyleLight">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">@color/DarkBrown</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/YellowSand</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stStrokeWidth">1dp</item>
+        <item name="stGravity">center</item>
+        <item name="stStrokeColor">@color/DarkBrown</item>
+        <item name="stRadius">25dp</item>
+    </style>
+
+</resources>

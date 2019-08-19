@@ -1,0 +1,83 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="settings_screen">
+
+    <PreferenceCategory
+        android:fillColor="?attr/icon_color_preferences"
+        app:icon="@drawable/icon_appearance"
+        app:title="Appearance">
+
+        <ListPreference
+            app:defaultValue="Dark"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_setting"
+            app:key="theme"
+            app:persistent="true"
+            app:title="@string/theme_preference"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="Grid"
+            app:entries="@array/explore_photo_layout"
+            app:entryValues="@array/explore_photo_layout_settings"
+            app:key="explore_photo_layout"
+            app:persistent="true"
+            app:title="'Explore' photo layout"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="List"
+            app:entries="@array/favorite_photo_layout"
+            app:entryValues="@array/favorite_photo_layout_settings"
+            app:key="favorites_photo_layout"
+            app:persistent="true"
+            app:title="'Favorites' photo layout"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:icon="@drawable/icon_speedometer"
+        app:title="Performance">
+
+        <ListPreference
+            app:defaultValue="High"
+            app:entries="@array/photo_quality"
+            app:entryValues="@array/photo_quality_setting"
+            app:key="picture_quality"
+            app:persistent="true"
+            app:title="Picture quality"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <!--- invisible, will be implemented later!-->
+    <PreferenceCategory
+        app:icon="@drawable/icon_notifications"
+        app:title="Notifications"
+        app:isPreferenceVisible="false">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="notifications"
+            app:isPreferenceVisible="false"
+            app:persistent="true"
+            app:summary="Notification about new photos from Mars"
+            app:title="Weekly updates" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:icon="@drawable/icon_key"
+        app:title="NASA Database key">
+
+        <EditTextPreference
+            android:positiveButtonText="Apply"
+            app:key="nasa_key"
+            android:persistent="true"
+            app:title="Apply your personal key"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

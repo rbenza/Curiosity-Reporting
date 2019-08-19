@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+        name="ExploreViewModel"
+        type="nl.rvbsoftdev.curiosityreporting.viewmodels.ExploreViewModel" />
+
+        <variable
+            name="PhotoRepository"
+            type="nl.rvbsoftdev.curiosityreporting.repository.PhotoRepository" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="nl.rvbsoftdev.curiosityreporting.MainActivity">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_photos_explore"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:scrollbarSize="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/constraint_layout"
+            app:layout_constraintEnd_toEndOf="@id/constraint_layout"
+            app:layout_constraintStart_toStartOf="@id/constraint_layout"
+            app:explorePhotos="@{ExploreViewModel.photosFromNasaApi}"
+            tools:itemCount="40"
+            tools:listitem="@layout/fragment_explore_recyclerview_item" />
+
+
+        <ImageView
+            android:id="@+id/status_image"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            app:imageConnectionStatus="@{ExploreViewModel.connectionStatus}"
+            app:layout_constraintBottom_toTopOf="@id/no_photos_available_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.943"
+            tools:src="@drawable/icon_connection_error" />
+
+        <TextView
+            android:id="@+id/no_photos_available_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:shadowColor="?attr/text_shadow_color"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?attr/text_color_toolbar"
+            android:textStyle="bold|italic"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:textConnectionStatus="@{ExploreViewModel.connectionStatus}"
+            tools:text="Connecting to the NASA Database.." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

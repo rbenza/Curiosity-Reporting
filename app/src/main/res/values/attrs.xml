@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="background_fragments" format="reference"/>
+    <attr name="background_mission_cards" format="reference"/>
+    <attr name="background_color_toolbar" format="reference"/>
+    <attr name="background_color_bottom_nav" format="reference"/>
+    <attr name="background_color_side_nav" format="reference"/>
+    <attr name="image_collapsing_toolbar" format="reference"/>
+    <attr name="text_color" format="reference"/>
+    <attr name="text_color_toolbar" format="reference"/>
+    <attr name="icon_color_bottom_nav" format="reference"/>
+    <attr name="icon_color_side_nav" format="reference"/>
+    <attr name="icon_color_preferences" format="reference"/>
+    <attr name="text_shadow_color" format="reference"/>
+    <attr name="background_color_preferences" format="reference"/>
+    <attr name="color_camera_menu_icon" format="reference"/>
+    <attr name="collapsed_toolbar" format="reference"/>
+
+
+</resources>
