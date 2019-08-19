@@ -1,5 +1,5 @@
+<img src="https://user-images.githubusercontent.com/47558082/63291622-33cd9380-c2c4-11e9-8219-da5d841eabd8.png" width="40%"></img>
 
-# Curiosity Reporting 
 ### *Explore Mars through the eyes of the NASA Mars Rover 'Curiosity'*
 
 Curiosity Reporting is an Android app developed for educational purposes and a fascination for Mars.
