@@ -9,7 +9,6 @@ The menu does slide out and works when pulled from the side. Can be solved by di
 
 -Camera Filter in Explore Fragment stops working when it encounters an empty list
 
-
 Implement:
 
 -Favorite star icon stays selected when revisting photo in Explore Fragment (logic to compare NetworkPhoto with FavoriteDatabasePhoto)

@@ -31,7 +31,7 @@ class MissionDetailFragment3 : Fragment() {
         return dataBinding.root
     }
 
-    /** Only allow portrait orientation. Content in Mission Detail Fragment not suitable for landscape orientation **/
+    /** Only allow portrait orientation. Content in Mission Detail Fragment 3 not suitable for landscape orientation **/
     override fun onResume() {
         super.onResume()
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT

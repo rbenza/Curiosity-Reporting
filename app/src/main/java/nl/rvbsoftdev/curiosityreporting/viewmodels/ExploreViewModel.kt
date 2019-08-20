@@ -43,7 +43,7 @@ class ExploreViewModel(app: Application) : AndroidViewModel(app) {
         try {
             refreshPhotos(photosFromNasaApi.value?.get(0)?.earth_date, null, cameraFilter)
         } catch (e: Exception) {
-            Log.e("Camera filter error", e.toString())
+
         }
     }
 }

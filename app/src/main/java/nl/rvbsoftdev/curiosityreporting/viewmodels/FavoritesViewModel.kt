@@ -13,6 +13,7 @@ class FavoritesViewModel(app: Application) : AndroidViewModel(app) {
 
     private val photoRepository = getRepository(getApplication())
 
+    /** Get all favorite photos from Room database through repository (uses suspend function)**/
     init {
         viewModelScope.launch {
             photoRepository.getAllFavoritesPhotos()

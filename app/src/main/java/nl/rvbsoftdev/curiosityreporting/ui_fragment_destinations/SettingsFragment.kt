@@ -28,9 +28,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         if (PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("nasa_key", null).isNullOrEmpty()) {
-
             mainActivity.showStyledSnackbarMessage(view, getString(R.string.nasa_key_warning),
                     "GET KEY", 5000, R.drawable.icon_key) { getNasaKeyAtWebsite() }
         }
