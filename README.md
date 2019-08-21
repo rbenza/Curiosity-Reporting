@@ -1,4 +1,4 @@
-<img src="https://user-images.githubusercontent.com/47558082/63434368-3a275100-c425-11e9-9844-c76070631088.jpg" w></img> 
+<img src="https://user-images.githubusercontent.com/47558082/63434368-3a275100-c425-11e9-9844-c76070631088.jpg"></img> 
 
 ### *Explore Mars through the eyes of the NASA Mars Rover 'Curiosity'*
 
@@ -13,7 +13,7 @@ This app let's you:
 
 All the photos are retrieved from the [public database](https://api.nasa.gov/api.html#MarsPhotos) the NASA provides. Available on the Google Play Store.
 
-[<img src="https://user-images.githubusercontent.com/47558082/63432359-4e694f00-c421-11e9-99c1-81eccc3d19d3.png" width="30%"></img>](https://play.google.com/store/apps/details?id=nl.rvbsoftdev.curiosityreporting)
+[<img src="https://user-images.githubusercontent.com/47558082/63432359-4e694f00-c421-11e9-99c1-81eccc3d19d3.png" width="25%"></img>](https://play.google.com/store/apps/details?id=nl.rvbsoftdev.curiosityreporting)
 
 ## App screenshots
 
