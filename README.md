@@ -1,4 +1,4 @@
-<img src="https://user-images.githubusercontent.com/47558082/63291622-33cd9380-c2c4-11e9-8219-da5d841eabd8.png" width="40%"></img>
+<img src="https://user-images.githubusercontent.com/47558082/63291622-33cd9380-c2c4-11e9-8219-da5d841eabd8.png" width="40%"></img> <img src="https://user-images.githubusercontent.com/47558082/63432359-4e694f00-c421-11e9-99c1-81eccc3d19d3.png" width="40%"></img> 
 
 ### *Explore Mars through the eyes of the NASA Mars Rover 'Curiosity'*
 
