@@ -13,7 +13,7 @@ This app let's you:
 
 All the photos are retrieved from the [public database](https://api.nasa.gov/api.html#MarsPhotos) the NASA provides. Available on the Google Play Store.
 
-[<img src="https://user-images.githubusercontent.com/47558082/63432359-4e694f00-c421-11e9-99c1-81eccc3d19d3.png" width="25%"></img>](https://play.google.com/store/apps/details?id=nl.rvbsoftdev.curiosityreporting)
+[<img src="https://user-images.githubusercontent.com/47558082/63432359-4e694f00-c421-11e9-99c1-81eccc3d19d3.png" width="35%"></img>](https://play.google.com/store/apps/details?id=nl.rvbsoftdev.curiosityreporting)
 
 ## App screenshots
 
