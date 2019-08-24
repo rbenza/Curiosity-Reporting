@@ -34,7 +34,7 @@ Curiosity Reporting is built with best practices and recommended architecture in
 
 ## App components
 
-* **UI/UX:** Dark/Light themes, custom styled toast/snackbar messages, custom DatePicker dialog, custom ImageView, launch screen, weekly notifications
+* **UI/UX:** Dark/Light themes, custom styled toast/snackbar messages, custom DatePicker dialog, custom ImageView, launch screen, weekly notifications, grid or listviews
 * **Layouts:** RecyclerView with DiffUtil, global Toolbar for all fragments, ConstraintLayout, CoordinatorLayout, CollapsingToolbar Layout, DrawerLayout
 * **Navigation:** Jetpack Navigation with SafeArgs, bottom navigation bar, menu navigation
 * **Data:** Jetpack LiveData, Jetpack databinding, custom binding adapters 
