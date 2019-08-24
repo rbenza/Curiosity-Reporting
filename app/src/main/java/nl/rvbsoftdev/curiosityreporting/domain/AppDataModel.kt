@@ -3,7 +3,8 @@ package nl.rvbsoftdev.curiosityreporting.domain
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
-/** Data model for the app, the app does not interact with 'NetworkPhoto' or 'FavoriteDataBasePhoto', these types are abstracted away by the repository API (MVVM architecture, separation of concerns).
+/** Data model for the app, the app does not interact with 'NetworkPhoto' or 'FavoriteDataBasePhoto',
+ * these types are abstracted away by the repository API (MVVM architecture, separation of concerns).
  * Makes adjusting, adding or removing data sources in the future easy. **/
 
 @Parcelize

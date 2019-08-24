@@ -1,7 +1,16 @@
 package nl.rvbsoftdev.curiosityreporting
 
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
+import android.os.StrictMode
+import android.os.SystemClock
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,19 +26,21 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.muddzdev.styleabletoast.StyleableToast
 import com.pd.chocobar.ChocoBar
 import kotlinx.android.synthetic.main.activity_main.*
+import nl.rvbsoftdev.curiosityreporting.ui.NotificationsBroadcastReceiver
+import nl.rvbsoftdev.curiosityreporting.ui.AppNotifications
 import nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel
 
-/** Single Activity for the whole app, sets up all the UI elements (Toolbar, Bottom Nav, Side Nav)
+/** Single Activity for the whole app, sets up all the UI elements (Toolbar, Bottom Nav, Side Nav, Notification Channel, Broadcast Receiver)
  *  and contains a Navigation Host Fragment which hosts all the Fragment destinations (see navigation_graph.xml for full overview). **/
 
 class MainActivity : AppCompatActivity() {
 
     /** Firebase setup to monitor app performance and usage **/
     lateinit var firebaseAnalytics: FirebaseAnalytics
-
     lateinit var mViewModel: SharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         setAndReturnUserTheme()
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         mViewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
@@ -41,6 +52,10 @@ class MainActivity : AppCompatActivity() {
         setupBottomNavigation(navController)
         setupSideNavigationMenu(navController)
         visibilityNavElements(navController)
+        setupNotificationChannel()
+        setupWeeklyNotifications()
+        enableStrictMode()
+
     }
 
     private val setTopLevelDestinations by lazy {
@@ -96,6 +111,18 @@ class MainActivity : AppCompatActivity() {
                 }
 
             }
+        }
+    }
+
+    /** Check if nothing expensive runs on UI thread **/
+    private fun enableStrictMode() {
+        if (BuildConfig.DEBUG) {
+            val policy = StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build()
+
+            StrictMode.setThreadPolicy(policy)
         }
     }
 
@@ -160,6 +187,28 @@ class MainActivity : AppCompatActivity() {
                         .show()
             }
 
+        }
+    }
+
+    /** Setup Notification channel for Android 8.0 or higher devices **/
+    private fun setupNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val channel = NotificationChannel(AppNotifications.NOTIFICATION_CHANNEL, "AppNotifications", NotificationManager.IMPORTANCE_DEFAULT)
+            channel.description = "Get a weekly notification about Curiosity at Mars."
+            nm.createNotificationChannel(channel)
+        }
+    }
+
+    private fun setupWeeklyNotifications() {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("notifications", true)) {
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent = Intent(this, NotificationsBroadcastReceiver::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HALF_DAY * 7,
+                    AlarmManager.INTERVAL_HALF_DAY * 7,
+                    pendingIntent)
         }
     }
 

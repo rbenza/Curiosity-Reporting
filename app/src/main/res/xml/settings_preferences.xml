@@ -51,18 +51,15 @@
 
     </PreferenceCategory>
 
-    <!--- invisible, will be implemented later!-->
     <PreferenceCategory
         app:icon="@drawable/icon_notifications"
-        app:title="Notifications"
-        app:isPreferenceVisible="false">
+        app:title="Notifications">
 
         <SwitchPreferenceCompat
             app:defaultValue="true"
             app:key="notifications"
-            app:isPreferenceVisible="false"
             app:persistent="true"
-            app:summary="Notification about new photos from Mars"
+            app:summary="Weekly notifications about Curiosity at Mars"
             app:title="Weekly updates" />
 
     </PreferenceCategory>

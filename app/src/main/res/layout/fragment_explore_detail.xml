@@ -4,35 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="ExploreDetailViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.viewmodels.ExploreDetailViewModel" />
-
-        <import
-            type="nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_explore_detail_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <com.jsibbold.zoomage.ZoomageView
-            android:id="@+id/selected_photo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            app:zoomage_minScale="1"
-            app:zoomage_maxScale="15"
-            app:zoomage_restrictBounds="true"
-            app:zoomage_translatable="true"
-            app:imageUrl="@{ExploreDetailViewModel.selectedPhoto.img_src}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/backgrounds/scenic" />
 
         <ImageView
             android:id="@+id/back_button"
@@ -60,8 +35,8 @@
             android:layout_height="wrap_content"
             android:fillColor="?attr/icon_color_preferences"
             android:padding="16dp"
-            android:visibility="invisible"
             android:src="@drawable/icon_star_selected"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@id/share_button"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,7 +49,6 @@
             android:src="@drawable/icon_star"
             app:layout_constraintEnd_toStartOf="@id/share_button"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <TextView
             android:id="@+id/photo_info"
@@ -93,6 +67,31 @@
             tools:text="Placeholder Text" />
 
 
+        <com.jsibbold.zoomage.ZoomageView
+            android:id="@+id/selected_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            app:imageUrl="@{ExploreDetailViewModel.selectedPhoto.img_src}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:zoomage_maxScale="15"
+            app:zoomage_minScale="1"
+            app:zoomage_restrictBounds="true"
+            app:zoomage_translatable="true"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <import type="nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel" />
+
+        <variable
+            name="ExploreDetailViewModel"
+            type="nl.rvbsoftdev.curiosityreporting.viewmodels.ExploreDetailViewModel" />
+    </data>
 
 </layout>

@@ -104,7 +104,7 @@
                             android:layout_height="62dp"
                             android:layout_gravity="start|center"
                             android:layout_margin="16dp"
-                            android:src="@drawable/ic_icon_mars_planet2"
+                            android:src="@drawable/icon_mars_planet"
                             android:tint="@color/Red" />
 
                         <TextView

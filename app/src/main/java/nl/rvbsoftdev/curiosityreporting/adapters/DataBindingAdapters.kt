@@ -15,6 +15,10 @@ import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.domain.Photo
 import nl.rvbsoftdev.curiosityreporting.repository.NasaApiConnectionStatus
 
+/** Custom databinding adapters to bind data to different views.
+ * By setting the fragment in which the views are present as lifecycle owner the data becomes observable
+ * and the UI updates automatically when the data changes **/
+
 @BindingAdapter("explorePhotos")
 fun bindRecyclerViewExplore(recyclerView: RecyclerView, data: List<Photo>?) {
     val adapter = recyclerView.adapter as ExplorePhotoAdapter

@@ -1,5 +1,6 @@
-package nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations
+package nl.rvbsoftdev.curiosityreporting.ui
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -18,67 +19,60 @@ import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.analytics.FirebaseAnalytics
 import nl.rvbsoftdev.curiosityreporting.MainActivity
 import nl.rvbsoftdev.curiosityreporting.R
+import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoritesDetailBinding
+import nl.rvbsoftdev.curiosityreporting.viewmodels.FavoritesDetailViewModel
+import nl.rvbsoftdev.curiosityreporting.viewmodels.FavoritesDetailViewModelFactory
 import nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel
-import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreDetailBinding
-import nl.rvbsoftdev.curiosityreporting.viewmodels.ExploreDetailViewModel
-import nl.rvbsoftdev.curiosityreporting.viewmodels.ExploreDetailViewModelFactory
 
-/** Explore Detail Fragment that lets the user zoom in on the selected photo. The photo can also be shared or added/removed from the Room local database **/
+/** Favorites Detail Fragment that lets the user zoom in on the selected photo. The photo can also be shared or removed from favorites**/
 
-lateinit var viewModelFactory: ExploreDetailViewModelFactory
+class FavoritesDetailFragment : Fragment() {
 
-const val REQUEST_CODE = 1
+    val REQUEST_CODE: Int = 1
 
-class ExploreDetailFragment : Fragment() {
+    lateinit var mViewModelFactory: FavoritesDetailViewModelFactory
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Favorites Detail Fragment")
+        (activity as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Explore Detail Fragment")
-        (activity as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-
         val application = requireNotNull(activity).application
-        val dataBinding = FragmentExploreDetailBinding.inflate(inflater)
+        val dataBinding = FragmentFavoritesDetailBinding.inflate(inflater)
         dataBinding.lifecycleOwner = this
-        val photo = ExploreDetailFragmentArgs.fromBundle(arguments!!).selectedPhoto
-        viewModelFactory = ExploreDetailViewModelFactory(photo, application)
+        val favoritePhoto = FavoritesDetailFragmentArgs.fromBundle(arguments!!).selectedPhoto
+        mViewModelFactory = FavoritesDetailViewModelFactory(favoritePhoto, application)
         val viewModel = ViewModelProviders.of(
-                this, viewModelFactory).get(ExploreDetailViewModel::class.java)
+                this, mViewModelFactory).get(FavoritesDetailViewModel::class.java)
 
-        dataBinding.exploreDetailViewModel = viewModel
+        dataBinding.favoritesDetailViewModel = viewModel
 
-        /** a few simple Onclicklisteners with lambdas for single events instead of wiring it through the ViewModel with LiveData **/
-
+        /** some simple Onclicklisteners with lambda for single event instead of wiring it through a ViewModel with LiveData **/
         dataBinding.shareButton.setOnClickListener {
             if (requireContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 requireActivity().requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
             } else sharePhoto()
         }
         dataBinding.backButton.setOnClickListener { (activity as MainActivity).onSupportNavigateUp() }
-        dataBinding.favoriteButton.setOnClickListener {
-            viewModel.addPhotoToFavorites(viewModel.selectedPhoto.value!!)
-            (activity as MainActivity).showStyledSnackbarMessage(requireView(), getString(R.string.photo_add_to_fav), null, 2500, R.drawable.icon_star_selected, null)
-            it.visibility = View.GONE
-            dataBinding.favoriteButtonSelected.visibility = View.VISIBLE
 
-        }
-
-        dataBinding.favoriteButtonSelected.setOnClickListener {
+        dataBinding.deleteFavoritePhoto.setOnClickListener {
             viewModel.removePhotoFromFavorites(viewModel.selectedPhoto.value!!)
-            (activity as MainActivity).showStyledSnackbarMessage(requireView(), getString(R.string.photo_removed_from_fav), null, 2500, R.drawable.icon_star, null)
-            it.visibility = View.GONE
-            dataBinding.favoriteButton.visibility = View.VISIBLE
+            (activity as MainActivity).showStyledSnackbarMessage(requireView(), getString(R.string.photo_removed_from_fav), null, 2500, R.drawable.icon_delete, null)
         }
 
         return dataBinding.root
     }
-
+    /** Uses Glide to convert the selected photo to a bitmap and share. Invokes requestPermission function to request runtime permission for storage access **/
 
     private fun sharePhoto() {
         try {
             val viewModel = ViewModelProviders.of(
-                    this, viewModelFactory).get(ExploreDetailViewModel::class.java)
+                    this, mViewModelFactory).get(FavoritesDetailViewModel::class.java)
 
             if (!viewModel.selectedPhoto.value?.img_src.isNullOrEmpty()) {
                 Glide.with(requireContext())
@@ -87,7 +81,6 @@ class ExploreDetailFragment : Fragment() {
                         .into(object : CustomTarget<Bitmap>() {
                             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                                 try {
-
                                 val imagePath = MediaStore.Images.Media.insertImage(requireActivity().contentResolver, resource, "Curiosity Mars Image " + viewModel.selectedPhoto.value?.earth_date, null)
                                 val uri = Uri.parse(imagePath)
 
@@ -111,14 +104,14 @@ class ExploreDetailFragment : Fragment() {
         }
     }
 
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             REQUEST_CODE -> if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 sharePhoto()
             }
-            else -> (activity as MainActivity).showStyledToastMessage("Access to storage is required to share this photo")
+            else -> (activity as MainActivity).showStyledToastMessage(getString(R.string.disk_access_required))
         }
     }
 }
-
 

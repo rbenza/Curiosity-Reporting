@@ -21,7 +21,8 @@
     <string name="low_pic_qlty">Low picture quality enabled for best loading performance</string>
     <string name="normal_pic_qlty">Normal picture quality enabled for better loading performance</string>
     <string name="high_pic_qlty">Highest picture quality enabled!</string>
-    <string name="noti_new_pics">You will now receive a notification when Curiosity transmitted photos back to Earth (max. once a week).</string>
+    <string name="noti_on">You will now receive a weekly notification about Curiosity adventures at Mars</string>
+    <string name="noti_off">Weekly notifications turned off</string>
     <string name="dark_theme_applied">Dark theme applied</string>
     <string name="light_theme_applied">Light theme applied</string>
 
@@ -51,7 +52,7 @@
     <string name="no_internet_app2">No internet app found!</string>
 
     <!--about fragment strings-->
-    <string name="version_description">Version 1.0 - August 2019</string>
+    <string name="version_description">Version 1.1 - August 2019</string>
     <string name="developer_description">Developed by Remy Benza</string>
     <string name="email_toast1">No email app found!\nYou can send an e-mail to:\n\nrvbsoftdev@gmail.com</string>
     <string name="about_app_description">"This app is developed for educational purposes and a fascination for Mars. Suggestions or comments can be send to the developer.</string>
@@ -75,8 +76,9 @@
     <string name="no_photos_in_nasa_db">No photos in the database available to display. Try selecting a different date, camera filter or roll the dice!</string>
     <string name="photo_add_to_fav">Photo added to favorites!</string>
     <string name="photo_removed_from_fav">Photo removed from favorites</string>
-    <string name="no_app_installed">No app installed to share this photo!</string>
     <string name="disk_access_required">Access to storage is required to share this photo</string>
     <string name="most_recent_date_not_available">Curiosity most recent photo date not available. Select a date manually.</string>
+
+    <!-- TODO: remove this placeholder text -->
 
 </resources>

@@ -1,12 +1,16 @@
 package nl.rvbsoftdev.curiosityreporting.repository
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers.Main
 import nl.rvbsoftdev.curiosityreporting.database.FavoriteDatabasePhoto
 import nl.rvbsoftdev.curiosityreporting.database.FavoritePhotosDatabase
 import nl.rvbsoftdev.curiosityreporting.database.asDataBaseModel
@@ -14,14 +18,16 @@ import nl.rvbsoftdev.curiosityreporting.database.getDatabase
 import nl.rvbsoftdev.curiosityreporting.domain.Photo
 import nl.rvbsoftdev.curiosityreporting.network.NasaApi
 import nl.rvbsoftdev.curiosityreporting.network.asAppDataModel
+import okhttp3.Dispatcher
 import java.util.*
 
-/** The PhotoRepository is the single data source for the app. All the data the ViewModels provide the Views (the Fragments destinations) comes from the repository.
+/** The PhotoRepository is the single data source for the app.
+ * All the data the ViewModels provide the Views (the Fragments destinations) comes from the repository.
  * ViewModels do not interact with the network or database directly (MVVM unidirectional design). **/
 
 enum class NasaApiConnectionStatus { LOADING, ERROR, NODATA, DONE }
 
-class PhotoRepository(app: Application) {
+class PhotoRepository(app: Application)  {
 
     private val preferenceManager = PreferenceManager.getDefaultSharedPreferences(app)
 
@@ -70,7 +76,6 @@ class PhotoRepository(app: Application) {
             var apiKeySetbyUser = "HViCqNaudnl7iRBSheUO7kJLzq2Ja0tewak9xiY5"
             /** if present apply personal NASA API key **/
             try {
-
                 if (!preferenceManager.getString("nasa_key", null).isNullOrEmpty()) {
                     apiKeySetbyUser = preferenceManager.getString("nasa_key", null)!!
                 }
@@ -94,7 +99,6 @@ class PhotoRepository(app: Application) {
         withContext(IO) {
             var apiKeySetbyUser = "HViCqNaudnl7iRBSheUO7kJLzq2Ja0tewak9xiY5"
             try {
-
                 if (!preferenceManager.getString("nasa_key", null).isNullOrEmpty()) {
                     apiKeySetbyUser = preferenceManager.getString("nasa_key", null)!!
                 }

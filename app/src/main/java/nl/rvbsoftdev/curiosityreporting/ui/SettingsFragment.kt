@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations
+package nl.rvbsoftdev.curiosityreporting.ui
 
 import android.content.Context
 import android.content.Intent
@@ -45,10 +45,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                 "Dark" -> applySelectedTheme(R.style.AppThemeDark, getString(R.string.dark_theme_applied))
                 "Light" -> applySelectedTheme(R.style.AppThemeLight, getString(R.string.light_theme_applied))
             }
-            //hidden setting, will be implemented later.
+
             "notifications" -> when (sharedPreferences.getBoolean("notifications", true)) {
-                true -> mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.noti_new_pics),
-                        null, 5000, R.drawable.icon_notifications, null)
+                true -> mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.noti_on),
+                        null, 4000, R.drawable.icon_notifications, null)
+                false -> mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.noti_off),
+                        null, 3000, R.drawable.icon_notifications_off, null)
             }
 
             "picture_quality" -> when (sharedPreferences.getString("picture_quality", "High")) {
@@ -120,7 +122,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
 
     }
-
+    /** Prevent memory leak, unregister OnSharedPreferenceChangeListener when fragment looses focus for user **/
     override fun onResume() {
         super.onResume()
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)

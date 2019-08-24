@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.ui_fragment_destinations
+package nl.rvbsoftdev.curiosityreporting.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import nl.rvbsoftdev.curiosityreporting.R
 
-/** Fragment that displays the privacy policy when clicking the privacy icon in the 'about' fragment**/
+/** Fragment that displays the privacy policy when clicking the privacy icon in the 'about' fragment **/
 
 class PrivacyPolicyFragment : Fragment() {
 
