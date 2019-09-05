@@ -34,15 +34,16 @@ Curiosity Reporting is built with best practices and recommended architecture in
 
 ## App components
 
-* **UI/UX:** Dark/Light themes, custom styled toast/snackbar messages, custom DatePicker dialog, custom ImageView, launch screen
+* **UI/UX:** Dark/Light themes, custom styled toast/snackbar messages, custom DatePicker dialog, custom ImageView, launch screen, weekly notifications, grid or listviews
 * **Layouts:** RecyclerView with DiffUtil, global Toolbar for all fragments, ConstraintLayout, CoordinatorLayout, CollapsingToolbar Layout, DrawerLayout
 * **Navigation:** Jetpack Navigation with SafeArgs, bottom navigation bar, menu navigation
 * **Data:** Jetpack LiveData, Jetpack databinding, custom binding adapters 
 * **Persistence:** Jetpack Room SQLite database, Jetpack Preferences, Jetpack ViewModels
 * **Network:** Retrofit, Glide and Moshi to connect and parse JSON response from NASA REST API
 * **Threading:** Kotlin Coroutines for background tasks (Dispatchers IO/Main)
-* **Testing/Performance:** Espresso, JUnit, Firebase TestLab, Firebase Analytics, Firebase Crashlytics
-* **Tools:** Android Studio, Github and Photoshop
+* **Background:** JetPack WorkManager to perform background work while app is not running
+* **Testing/Performance:** Espresso, JUnit, Android Studio Profiler, Firebase TestLab, Analytics and Crashlytics
+* **Tools:** Android Studio, Git(hub) and Photoshop
 
 ## Contact developer
 
