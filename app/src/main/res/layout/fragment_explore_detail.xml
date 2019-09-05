@@ -9,6 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.alexvasilkov.gestures.views.GestureImageView
+            android:id="@+id/selected_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            app:gest_doubleTapZoom="1.25"
+            app:gest_maxZoom="6"
+            app:imageUrl="@{ExploreDetailViewModel.selectedPhoto.img_src}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
         <ImageView
             android:id="@+id/back_button"
             android:layout_width="wrap_content"
@@ -36,7 +49,6 @@
             android:fillColor="?attr/icon_color_preferences"
             android:padding="16dp"
             android:src="@drawable/icon_star_selected"
-            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@id/share_button"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,23 +77,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Placeholder Text" />
-
-
-        <com.jsibbold.zoomage.ZoomageView
-            android:id="@+id/selected_photo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            app:imageUrl="@{ExploreDetailViewModel.selectedPhoto.img_src}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:zoomage_maxScale="15"
-            app:zoomage_minScale="1"
-            app:zoomage_restrictBounds="true"
-            app:zoomage_translatable="true"
-            tools:src="@tools:sample/backgrounds/scenic" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

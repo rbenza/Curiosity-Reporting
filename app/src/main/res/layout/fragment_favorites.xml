@@ -7,7 +7,7 @@
         android:id="@+id/constraint_layout_favorites"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="nl.rvbsoftdev.curiosityreporting.MainActivity">
+        tools:context="nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_photo_favorites"
@@ -57,14 +57,6 @@
         <variable
             name="FavoritesViewModel"
             type="nl.rvbsoftdev.curiosityreporting.viewmodels.FavoritesViewModel" />
-
-        <variable
-            name="ExploreViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.viewmodels.ExploreViewModel" />
-
-        <variable
-            name="PhotoRepository"
-            type="nl.rvbsoftdev.curiosityreporting.repository.PhotoRepository" />
 
     </data>
 </layout>

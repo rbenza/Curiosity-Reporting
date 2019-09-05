@@ -13,8 +13,6 @@ import nl.rvbsoftdev.curiosityreporting.domain.Photo
 class FavoritesPhotoAdapter(val onClickListener: OnClickListener) :
         ListAdapter<Photo, FavoritesPhotoAdapter.FavoritePhotoViewHolder>(DiffCallback) {
 
-    var photos = listOf<Photo>()
-
     class FavoritePhotoViewHolder(private var dataBinding: FragmentFavoriteRecyclerviewItemBinding) :
             RecyclerView.ViewHolder(dataBinding.root) {
 

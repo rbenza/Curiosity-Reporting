@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting
+package nl.rvbsoftdev.curiosityreporting.ui.single_activity
 
 import android.app.AlarmManager
 import android.app.NotificationChannel
@@ -26,14 +26,20 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.muddzdev.styleabletoast.StyleableToast
 import com.pd.chocobar.ChocoBar
 import kotlinx.android.synthetic.main.activity_main.*
-import nl.rvbsoftdev.curiosityreporting.ui.NotificationsBroadcastReceiver
-import nl.rvbsoftdev.curiosityreporting.ui.AppNotifications
+import nl.rvbsoftdev.curiosityreporting.BuildConfig
+import nl.rvbsoftdev.curiosityreporting.R
+import nl.rvbsoftdev.curiosityreporting.ui.notifications.AppNotifications
+import nl.rvbsoftdev.curiosityreporting.ui.notifications.NotificationsBroadcastReceiver
 import nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel
 
-/** Single Activity for the whole app, sets up all the UI elements (Toolbar, Bottom Nav, Side Nav, Notification Channel, Broadcast Receiver)
- *  and contains a Navigation Host Fragment which hosts all the Fragment destinations (see navigation_graph.xml for full overview). **/
+/** Single Activity for the whole app, sets up all the UI elements (Toolbar, Bottom Nav, Side Nav,
+ * Snackbar/Toast messages, user Theme and Notification Channel).
+ * Also contains a Navigation Host Fragment which hosts all the Fragment destinations (see res/navigation/navigation_graph.xml for full overview).
+ *
+ * For the benefits of a single activity design pattern see: https://www.youtube.com/watch?v=2k8x8V77CrU and
+ * https://www.reddit.com/r/androiddev/comments/9yf21b/single_activity_architecture_why/ **/
 
-class MainActivity : AppCompatActivity() {
+class SingleActivity : AppCompatActivity() {
 
     /** Firebase setup to monitor app performance and usage **/
     lateinit var firebaseAnalytics: FirebaseAnalytics
@@ -114,7 +120,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /** Check if nothing expensive runs on UI thread **/
+    /** Monitor if nothing expensive runs on UI thread **/
     private fun enableStrictMode() {
         if (BuildConfig.DEBUG) {
             val policy = StrictMode.ThreadPolicy.Builder()
@@ -127,7 +133,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp() =
-            NavigationUI.navigateUp(Navigation.findNavController(this, R.id.nav_host_fragment), setTopLevelDestinations)
+            NavigationUI.navigateUp(Navigation.findNavController(this, R.id.nav_host_fragment),
+                    setTopLevelDestinations) || super.onSupportNavigateUp()
 
 
     fun setAndReturnUserTheme(): String? {

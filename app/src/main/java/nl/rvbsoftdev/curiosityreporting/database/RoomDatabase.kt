@@ -20,6 +20,9 @@ interface FavoritePhotoDao {
 
     @Query("DELETE FROM favoritedatabasephoto")
     fun deleteAllFavorites()
+
+    @Query("SELECT * FROM favoritedatabasephoto WHERE id LIKE :search")
+    fun find(search: Int): LiveData<FavoriteDatabasePhoto>
 }
 
 @Database(entities = [FavoriteDatabasePhoto::class], version = 8, exportSchema = false)

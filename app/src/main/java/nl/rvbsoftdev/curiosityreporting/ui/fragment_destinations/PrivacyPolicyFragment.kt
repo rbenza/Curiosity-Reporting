@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.ui
+package nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.ui
+package nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -10,11 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.analytics.FirebaseAnalytics
-import nl.rvbsoftdev.curiosityreporting.MainActivity
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentAboutBinding
+import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 
-/** About Fragment that provides information about the app and contact the developer. **/
+/** About Fragment that provides information about the app and the developer. **/
 
 class AboutFragment : Fragment() {
 
@@ -22,7 +22,7 @@ class AboutFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "About Fragment")
-        (activity as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
 
         val dataBinding = FragmentAboutBinding.inflate(inflater)
         dataBinding.lifecycleOwner = this
@@ -43,7 +43,7 @@ class AboutFragment : Fragment() {
         if (startEmailApp.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(startEmailApp)
         } else {
-            (activity as MainActivity).showStyledSnackbarMessage(this.requireView(), getString(R.string.email_toast1),
+            (activity as SingleActivity).showStyledSnackbarMessage(this.requireView(), getString(R.string.email_toast1),
                     null, 8000, R.drawable.icon_email, null)
         }
     }
@@ -53,11 +53,11 @@ class AboutFragment : Fragment() {
         if (launchBrowser.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(launchBrowser)
         } else {
-            (activity as MainActivity).showStyledToastMessage("No internet app found!\n\nGo to: github.com/rbenza/Curiosity-Reporting")
+            (activity as SingleActivity).showStyledToastMessage("No internet app found!\n\nGo to: github.com/rbenza/Curiosity-Reporting")
         }
     }
 
-    /** Only allow portrait orientation. Content in About Fragment not suitable for landscape orientation**/
+    /** Only allow portrait orientation. Content in About Fragment not suitable for landscape orientation **/
     override fun onResume() {
         super.onResume()
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT

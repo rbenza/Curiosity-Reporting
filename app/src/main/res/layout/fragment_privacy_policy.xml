@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:background="@color/Black"
-    tools:context=".ui.PrivacyPolicyFragment">
+    tools:context=".ui.fragment_destinations.PrivacyPolicyFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.ui
+package nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations
 
 import android.content.Context
 import android.content.Intent
@@ -9,20 +9,20 @@ import android.view.View
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.google.firebase.analytics.FirebaseAnalytics
-import nl.rvbsoftdev.curiosityreporting.MainActivity
 import nl.rvbsoftdev.curiosityreporting.R
+import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 
 /** Settings Fragment where the user can adjust the theme and app settings. Uses OnSharedPreferenceChangeListener to react to preferences changing. **/
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private val mainActivity by lazy { (activity as MainActivity) }
+    private val mainActivity by lazy { (activity as SingleActivity) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings Fragment")
-        (activity as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
 
     }
 
@@ -115,7 +115,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             if (launchBrowser.resolveActivity(requireActivity().packageManager) != null) {
                 startActivity(launchBrowser)
             } else {
-                (activity as MainActivity).showStyledToastMessage(getString(R.string.no_internet_app))
+                (activity as SingleActivity).showStyledToastMessage(getString(R.string.no_internet_app))
             }
         } catch (e: Exception) {
 

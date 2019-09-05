@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.ui
+package nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations
 
 import android.content.pm.ActivityInfo
 import androidx.lifecycle.ViewModelProviders
@@ -11,10 +11,10 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.analytics.FirebaseAnalytics
-import nl.rvbsoftdev.curiosityreporting.MainActivity
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentMissionBinding
+import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 
 /** 'MissionFragment' first screen the user sees. Provides navigation to MissionDetailFragments 1, 2 and 3 and a Twitter webview. **/
 
@@ -29,7 +29,7 @@ class MissionFragment : Fragment() {
 
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Mission Fragment")
-        (activity as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
 
         val dataBinding = FragmentMissionBinding.inflate(inflater)
         dataBinding.sharedViewModel = mViewModel

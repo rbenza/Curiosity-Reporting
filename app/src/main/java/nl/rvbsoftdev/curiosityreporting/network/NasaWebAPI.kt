@@ -16,7 +16,11 @@ private const val BASE_URL = "https://api.nasa.gov/"
 interface NasaWebAPI {
 
     @GET("mars-photos/api/v1/rovers/curiosity/photos")
-    fun getNasaJsonResponse(@Query("earth_date") earthDate: String?, @Query("sol") sol: Int?, @Query("camera") camera: String?, @Query("api_key") apiKey: String):
+    fun getNasaJsonResponse(@Query("earth_date") earthDate: String?,
+                            @Query("sol") sol: Int?,
+                            @Query("camera") camera: String?,
+                            @Query("api_key") apiKey: String):
+
             Deferred<NetworkPhotoContainer> /** no CallBacks since using Kotlin Coroutines **/
 }
 

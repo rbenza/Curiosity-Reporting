@@ -4,30 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <import
-            type="nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel" />
-
-        <variable
-            name="FavoritesDetailViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.viewmodels.FavoritesDetailViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_explore_detail_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.jsibbold.zoomage.ZoomageView
+        <com.alexvasilkov.gestures.views.GestureImageView
             android:id="@+id/selected_photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
-            app:zoomage_minScale="1"
-            app:zoomage_maxScale="15"
-            app:zoomage_restrictBounds="true"
-            app:zoomage_translatable="true"
+            app:gest_doubleTapZoom="1.25"
+            app:gest_maxZoom="6"
             app:imageUrl="@{FavoritesDetailViewModel.selectedPhoto.img_src}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +69,15 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Placeholder Text" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <import type="nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel" />
+
+        <variable
+            name="FavoritesDetailViewModel"
+            type="nl.rvbsoftdev.curiosityreporting.viewmodels.FavoritesDetailViewModel" />
+    </data>
 
 </layout>

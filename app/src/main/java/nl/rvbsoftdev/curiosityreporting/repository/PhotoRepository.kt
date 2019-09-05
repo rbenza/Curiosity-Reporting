@@ -11,10 +11,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
-import nl.rvbsoftdev.curiosityreporting.database.FavoriteDatabasePhoto
-import nl.rvbsoftdev.curiosityreporting.database.FavoritePhotosDatabase
-import nl.rvbsoftdev.curiosityreporting.database.asDataBaseModel
-import nl.rvbsoftdev.curiosityreporting.database.getDatabase
+import nl.rvbsoftdev.curiosityreporting.database.*
 import nl.rvbsoftdev.curiosityreporting.domain.Photo
 import nl.rvbsoftdev.curiosityreporting.network.NasaApi
 import nl.rvbsoftdev.curiosityreporting.network.asAppDataModel
@@ -27,9 +24,7 @@ import java.util.*
 
 enum class NasaApiConnectionStatus { LOADING, ERROR, NODATA, DONE }
 
-class PhotoRepository(app: Application)  {
-
-    private val preferenceManager = PreferenceManager.getDefaultSharedPreferences(app)
+class PhotoRepository(private val app: Application) {
 
     companion object {
         private lateinit var sRepository: PhotoRepository
@@ -76,8 +71,8 @@ class PhotoRepository(app: Application)  {
             var apiKeySetbyUser = "HViCqNaudnl7iRBSheUO7kJLzq2Ja0tewak9xiY5"
             /** if present apply personal NASA API key **/
             try {
-                if (!preferenceManager.getString("nasa_key", null).isNullOrEmpty()) {
-                    apiKeySetbyUser = preferenceManager.getString("nasa_key", null)!!
+                if (!PreferenceManager.getDefaultSharedPreferences(app).getString("nasa_key", null).isNullOrEmpty()) {
+                    apiKeySetbyUser = PreferenceManager.getDefaultSharedPreferences(app).getString("nasa_key", null)!!
                 }
 
                 val getPhotos = NasaApi.RETROFIT_SERVICE.getNasaJsonResponse(earthDate, sol, camera, apiKey = apiKeySetbyUser)
@@ -99,8 +94,8 @@ class PhotoRepository(app: Application)  {
         withContext(IO) {
             var apiKeySetbyUser = "HViCqNaudnl7iRBSheUO7kJLzq2Ja0tewak9xiY5"
             try {
-                if (!preferenceManager.getString("nasa_key", null).isNullOrEmpty()) {
-                    apiKeySetbyUser = preferenceManager.getString("nasa_key", null)!!
+                if (!PreferenceManager.getDefaultSharedPreferences(app).getString("nasa_key", null).isNullOrEmpty()) {
+                    apiKeySetbyUser = PreferenceManager.getDefaultSharedPreferences(app).getString("nasa_key", null)!!
                 }
 
                 val getMostRecentDates = NasaApi.RETROFIT_SERVICE.getNasaJsonResponse("2019-05-01", null, null, apiKey = apiKeySetbyUser).await()
@@ -133,6 +128,17 @@ class PhotoRepository(app: Application)  {
         }
     }
 
+    suspend fun searchForPhotoInFavoritesDatabase(photo: Photo): LiveData<Photo>? {
+        var searchResult: LiveData<Photo>? = null
+        withContext(IO) {
+            searchResult = Transformations.map(_favoritePhotosDatabase.favoritePhotoDao.find(photo.asDataBaseModel().id)) {
+                it.asAppDataModel()
+            }
+        }
+        return searchResult
+    }
+
+
     suspend fun getAllFavoritesPhotos(): LiveData<List<Photo>>? {
         var resultConverted: LiveData<List<Photo>>? = null
         withContext(IO) {
@@ -140,7 +146,6 @@ class PhotoRepository(app: Application)  {
             resultConverted = Transformations.map(result) { input: List<FavoriteDatabasePhoto>? ->
                 input?.asDataBaseModel()
             }
-
         }
         return resultConverted
     }

@@ -22,6 +22,7 @@ class ExploreDetailViewModel(photo: Photo, app: Application) : AndroidViewModel(
         _selectedPhoto.value = photo
     }
 
+
     fun addPhotoToFavorites(photo: Photo) {
         viewModelScope.launch {
             photoRepository.addPhotoToFavorites(photo)
@@ -32,6 +33,14 @@ class ExploreDetailViewModel(photo: Photo, app: Application) : AndroidViewModel(
         viewModelScope.launch {
             photoRepository.removePhotoFromFavorites(photo)
         }
+    }
+
+    fun searchForPhotoInFavoritesDatabase(photo: Photo): LiveData<Photo>? {
+        var searchResult: LiveData<Photo>? = null
+        viewModelScope.launch {
+            searchResult = photoRepository.searchForPhotoInFavoritesDatabase(photo)
+        }
+        return searchResult
     }
 }
 

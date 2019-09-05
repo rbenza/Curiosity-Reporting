@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.ui
+package nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -9,9 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.analytics.FirebaseAnalytics
-import nl.rvbsoftdev.curiosityreporting.MainActivity
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFactsBinding
+import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 
 /** Facts Fragment with information about Mars**/
 
@@ -21,7 +21,7 @@ class FactsFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Facts Fragment")
-        (activity as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
 
         val dataBinding = FragmentFactsBinding.inflate(inflater)
 
@@ -36,7 +36,7 @@ class FactsFragment : Fragment() {
         if (launchBrowser.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(launchBrowser)
         } else {
-            (activity as MainActivity).showStyledToastMessage(getString(R.string.no_internet_app))
+            (activity as SingleActivity).showStyledToastMessage(getString(R.string.no_internet_app))
         }
     }
 

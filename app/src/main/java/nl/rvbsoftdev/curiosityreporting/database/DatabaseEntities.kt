@@ -5,7 +5,7 @@ import nl.rvbsoftdev.curiosityreporting.domain.Camera
 import nl.rvbsoftdev.curiosityreporting.domain.Photo
 import nl.rvbsoftdev.curiosityreporting.domain.Rover
 
-/** Room database table with only unique items (id variable is unique) and ordered by earth_date **/
+/** Room database table with only unique items (id property is unique) and ordered by earth_date **/
 
 @SuppressWarnings(RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
 
@@ -58,11 +58,24 @@ fun Photo.asDataBaseModel(): FavoriteDatabasePhoto {
     }
 }
 
+fun FavoriteDatabasePhoto.asAppDataModel(): Photo {
+    return let {
+        Photo(
+                id = it.id,
+                camera = it.camera.asAppDataModel(),
+                earth_date = it.earth_date,
+                img_src = it.img_src,
+                sol = it.sol,
+                rover = it.rover.asAppDataModel())
+    }
+}
+
 fun Camera.asDataBaseModel(): DatabaseCamera {
     return let {
         DatabaseCamera(full_name = it.full_name, name = it.name)
     }
 }
+
 
 fun Rover.asDataBaseModel(): DatabaseRover {
     return let {
@@ -72,7 +85,6 @@ fun Rover.asDataBaseModel(): DatabaseRover {
                 total_photos = it.total_photos)
     }
 }
-
 
 fun DatabaseCamera.asAppDataModel(): Camera {
     return let {

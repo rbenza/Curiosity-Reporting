@@ -22,6 +22,11 @@ class ExploreViewModel(app: Application) : AndroidViewModel(app) {
 
     private val _navigateToSelectedPhoto = MutableLiveData<Photo>()
 
+    private val _cameraFilterStatus = MutableLiveData<String>()
+
+    val cameraFilterStatus: LiveData<String>
+    get() = _cameraFilterStatus
+
     val navigateToSelectedPhoto: LiveData<Photo>
         get() = _navigateToSelectedPhoto
 
@@ -42,8 +47,9 @@ class ExploreViewModel(app: Application) : AndroidViewModel(app) {
     fun setCameraFilter(cameraFilter: String?) {
         try {
             refreshPhotos(photosFromNasaApi.value?.get(0)?.earth_date, null, cameraFilter)
+            _cameraFilterStatus.value = "Succes"
         } catch (e: Exception) {
-
+            _cameraFilterStatus.value = "Error"
         }
     }
 }

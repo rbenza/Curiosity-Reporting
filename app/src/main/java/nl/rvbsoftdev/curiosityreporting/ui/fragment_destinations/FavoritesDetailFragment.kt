@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.ui
+package nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations
 
 import android.content.Context
 import android.content.Intent
@@ -17,9 +17,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.analytics.FirebaseAnalytics
-import nl.rvbsoftdev.curiosityreporting.MainActivity
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoritesDetailBinding
+import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 import nl.rvbsoftdev.curiosityreporting.viewmodels.FavoritesDetailViewModel
 import nl.rvbsoftdev.curiosityreporting.viewmodels.FavoritesDetailViewModelFactory
 import nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel
@@ -36,7 +36,7 @@ class FavoritesDetailFragment : Fragment() {
         super.onAttach(context)
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Favorites Detail Fragment")
-        (activity as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -52,22 +52,22 @@ class FavoritesDetailFragment : Fragment() {
 
         dataBinding.favoritesDetailViewModel = viewModel
 
-        /** some simple Onclicklisteners with lambda for single event instead of wiring it through a ViewModel with LiveData **/
+        /** some simple Onclicklisteners with lambda for single events instead of wiring it through a ViewModel with LiveData **/
         dataBinding.shareButton.setOnClickListener {
             if (requireContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 requireActivity().requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
             } else sharePhoto()
         }
-        dataBinding.backButton.setOnClickListener { (activity as MainActivity).onSupportNavigateUp() }
-
+        dataBinding.backButton.setOnClickListener { (activity as SingleActivity).onSupportNavigateUp() }
         dataBinding.deleteFavoritePhoto.setOnClickListener {
             viewModel.removePhotoFromFavorites(viewModel.selectedPhoto.value!!)
-            (activity as MainActivity).showStyledSnackbarMessage(requireView(), getString(R.string.photo_removed_from_fav), null, 2500, R.drawable.icon_delete, null)
+            (activity as SingleActivity).showStyledSnackbarMessage(requireView(), getString(R.string.photo_removed_from_fav), null, 2500, R.drawable.icon_delete, null)
         }
 
         return dataBinding.root
     }
-    /** Uses Glide to convert the selected photo to a bitmap and share. Invokes requestPermission function to request runtime permission for storage access **/
+    /** Uses Glide to convert the selected photo to a bitmap and share.
+     * Invokes requestPermission function to request runtime permission for storage access **/
 
     private fun sharePhoto() {
         try {
@@ -86,12 +86,13 @@ class FavoritesDetailFragment : Fragment() {
 
                                 val shareIntent = Intent(Intent.ACTION_SEND)
                                 shareIntent.type = "image/*"
-                                shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${SharedViewModel.DateFormatter.formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
+                                shareIntent.putExtra(Intent.EXTRA_TEXT,
+                                        "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${SharedViewModel.DateFormatter.formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
                                 shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
                                 if (shareIntent.resolveActivity(requireActivity().packageManager) != null) {
                                     startActivity(shareIntent)
                                 } else {
-                                    (activity as MainActivity).showStyledToastMessage("No app installed to share this photo!")
+                                    (activity as SingleActivity).showStyledToastMessage("No app installed to share this photo!")
                                 }} catch (e: Exception) { }
                             }
 
@@ -110,7 +111,8 @@ class FavoritesDetailFragment : Fragment() {
             REQUEST_CODE -> if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 sharePhoto()
             }
-            else -> (activity as MainActivity).showStyledToastMessage(getString(R.string.disk_access_required))
+            else -> (activity as SingleActivity).
+                    showStyledToastMessage(getString(R.string.disk_access_required))
         }
     }
 }

@@ -18,7 +18,7 @@
             android:id="@+id/fragment_explore_detail_constraint_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.AboutFragment">
+            tools:context=".ui.fragment_destinations.AboutFragment">
 
             <Button
                 android:id="@+id/send_email_button"

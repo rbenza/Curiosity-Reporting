@@ -11,7 +11,7 @@ The menu does slide out and works when pulled from the side. Can be solved by di
 
 Implement:
 
--Favorite star icon stays selected when revisting photo in Explore Fragment (logic to compare NetworkPhoto with FavoriteDatabasePhoto)
+-Favorite star icon stays selected when revisiting photo in Explore Fragment (logic to compare NetworkPhoto with FavoriteDatabasePhoto)
 
 
 

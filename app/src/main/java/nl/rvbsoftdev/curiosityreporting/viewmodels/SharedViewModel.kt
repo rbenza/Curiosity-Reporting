@@ -11,7 +11,7 @@ import nl.rvbsoftdev.curiosityreporting.repository.PhotoRepository
 import java.text.SimpleDateFormat
 import java.util.*
 
-/** SharedViewModel tied to MainActivity LifeCycle (which hosts the nav fragment) to enable sharing of data between fragments and provide global functions.**/
+/** SharedViewModel tied to SingleActivity LifeCycle (which hosts the nav fragment) to enable sharing of data between fragments and provide global functions.**/
 
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
 

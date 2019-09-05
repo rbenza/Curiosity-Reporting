@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.ui
+package nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations
 
 import android.content.Intent
 import android.net.Uri
@@ -11,12 +11,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.fragment_more.*
-import nl.rvbsoftdev.curiosityreporting.MainActivity
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.adapters.ListViewAdapter
+import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 import nl.rvbsoftdev.curiosityreporting.viewmodels.MoreViewModel
 
-/** More Fragment where the user can navigate to the fragments; 'about', 'settings' and share the app or visit the NASA website.
+/** More Fragment where the user can navigate to the fragments; 'About', 'Settings' and share the app or visit the NASA website.
  * Uses Legacy ListView with findViewById since it's a very small list with 4 static items  **/
 
 class MoreFragment : Fragment() {
@@ -29,7 +29,7 @@ class MoreFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "More Fragment")
-        (activity as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
 
         return inflater.inflate(R.layout.fragment_more, container, false)
     }
@@ -55,7 +55,7 @@ class MoreFragment : Fragment() {
         if (launchBrowser.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(launchBrowser)
         } else {
-            (activity as MainActivity).showStyledToastMessage(getString(R.string.no_internet_app))
+            (activity as SingleActivity).showStyledToastMessage(getString(R.string.no_internet_app))
         }
     }
 
@@ -63,11 +63,11 @@ class MoreFragment : Fragment() {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
         val playStoreLink = "https://play.google.com/store/apps/details?id=nl.rvbsoftdev.curiosityreporting"
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this amazing app to Explore Mars!\n\nGet it at ${playStoreLink}")
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this cool app that let's you Explore Mars!\n\nGet it at ${playStoreLink}")
         if (shareIntent.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(shareIntent)
         } else {
-            (activity as MainActivity).showStyledToastMessage("No app to share found!\n" +
+            (activity as SingleActivity).showStyledToastMessage("No app to share found!\n" +
                     "\n" +
                     "Go to ${playStoreLink} to share the app")
         }

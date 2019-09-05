@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.ui
+package nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations
 
 import android.os.Bundle
 import android.view.*
@@ -15,8 +15,8 @@ import nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreBinding
 import java.util.*
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
-import nl.rvbsoftdev.curiosityreporting.MainActivity
 import nl.rvbsoftdev.curiosityreporting.adapters.ExplorePhotoAdapter
+import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 import nl.rvbsoftdev.curiosityreporting.viewmodels.ExploreViewModel
 
 /** Explore Fragment where the user can view the photos from the NASA database through a random Sol generator or DatePicker dialog **/
@@ -33,28 +33,32 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Explore Fragment")
-        (activity as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-
+        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
         val dataBinding = FragmentExploreBinding.inflate(inflater)
-
         dataBinding.lifecycleOwner = this
         dataBinding.exploreViewModel = mViewModel
-
-        dataBinding.recyclerviewPhotosExplore.adapter = ExplorePhotoAdapter(ExplorePhotoAdapter.OnClickListener {
+        dataBinding.recyclerviewPhotosExplore.adapter =
+                ExplorePhotoAdapter(ExplorePhotoAdapter.OnClickListener {
             mViewModel.displayPhotoDetails(it)
         })
-
+        /** Lets the user select a list or grid as preference **/
         var gridOrList = 4
-        if (PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("explore_photo_layout", "Grid") == "List") {
+        if (PreferenceManager.getDefaultSharedPreferences(requireContext()).
+                        getString("explore_photo_layout", "Grid") == "List") {
             gridOrList = 1
         }
         dataBinding.recyclerviewPhotosExplore.layoutManager = GridLayoutManager(requireContext(), gridOrList)
-
         mViewModel.navigateToSelectedPhoto.observe(this, Observer {
             if (it != null) {
-                this.findNavController().navigate(ExploreFragmentDirections.actionExploreFragmentToExploreDetailFragment(it))
+                this.findNavController().
+                        navigate(ExploreFragmentDirections.actionExploreFragmentToExploreDetailFragment(it))
                 mViewModel.displayPhotoDetailsFinished()
             }
+        })
+        mViewModel.cameraFilterStatus.observe(this, Observer {
+            if(it == "Error") {
+                (activity as SingleActivity).
+                        showStyledToastMessage("Please reselect the date, this small issue will be fixed soon.") }
         })
 
         setHasOptionsMenu(true)
@@ -72,7 +76,8 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         fun showCameraFilterSnackBar(camera: String) {
-            (activity as MainActivity).showStyledSnackbarMessage(requireView(), "Camera filter for ${camera} selected",
+            (activity as SingleActivity).showStyledSnackbarMessage(requireView(),
+                    "Camera filter for ${camera} selected",
                     null, 2500, R.drawable.icon_camera, null)
         }
 
@@ -128,7 +133,7 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 }
                 val randomSol = Random().nextInt(randomBound)
                 mViewModel.refreshPhotos(null, randomSol, null)
-                (activity as MainActivity).showStyledSnackbarMessage(requireView(),
+                (activity as SingleActivity).showStyledSnackbarMessage(requireView(),
                         "Roll the dice!\nSelected Mars solar day ${randomSol}!",
                         null, 3000, R.drawable.icon_dice, null)
             }
@@ -136,7 +141,8 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         return true
     }
 
-    /** Custom Datepicker fragment where user can select a photo date. Tries to fetch te most recent date from the NASA API. When unsuccessful uses date of today **/
+    /** Custom Datepicker fragment where user can select a photo date.
+     * Tries to fetch te most recent date from the NASA API. When unsuccessful uses date of today **/
 
     private fun showDatePickerDialog() {
 
@@ -148,8 +154,9 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             val mostRecentDay = Integer.valueOf(mostRecentPhotoDate!!.slice(8..9))
 
             val dpd = DatePickerDialog.newInstance(this, mostRecentYear, mostRecentMonth, mostRecentDay)
-            dpd.setTitle("Curiosity most recent Photos are taken on " + SharedViewModel.DateFormatter.formatDate(mostRecentPhotoDate))
-            if ((activity as MainActivity).setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
+            dpd.setTitle("Curiosity most recent Photos are taken on " +
+                    SharedViewModel.DateFormatter.formatDate(mostRecentPhotoDate))
+            if ((activity as SingleActivity).setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
             dpd.showYearPickerFirst(true)
             dpd.setCancelText("Dismiss")
             dpd.minDate = SharedViewModel.CalenderObjectProvider.provideCalender("2012-08-07")
@@ -163,7 +170,7 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             val currentDay = calender.get(Calendar.DAY_OF_MONTH)
 
             val dpd = DatePickerDialog.newInstance(this, currentYear, currentMonth, currentDay)
-            if ((activity as MainActivity).setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
+            if ((activity as SingleActivity).setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
             dpd.setTitle(getString(R.string.most_recent_date_not_available))
             dpd.showYearPickerFirst(true)
             dpd.setCancelText("Dismiss")
@@ -176,7 +183,9 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
         val monthConverted = monthOfYear + 1
         val userSelectedDate = "${year}-${monthConverted}-${dayOfMonth}"
-        (activity as MainActivity).showStyledSnackbarMessage(requireView(), "Date selected: " + SharedViewModel.DateFormatter.formatDate(userSelectedDate), null, 3500, R.drawable.icon_calender, null)
+        (activity as SingleActivity).showStyledSnackbarMessage(requireView(),
+                "Date selected: " + SharedViewModel.DateFormatter.formatDate(userSelectedDate),
+                null, 3500, R.drawable.icon_calender, null)
         mViewModel.refreshPhotos(userSelectedDate, null, null)
     }
 }

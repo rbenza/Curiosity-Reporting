@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:background="@color/Black"
             android:padding="12dp"
-            tools:context=".ui.FactsFragment">
+            tools:context=".ui.fragment_destinations.FactsFragment">
 
             <ImageView
                 android:id="@+id/mars_and_earth_img"

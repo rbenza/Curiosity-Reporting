@@ -14,7 +14,7 @@
         android:theme="@style/AppThemeDark.Launcher"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.single_activity.SingleActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +27,7 @@
             android:value="true" />
 
         <receiver
-            android:name=".ui.NotificationsBroadcastReceiver"
+            android:name=".ui.notifications.NotificationsBroadcastReceiver"
             android:enabled="true"
             android:exported="true"/>
     </application>

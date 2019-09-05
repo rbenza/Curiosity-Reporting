@@ -79,6 +79,4 @@
     <string name="disk_access_required">Access to storage is required to share this photo</string>
     <string name="most_recent_date_not_available">Curiosity most recent photo date not available. Select a date manually.</string>
 
-    <!-- TODO: remove this placeholder text -->
-
 </resources>

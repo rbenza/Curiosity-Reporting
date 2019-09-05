@@ -22,7 +22,6 @@ class CuriosityReportingApp : Application() {
     }
 
     private fun setupRecurringWork() {
-        Log.i("WorkManager", "setupRecurringWork called")
         val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.UNMETERED)
                 .setRequiresBatteryNotLow(true)
@@ -47,6 +46,5 @@ class CuriosityReportingApp : Application() {
     override fun onCreate() {
         super.onCreate()
         delayedInit()
-        Log.i("WorkManager", "delayInit called")
     }
 }

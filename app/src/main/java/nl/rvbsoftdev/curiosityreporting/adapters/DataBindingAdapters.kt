@@ -34,15 +34,15 @@ fun bindRecyclerViewFavorites(recyclerView: RecyclerView, data: List<Photo>?) {
 @BindingAdapter("imageUrl")
 fun bindImage(imgView: ImageView, imgUrl: String?) {
 
-    val circularProgressDrawable = CircularProgressDrawable(imgView.context)
-    circularProgressDrawable.strokeWidth = 4f
-    circularProgressDrawable.centerRadius = 20f
+    val loadingSpinner = CircularProgressDrawable(imgView.context)
+    loadingSpinner.strokeWidth = 4f
+    loadingSpinner.centerRadius = 20f
     if (PreferenceManager.getDefaultSharedPreferences(imgView.context).getString("theme", "Dark") == "Dark") {
-        circularProgressDrawable.setColorSchemeColors(imgView.context.getColor(R.color.DeepOrange))
+        loadingSpinner.setColorSchemeColors(imgView.context.getColor(R.color.DeepOrange))
     } else {
-        circularProgressDrawable.setColorSchemeColors(imgView.context.getColor(R.color.DarkBrown))
+        loadingSpinner.setColorSchemeColors(imgView.context.getColor(R.color.DarkBrown))
     }
-    circularProgressDrawable.start()
+    loadingSpinner.start()
 
     var pictureQualitySetting = 100
     when (PreferenceManager.getDefaultSharedPreferences(imgView.context).getString("picture_quality", "High")) {
@@ -56,7 +56,7 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
                 .load(imgUri)
                 .encodeQuality(pictureQualitySetting)
                 .apply(RequestOptions()
-                        .placeholder(circularProgressDrawable)
+                        .placeholder(loadingSpinner)
                         .error(R.drawable.icon_broken_image))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)  /** no Room database needed for NetworkPhotos, very small chance users loads same photos twice (360k photos in NASA db). Glide cache impl works when user selects same date twice with Datepicker fragment. Max cache size 250mb **/
                 .into(imgView)

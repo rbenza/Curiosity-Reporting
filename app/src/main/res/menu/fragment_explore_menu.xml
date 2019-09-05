@@ -5,10 +5,10 @@
 
     <group android:id="@+id/title">
         <item
-            android:id="@+id/date_info"
+            android:id="@+id/camera_filter_title"
             android:title="SELECT CAMERA FILTER :"
             app:showAsAction="never"
-            android:gravity="right"/>
+            android:gravity="center"/>
     </group>
     <group android:id="@+id/options"
         android:checkableBehavior="single">

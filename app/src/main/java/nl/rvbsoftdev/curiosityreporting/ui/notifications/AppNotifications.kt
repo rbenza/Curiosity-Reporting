@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.ui
+package nl.rvbsoftdev.curiosityreporting.ui.notifications
 
 import android.app.Notification
 import android.app.NotificationManager
