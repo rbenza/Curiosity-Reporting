@@ -37,7 +37,7 @@ import nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel
  * Also contains a Navigation Host Fragment which hosts all the Fragment destinations (see res/navigation/navigation_graph.xml for full overview).
  *
  * For the benefits of a single activity design pattern see: https://www.youtube.com/watch?v=2k8x8V77CrU and
- * https://www.reddit.com/r/androiddev/comments/9yf21b/single_activity_architecture_why/ **/
+ * https://www.reddit.com/r/androiddev/comments/9yf21b/single_activity_architecture_why/  **/
 
 class SingleActivity : AppCompatActivity() {
 
