@@ -13,11 +13,11 @@ This app let's you:
 
 All the photos are retrieved from the [public database](https://api.nasa.gov/api.html#MarsPhotos) the NASA provides. Available on the Google Play Store.
 
-[<img src="https://user-images.githubusercontent.com/47558082/63432359-4e694f00-c421-11e9-99c1-81eccc3d19d3.png" width="50%"></img>](https://play.google.com/store/apps/details?id=nl.rvbsoftdev.curiosityreporting)
+[<img src="https://user-images.githubusercontent.com/47558082/63432359-4e694f00-c421-11e9-99c1-81eccc3d19d3.png" width="40%"></img>](https://play.google.com/store/apps/details?id=nl.rvbsoftdev.curiosityreporting)
 
 ## App screenshots
 
-<img src="https://user-images.githubusercontent.com/47558082/63264743-1bda1d80-c28c-11e9-86ad-e086507572ac.jpg" width="23%"></img> <img src="https://user-images.githubusercontent.com/47558082/63264744-1bda1d80-c28c-11e9-834c-c495e5ba6331.jpg" width="23%"></img> <img src="https://user-images.githubusercontent.com/47558082/63264746-1bda1d80-c28c-11e9-98a5-697f5b4df033.jpg" width="23%"></img> <img src="https://user-images.githubusercontent.com/47558082/63264747-1c72b400-c28c-11e9-85b5-381692eb0718.jpg" width="23%"></img> <img src="https://user-images.githubusercontent.com/47558082/63264748-1c72b400-c28c-11e9-9183-b024fc0a4ea3.jpg" width="23%"></img> <img src="https://user-images.githubusercontent.com/47558082/63264749-1c72b400-c28c-11e9-84a8-78fecef1b735.jpg" width="23%"></img> <img src="https://user-images.githubusercontent.com/47558082/63264751-1c72b400-c28c-11e9-938d-215bdace9668.jpg" width="23%"></img> 
+<img src="https://user-images.githubusercontent.com/47558082/63264743-1bda1d80-c28c-11e9-86ad-e086507572ac.jpg" width="23%"></img> <img src="https://user-images.githubusercontent.com/47558082/65384985-4c98f100-dd29-11e9-88bc-0c0f3d12a3aa.jpg" width="23%"></img> <img src="https://user-images.githubusercontent.com/47558082/63264746-1bda1d80-c28c-11e9-98a5-697f5b4df033.jpg" width="23%"></img> <img src="https://user-images.githubusercontent.com/47558082/63264747-1c72b400-c28c-11e9-85b5-381692eb0718.jpg" width="23%"></img> <img src="https://user-images.githubusercontent.com/47558082/63264748-1c72b400-c28c-11e9-9183-b024fc0a4ea3.jpg" width="23%"></img> <img src="https://user-images.githubusercontent.com/47558082/65384983-4c98f100-dd29-11e9-8f6a-8c179b913160.jpg" width="23%"></img> <img src="https://user-images.githubusercontent.com/47558082/65384984-4c98f100-dd29-11e9-8bd7-620a6415eed9.jpg" width="23%"></img> 
 
 
 ## App architecture 
