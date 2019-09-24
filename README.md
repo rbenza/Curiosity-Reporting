@@ -43,7 +43,7 @@ Curiosity Reporting is built with best practices and recommended architecture in
 * **Threading:** Kotlin Coroutines for background tasks (Dispatchers IO/Main)
 * **Background:** JetPack WorkManager to perform background work while app is not running
 * **Testing/Performance:** Espresso, JUnit, Android Studio Profiler, Firebase TestLab, Analytics and Crashlytics
-* **Tools:** Android Studio, Git(hub) and Photoshop
+* **Tools:** Android Studio, Git(hub), Adobe Illustrator and Photoshop
 
 ## Contact developer
 
