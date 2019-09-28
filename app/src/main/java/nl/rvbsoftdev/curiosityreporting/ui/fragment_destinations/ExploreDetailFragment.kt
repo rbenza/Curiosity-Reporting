@@ -53,7 +53,7 @@ class ExploreDetailFragment : Fragment() {
 
         dataBinding.shareButton.setOnClickListener {
             if (requireContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                requireActivity().requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
+                requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
             } else sharePhoto()
         }
         dataBinding.backButton.setOnClickListener { (activity as SingleActivity).onSupportNavigateUp() }

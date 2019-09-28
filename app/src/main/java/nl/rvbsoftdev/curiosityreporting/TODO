@@ -2,8 +2,6 @@ TODO
 
 Bugs:
 
--Share button in Explore Detail Fragment asks for external storage permission, but when allowed does not display sharing screen (user needs to reselect share button).
-
 -Hamburger menu button does not work in landscape mode in the Explore and Favorites fragments.
 The menu does slide out and works when pulled from the side. Can be solved by disabling setHasOptionsMenu(false) but then there are no menu options.
 
