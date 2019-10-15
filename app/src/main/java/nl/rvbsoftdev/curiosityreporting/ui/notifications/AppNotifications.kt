@@ -12,8 +12,8 @@ import nl.rvbsoftdev.curiosityreporting.R
 
 object AppNotifications {
 
-    private val NOTIFICATION_TAG = "NewPhotos"
-    val NOTIFICATION_CHANNEL = "Alert channel"
+    private const val NOTIFICATION_TAG = "NewPhotos"
+    const val NOTIFICATION_CHANNEL = "Alert channel"
 
     fun notify(context: Context) {
         val res = context.resources

@@ -16,7 +16,7 @@ import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private val mainActivity by lazy { (activity as SingleActivity) }
+    private val singleActivity by lazy { (activity as SingleActivity) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -29,7 +29,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("nasa_key", null).isNullOrEmpty()) {
-            mainActivity.showStyledSnackbarMessage(view, getString(R.string.nasa_key_warning),
+            singleActivity.showStyledSnackbarMessage(view, getString(R.string.nasa_key_warning),
                     "GET KEY", 5000, R.drawable.icon_key) { getNasaKeyAtWebsite() }
         }
     }
@@ -47,56 +47,56 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             }
 
             "notifications" -> when (sharedPreferences.getBoolean("notifications", true)) {
-                true -> mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.noti_on),
+                true -> singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.noti_on),
                         null, 4000, R.drawable.icon_notifications, null)
-                false -> mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.noti_off),
+                false -> singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.noti_off),
                         null, 3000, R.drawable.icon_notifications_off, null)
             }
 
             "picture_quality" -> when (sharedPreferences.getString("picture_quality", "High")) {
                 "High" -> {
-                    mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.high_pic_qlty),
+                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.high_pic_qlty),
                             null, 3000, R.drawable.icon_image, null)
                 }
                 "Normal" -> {
-                    mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.normal_pic_qlty),
+                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.normal_pic_qlty),
                             null, 3000, R.drawable.icon_image, null)
                 }
                 "Low" -> {
-                    mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.low_pic_qlty),
+                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.low_pic_qlty),
                             null, 3000, R.drawable.icon_image, null)
                 }
             }
 
             "explore_photo_layout" -> when (sharedPreferences.getString("explore_photo_layout", "Grid")) {
                 "List" -> {
-                    mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.photo_expl_list_msg),
+                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.photo_expl_list_msg),
                             null, 3000, R.drawable.icon_list, null)
                 }
                 "Grid" -> {
-                    mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.photo_expl_grid_msg),
+                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.photo_expl_grid_msg),
                             null, 3000, R.drawable.icon_grid, null)
                 }
             }
 
             "favorites_photo_layout" -> when (sharedPreferences.getString("favorites_photo_layout", "List")) {
                 "List" -> {
-                    mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.photo_fav_list_msg),
+                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.photo_fav_list_msg),
                             null, 3000, R.drawable.icon_list, null)
                 }
                 "Grid" -> {
-                    mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.photo_fav_grid_msg),
+                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.photo_fav_grid_msg),
                             null, 3000, R.drawable.icon_grid, null)
                 }
             }
 
             "nasa_key" -> when (sharedPreferences.getString("nasa_key", null)) {
                 "" -> {
-                    mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.def_key),
+                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.def_key),
                             null, 4000, R.drawable.icon_key, null)
                 }
                 else -> {
-                    mainActivity.showStyledSnackbarMessage(requireView(), getString(R.string.personal_key_applied),
+                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.personal_key_applied),
                             null, 5000, R.drawable.icon_key, null)
                 }
             }
@@ -104,9 +104,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     private fun applySelectedTheme(theme: Int, toastMsg: String) {
-        mainActivity.setTheme(theme)
-        mainActivity.updateUI()
-        mainActivity.showStyledToastMessage(toastMsg)
+        singleActivity.setTheme(theme)
+        singleActivity.updateUI()
+        singleActivity.showStyledToastMessage(toastMsg)
     }
 
     private fun getNasaKeyAtWebsite() {
@@ -118,7 +118,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                 (activity as SingleActivity).showStyledToastMessage(getString(R.string.no_internet_app))
             }
         } catch (e: Exception) {
-
+            e.printStackTrace()
         }
 
     }

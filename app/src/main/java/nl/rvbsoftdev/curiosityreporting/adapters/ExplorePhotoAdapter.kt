@@ -11,7 +11,7 @@ import nl.rvbsoftdev.curiosityreporting.domain.Photo
 
 /** Recyclerview adapter with DiffUtil for photos in the 'Explore' fragment **/
 
-class ExplorePhotoAdapter(val onClickListener: OnClickListener) :
+class ExplorePhotoAdapter(private val onClickListener: OnClickListener) :
         ListAdapter<Photo, ExplorePhotoAdapter.PhotoViewHolder>(DiffCallback) {
 
     class PhotoViewHolder(private var dataBinding: FragmentExploreRecyclerviewItemBinding) :

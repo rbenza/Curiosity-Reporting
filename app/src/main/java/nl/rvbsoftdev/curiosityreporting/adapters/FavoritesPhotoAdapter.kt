@@ -10,7 +10,7 @@ import nl.rvbsoftdev.curiosityreporting.domain.Photo
 
 /** Recyclerview adapter with DiffUtil for photos in the 'Favorites' fragment **/
 
-class FavoritesPhotoAdapter(val onClickListener: OnClickListener) :
+class FavoritesPhotoAdapter(private val onClickListener: OnClickListener) :
         ListAdapter<Photo, FavoritesPhotoAdapter.FavoritePhotoViewHolder>(DiffCallback) {
 
     class FavoritePhotoViewHolder(private var dataBinding: FragmentFavoriteRecyclerviewItemBinding) :

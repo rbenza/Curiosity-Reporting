@@ -23,20 +23,16 @@ class MissionDetailFragment1 : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Mission Detail Fragment 1")
         (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-
         val dataBinding = Fragment1MissionDetailBinding.inflate(inflater)
         dataBinding.sharedViewModel = mViewModel
-
         dataBinding.missionPhoto2.setOnClickListener { watchCuriosityLandingOnYouTube() }
-
         return dataBinding.root
     }
 
-    private fun watchCuriosityLandingOnYouTube(){
+    private fun watchCuriosityLandingOnYouTube() {
         try {
             val launchBrowser = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=Esj5juUzhpU"))
             if (launchBrowser.resolveActivity(requireActivity().packageManager) != null) {
@@ -45,7 +41,7 @@ class MissionDetailFragment1 : Fragment() {
                 (activity as SingleActivity).showStyledToastMessage(getString(R.string.no_internet_app2))
             }
         } catch (e: Exception) {
-
+            e.printStackTrace()
         }
     }
 

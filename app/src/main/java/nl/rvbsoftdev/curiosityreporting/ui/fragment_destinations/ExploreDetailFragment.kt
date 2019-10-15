@@ -111,6 +111,7 @@ class ExploreDetailFragment : Fragment() {
                                         (activity as SingleActivity).showStyledToastMessage("No app installed to share this photo!")
                                     }
                                 } catch (e: Exception) {
+                                    e.printStackTrace()
                                 }
                             }
 
@@ -120,6 +121,7 @@ class ExploreDetailFragment : Fragment() {
                         })
             }
         } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

@@ -66,6 +66,7 @@ class FavoritesDetailFragment : Fragment() {
 
         return dataBinding.root
     }
+
     /** Uses Glide to convert the selected photo to a bitmap and share.
      * Invokes requestPermission function to request runtime permission for storage access **/
 
@@ -81,19 +82,22 @@ class FavoritesDetailFragment : Fragment() {
                         .into(object : CustomTarget<Bitmap>() {
                             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                                 try {
-                                val imagePath = MediaStore.Images.Media.insertImage(requireActivity().contentResolver, resource, "Curiosity Mars Image " + viewModel.selectedPhoto.value?.earth_date, null)
-                                val uri = Uri.parse(imagePath)
+                                    val imagePath = MediaStore.Images.Media.insertImage(requireActivity().contentResolver, resource, "Curiosity Mars Image " + viewModel.selectedPhoto.value?.earth_date, null)
+                                    val uri = Uri.parse(imagePath)
 
-                                val shareIntent = Intent(Intent.ACTION_SEND)
-                                shareIntent.type = "image/*"
-                                shareIntent.putExtra(Intent.EXTRA_TEXT,
-                                        "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${SharedViewModel.DateFormatter.formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
-                                shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
-                                if (shareIntent.resolveActivity(requireActivity().packageManager) != null) {
-                                    startActivity(shareIntent)
-                                } else {
-                                    (activity as SingleActivity).showStyledToastMessage("No app installed to share this photo!")
-                                }} catch (e: Exception) { }
+                                    val shareIntent = Intent(Intent.ACTION_SEND)
+                                    shareIntent.type = "image/*"
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT,
+                                            "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${SharedViewModel.DateFormatter.formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
+                                    shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+                                    if (shareIntent.resolveActivity(requireActivity().packageManager) != null) {
+                                        startActivity(shareIntent)
+                                    } else {
+                                        (activity as SingleActivity).showStyledToastMessage("No app installed to share this photo!")
+                                    }
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
                             }
 
                             override fun onLoadCleared(placeholder: Drawable?) {
@@ -102,6 +106,7 @@ class FavoritesDetailFragment : Fragment() {
                         })
             }
         } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -111,8 +116,7 @@ class FavoritesDetailFragment : Fragment() {
             REQUEST_CODE -> if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 sharePhoto()
             }
-            else -> (activity as SingleActivity).
-                    showStyledToastMessage(getString(R.string.disk_access_required))
+            else -> (activity as SingleActivity).showStyledToastMessage(getString(R.string.disk_access_required))
         }
     }
 }

@@ -9,8 +9,8 @@ import nl.rvbsoftdev.curiosityreporting.domain.Rover
 
 @SuppressWarnings(RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
 
-@Entity(indices = arrayOf(Index(value = ["id"], unique = true)))
-data class FavoriteDatabasePhoto constructor(
+@Entity(indices = [Index(value = ["id"], unique = true)])
+data class FavoriteDatabasePhoto (
         @PrimaryKey
         val id: Int,
         @Embedded val camera: DatabaseCamera,
@@ -20,14 +20,14 @@ data class FavoriteDatabasePhoto constructor(
         @Embedded val rover: DatabaseRover)
 
 @Entity
-data class DatabaseRover constructor(
+data class DatabaseRover (
         @PrimaryKey(autoGenerate = true)
         val max_date: String,
         val max_sol: Int,
         val total_photos: Int)
 
 @Entity
-data class DatabaseCamera constructor(
+data class DatabaseCamera (
         @PrimaryKey(autoGenerate = true)
         val full_name: String,
         val name: String)
