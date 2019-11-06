@@ -61,7 +61,6 @@ class SingleActivity : AppCompatActivity() {
         setupNotificationChannel()
         setupWeeklyNotifications()
         enableStrictMode()
-
     }
 
     private val setTopLevelDestinations by lazy {
@@ -88,26 +87,17 @@ class SingleActivity : AppCompatActivity() {
                     bottom_nav?.visibility = View.VISIBLE
                     global_toolbar?.visibility = View.GONE
                 }
-                R.id.mission_detail_fragment1 -> {
-                    bottom_nav?.visibility = View.GONE
-                    global_toolbar?.visibility = View.VISIBLE
-                }
-                R.id.mission_detail_fragment2 -> {
-                    bottom_nav?.visibility = View.GONE
-                    global_toolbar?.visibility = View.VISIBLE
-                }
+                R.id.mission_detail_fragment1,
+                R.id.mission_detail_fragment2,
                 R.id.mission_detail_fragment3 -> {
                     bottom_nav?.visibility = View.GONE
                     global_toolbar?.visibility = View.VISIBLE
                 }
-                R.id.about_fragment -> bottom_nav?.visibility = View.GONE
-                R.id.settings_fragment -> bottom_nav?.visibility = View.GONE
+                R.id.about_fragment,
+                R.id.settings_fragment,
                 R.id.fragment_privacy_policy -> bottom_nav?.visibility = View.GONE
-                R.id.explore_detail_fragment -> {
-                    bottom_nav?.visibility = View.GONE
-                    global_toolbar?.visibility = View.GONE
-                }
-                R.id.favorites_detail_fragment -> {
+
+                R.id.explore_detail_fragment, R.id.favorites_detail_fragment -> {
                     bottom_nav?.visibility = View.GONE
                     global_toolbar?.visibility = View.GONE
                 }
@@ -115,7 +105,6 @@ class SingleActivity : AppCompatActivity() {
                     bottom_nav?.visibility = View.VISIBLE
                     global_toolbar?.visibility = View.VISIBLE
                 }
-
             }
         }
     }
@@ -169,12 +158,11 @@ class SingleActivity : AppCompatActivity() {
                         .setActionTextTypefaceStyle(Typeface.BOLD)
                         .setIcon(icon)
                         .setDuration(durationMs)
-                        .setActionClickListener { action!!() }
+                        .setActionClickListener { action?.invoke() }
                         .build()
                         .show()
             }
             "Light" -> {
-
                 ChocoBar.builder()
                         .setView(view)
                         .setBackgroundColor(this.getColor(R.color.YellowLightSand))
@@ -189,11 +177,10 @@ class SingleActivity : AppCompatActivity() {
                         .setActionTextTypefaceStyle(Typeface.BOLD)
                         .setIcon(icon)
                         .setDuration(durationMs)
-                        .setActionClickListener { action!!() }
+                        .setActionClickListener { action?.invoke() }
                         .build()
                         .show()
             }
-
         }
     }
 

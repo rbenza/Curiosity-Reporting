@@ -77,49 +77,49 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         fun showCameraFilterSnackBar(camera: String) {
             (activity as SingleActivity).showStyledSnackbarMessage(requireView(),
-                    "Camera filter for ${camera} selected",
+                    "Camera filter for $camera selected",
                     null, 2500, R.drawable.icon_camera, null)
         }
 
         when (item.itemId) {
             R.id.all_cameras -> {
-                mViewModel.setCameraFilter(cameraFilter = null)
+                mViewModel.setCameraFilter(null)
                 showCameraFilterSnackBar("all cameras")
                 item.isChecked = true
             }
 
             R.id.FHAZ -> {
-                mViewModel.setCameraFilter(cameraFilter = "FHAZ")
+                mViewModel.setCameraFilter("FHAZ")
                 item.isChecked = true
                 showCameraFilterSnackBar("the Front Hazard Avoidance Camera")
             }
             R.id.RHAZ -> {
-                mViewModel.setCameraFilter(cameraFilter = "RHAZ")
+                mViewModel.setCameraFilter("RHAZ")
                 item.isChecked = true
                 showCameraFilterSnackBar("the Rear Hazard Avoidance Camera")
             }
             R.id.MAST -> {
-                mViewModel.setCameraFilter(cameraFilter = "MAST")
+                mViewModel.setCameraFilter("MAST")
                 showCameraFilterSnackBar("the Mast Camera")
                 item.isChecked = true
             }
             R.id.CHEMCAM -> {
-                mViewModel.setCameraFilter(cameraFilter = "CHEMCAM")
+                mViewModel.setCameraFilter("CHEMCAM")
                 showCameraFilterSnackBar("the Chemistry and Camera Complex")
                 item.isChecked = true
             }
             R.id.MAHLI -> {
-                mViewModel.setCameraFilter(cameraFilter = "MAHLI")
+                mViewModel.setCameraFilter("MAHLI")
                 showCameraFilterSnackBar("the Mars Hand Lens Imager")
                 item.isChecked = true
             }
             R.id.MARDI -> {
-                mViewModel.setCameraFilter(cameraFilter = "MARDI")
+                mViewModel.setCameraFilter("MARDI")
                 showCameraFilterSnackBar("the Mars Descent Imager")
                 item.isChecked = true
             }
             R.id.NAVCAM -> {
-                mViewModel.setCameraFilter(cameraFilter = "NAVCAM")
+                mViewModel.setCameraFilter("NAVCAM")
                 showCameraFilterSnackBar("the Navigation Camera")
                 item.isChecked = true
             }
@@ -127,14 +127,14 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
             R.id.select_random_date -> {
                 val mostRecentSol = mViewModel.mostRecentSolPhotoDate.value
-                var randomBound = 2491
+                var randomBound = 2540
                 if (mostRecentSol != null) {
                     randomBound = mostRecentSol
                 }
                 val randomSol = Random().nextInt(randomBound)
                 mViewModel.refreshPhotos(null, randomSol, null)
                 (activity as SingleActivity).showStyledSnackbarMessage(requireView(),
-                        "Roll the dice!\nSelected Mars solar day ${randomSol}!",
+                        "Roll the dice!\nSelected Mars solar day $randomSol!",
                         null, 3000, R.drawable.icon_dice, null)
             }
         }
@@ -147,7 +147,6 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private fun showDatePickerDialog() {
 
         try {
-
             val mostRecentPhotoDate = mViewModel.mostRecentEarthPhotoDate.value
             val mostRecentYear = Integer.valueOf(mostRecentPhotoDate!!.slice(0..3))
             val mostRecentMonth = (Integer.valueOf(mostRecentPhotoDate!!.slice(5..6))) - 1
@@ -176,7 +175,6 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             dpd.setCancelText("Dismiss")
             dpd.minDate = SharedViewModel.CalenderObjectProvider.provideCalender("2012-08-07")
             dpd.show(fragmentManager!!, "Datepickerdialog")
-
         }
     }
 

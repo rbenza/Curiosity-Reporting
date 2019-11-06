@@ -20,12 +20,12 @@ class ExploreViewModel(app: Application) : AndroidViewModel(app) {
 
     val mostRecentEarthPhotoDate: LiveData<String> = photoRepository.mostRecentEarthPhotoDate
 
-    private val _navigateToSelectedPhoto = MutableLiveData<Photo>()
-
     private val _cameraFilterStatus = MutableLiveData<String>()
 
     val cameraFilterStatus: LiveData<String>
     get() = _cameraFilterStatus
+
+    private val _navigateToSelectedPhoto = MutableLiveData<Photo>()
 
     val navigateToSelectedPhoto: LiveData<Photo>
         get() = _navigateToSelectedPhoto

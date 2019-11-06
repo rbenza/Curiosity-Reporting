@@ -30,8 +30,10 @@ class PhotoRepository(private val app: Application) {
         private lateinit var sRepository: PhotoRepository
 
         fun getRepository(app: Application): PhotoRepository {
-            if (!::sRepository.isInitialized) {
-                sRepository = PhotoRepository(app)
+            synchronized(PhotoRepository::class.java) {
+                if (!::sRepository.isInitialized) {
+                    sRepository = PhotoRepository(app)
+                }
             }
             return sRepository
         }

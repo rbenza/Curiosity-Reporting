@@ -40,7 +40,7 @@ class ListViewAdapter(var context: Context, var moreItems: ArrayList<MoreItems>)
             viewHolder = view.tag as ViewHolder
         }
 
-        var moreItems: MoreItems = getItem(position) as MoreItems
+        val moreItems: MoreItems = getItem(position) as MoreItems
         viewHolder.icon.setImageResource(moreItems.icon)
         viewHolder.textTitle.text = moreItems.textTitle
         viewHolder.textSubtitle.text = moreItems.textSubTitle

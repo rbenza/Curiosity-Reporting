@@ -11,7 +11,7 @@ import nl.rvbsoftdev.curiosityreporting.repository.PhotoRepository.Companion.get
 
 class FavoritesViewModel(app: Application) : AndroidViewModel(app) {
 
-    private val photoRepository = getRepository(getApplication())
+    private val photoRepository = getRepository(app)
 
     /** Get all favorite photos from Room database through repository (uses suspend function)**/
     init {

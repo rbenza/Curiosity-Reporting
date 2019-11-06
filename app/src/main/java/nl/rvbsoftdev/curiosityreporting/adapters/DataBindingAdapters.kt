@@ -50,10 +50,8 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
         "Normal" -> pictureQualitySetting = 75
         "Low" -> pictureQualitySetting = 25
     }
-    imgUrl?.let {
-        val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
         Glide.with(imgView.context)
-                .load(imgUri)
+                .load(imgUrl)
                 .encodeQuality(pictureQualitySetting)
                 .apply(RequestOptions()
                         .placeholder(loadingSpinner)
@@ -62,7 +60,6 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
                 /** no Room database needed for NetworkPhotos, very small chance users loads same photos twice (360k photos in NASA db). Glide cache impl works when user selects same date twice with Datepicker fragment. Max cache size 250mb **/
                 .into(imgView)
     }
-}
 
 @BindingAdapter("imageConnectionStatus")
 fun imageConnectionStatus(imageConnectionStatus: ImageView, connectionStatus: NasaApiConnectionStatus?) {
@@ -109,12 +106,12 @@ fun textConnectionStatus(textConnectionStatus: TextView, connectionStatus: NasaA
 
 @BindingAdapter("favoriteText")
 fun favoriteText(text: TextView, photo: List<Photo>?) {
-    if (photo.isNullOrEmpty()) text.visibility = View.VISIBLE else View.GONE
+    if (photo.isNullOrEmpty()) text.visibility = View.VISIBLE else text.visibility = View.GONE
 }
 
 @BindingAdapter("favoriteImg")
 fun favoriteImg(img: ImageView, photo: List<Photo>?) {
-    if (photo.isNullOrEmpty()) img.visibility = View.VISIBLE else View.GONE
+    if (photo.isNullOrEmpty()) img.visibility = View.VISIBLE else img.visibility = View.GONE
 }
 
 

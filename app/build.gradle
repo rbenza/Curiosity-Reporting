@@ -110,7 +110,7 @@ dependencies {
 
     // Glide
     implementation "com.github.bumptech.glide:glide:4.9.0"
-    annotationProcessor 'com.github.bumptech.glide:annotations:4.9.0'
+    kapt 'com.github.bumptech.glide:annotations:4.9.0'
 
     // Material DateTime Picker
     implementation 'com.wdullaer:materialdatetimepicker:4.2.1'
