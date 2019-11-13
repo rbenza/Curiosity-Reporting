@@ -32,11 +32,13 @@ class FavoritesDetailFragment : Fragment() {
 
     lateinit var mViewModelFactory: FavoritesDetailViewModelFactory
 
+    private val singleActivity by lazy { activity as SingleActivity }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Favorites Detail Fragment")
-        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        singleActivity.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -58,10 +60,13 @@ class FavoritesDetailFragment : Fragment() {
                 requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
             } else sharePhoto()
         }
-        dataBinding.backButton.setOnClickListener { (activity as SingleActivity).onSupportNavigateUp() }
+        dataBinding.backButton.setOnClickListener { singleActivity.onSupportNavigateUp() }
         dataBinding.deleteFavoritePhoto.setOnClickListener {
             viewModel.removePhotoFromFavorites(viewModel.selectedPhoto.value!!)
-            (activity as SingleActivity).showStyledSnackbarMessage(requireView(), getString(R.string.photo_removed_from_fav), null, 2500, R.drawable.icon_delete, null)
+            singleActivity.showStyledSnackbarMessage(requireView(),
+                    text = getString(R.string.photo_removed_from_fav),
+                    durationMs = 2500,
+                    icon = R.drawable.icon_delete)
         }
         return dataBinding.root
     }
@@ -92,7 +97,7 @@ class FavoritesDetailFragment : Fragment() {
                                     if (shareIntent.resolveActivity(requireActivity().packageManager) != null) {
                                         startActivity(shareIntent)
                                     } else {
-                                        (activity as SingleActivity).showStyledToastMessage("No app installed to share this photo!")
+                                        singleActivity.showStyledToastMessage("No app installed to share this photo!")
                                     }
                                 } catch (e: Exception) {
                                     e.printStackTrace()
@@ -115,7 +120,7 @@ class FavoritesDetailFragment : Fragment() {
             REQUEST_CODE -> if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 sharePhoto()
             }
-            else -> (activity as SingleActivity).showStyledToastMessage(getString(R.string.disk_access_required))
+            else -> singleActivity.showStyledToastMessage(getString(R.string.disk_access_required))
         }
     }
 }

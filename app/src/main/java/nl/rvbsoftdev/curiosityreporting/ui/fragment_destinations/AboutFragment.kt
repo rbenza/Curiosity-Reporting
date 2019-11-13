@@ -18,11 +18,13 @@ import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 
 class AboutFragment : Fragment() {
 
+    private val singleActivity by lazy { (activity as SingleActivity) }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "About Fragment")
-        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        singleActivity.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
 
         val dataBinding = FragmentAboutBinding.inflate(inflater)
         dataBinding.lifecycleOwner = this
@@ -43,8 +45,10 @@ class AboutFragment : Fragment() {
         if (startEmailApp.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(startEmailApp)
         } else {
-            (activity as SingleActivity).showStyledSnackbarMessage(this.requireView(), getString(R.string.email_toast1),
-                    null, 8000, R.drawable.icon_email, null)
+            singleActivity.showStyledSnackbarMessage(requireView(),
+                    text = getString(R.string.email_toast1),
+                    durationMs = 8000,
+                    icon = R.drawable.icon_email)
         }
     }
 
@@ -53,7 +57,7 @@ class AboutFragment : Fragment() {
         if (launchBrowser.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(launchBrowser)
         } else {
-            (activity as SingleActivity).showStyledToastMessage("No internet app found!\n\nGo to: github.com/rbenza/Curiosity-Reporting")
+            singleActivity.showStyledToastMessage("No internet app found!\n\nGo to: github.com/rbenza/Curiosity-Reporting")
         }
     }
 

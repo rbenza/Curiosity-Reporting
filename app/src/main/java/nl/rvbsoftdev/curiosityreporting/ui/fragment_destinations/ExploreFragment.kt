@@ -27,13 +27,14 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         ViewModelProviders.of(this).get(ExploreViewModel::class.java)
     }
 
+    private val singleActivity by lazy { activity as SingleActivity }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Explore Fragment")
-        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        singleActivity.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
         val dataBinding = FragmentExploreBinding.inflate(inflater)
         dataBinding.lifecycleOwner = this
         dataBinding.exploreViewModel = mViewModel
@@ -57,7 +58,7 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         })
         mViewModel.cameraFilterStatus.observe(this, Observer {
             if(it == "Error") {
-                (activity as SingleActivity).
+                singleActivity.
                         showStyledToastMessage("Please reselect the date, this small issue will be fixed soon.") }
         })
 
@@ -76,9 +77,10 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         fun showCameraFilterSnackBar(camera: String) {
-            (activity as SingleActivity).showStyledSnackbarMessage(requireView(),
-                    "Camera filter for $camera selected",
-                    null, 2500, R.drawable.icon_camera, null)
+            singleActivity.showStyledSnackbarMessage(requireView(),
+                    text = "Camera filter for $camera selected",
+                    durationMs = 2500,
+                    icon = R.drawable.icon_camera)
         }
 
         when (item.itemId) {
@@ -90,13 +92,13 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
             R.id.FHAZ -> {
                 mViewModel.setCameraFilter("FHAZ")
-                item.isChecked = true
                 showCameraFilterSnackBar("the Front Hazard Avoidance Camera")
+                item.isChecked = true
             }
             R.id.RHAZ -> {
                 mViewModel.setCameraFilter("RHAZ")
-                item.isChecked = true
                 showCameraFilterSnackBar("the Rear Hazard Avoidance Camera")
+                item.isChecked = true
             }
             R.id.MAST -> {
                 mViewModel.setCameraFilter("MAST")
@@ -133,9 +135,10 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 }
                 val randomSol = Random().nextInt(randomBound)
                 mViewModel.refreshPhotos(null, randomSol, null)
-                (activity as SingleActivity).showStyledSnackbarMessage(requireView(),
-                        "Roll the dice!\nSelected Mars solar day $randomSol!",
-                        null, 3000, R.drawable.icon_dice, null)
+                singleActivity.showStyledSnackbarMessage(requireView(),
+                        text ="Roll the dice!\nSelected Mars solar day $randomSol!",
+                        durationMs = 3000,
+                        icon = R.drawable.icon_dice)
             }
         }
         return true
@@ -155,7 +158,7 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             val dpd = DatePickerDialog.newInstance(this, mostRecentYear, mostRecentMonth, mostRecentDay)
             dpd.setTitle("Curiosity most recent Photos are taken on " +
                     SharedViewModel.DateFormatter.formatDate(mostRecentPhotoDate))
-            if ((activity as SingleActivity).setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
+            if (singleActivity.setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
             dpd.showYearPickerFirst(true)
             dpd.setCancelText("Dismiss")
             dpd.minDate = SharedViewModel.CalenderObjectProvider.provideCalender("2012-08-07")
@@ -169,7 +172,7 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             val currentDay = calender.get(Calendar.DAY_OF_MONTH)
 
             val dpd = DatePickerDialog.newInstance(this, currentYear, currentMonth, currentDay)
-            if ((activity as SingleActivity).setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
+            if (singleActivity.setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
             dpd.setTitle(getString(R.string.most_recent_date_not_available))
             dpd.showYearPickerFirst(true)
             dpd.setCancelText("Dismiss")
@@ -181,9 +184,10 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
         val monthConverted = monthOfYear + 1
         val userSelectedDate = "${year}-${monthConverted}-${dayOfMonth}"
-        (activity as SingleActivity).showStyledSnackbarMessage(requireView(),
-                "Date selected: " + SharedViewModel.DateFormatter.formatDate(userSelectedDate),
-                null, 3500, R.drawable.icon_calender, null)
+        singleActivity.showStyledSnackbarMessage(requireView(),
+                text = "Date selected: " + SharedViewModel.DateFormatter.formatDate(userSelectedDate),
+                durationMs = 3500,
+                icon = R.drawable.icon_calender)
         mViewModel.refreshPhotos(userSelectedDate, null, null)
     }
 }

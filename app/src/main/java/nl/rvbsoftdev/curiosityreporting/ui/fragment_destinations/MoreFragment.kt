@@ -21,6 +21,8 @@ import nl.rvbsoftdev.curiosityreporting.viewmodels.MoreViewModel
 
 class MoreFragment : Fragment() {
 
+    private val singleActivity by lazy { (activity as SingleActivity) }
+
     private val mViewModel: MoreViewModel by lazy {
         ViewModelProviders.of(this).get(MoreViewModel::class.java)
     }
@@ -29,7 +31,7 @@ class MoreFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "More Fragment")
-        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        singleActivity.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
 
         return inflater.inflate(R.layout.fragment_more, container, false)
     }
@@ -55,7 +57,7 @@ class MoreFragment : Fragment() {
         if (launchBrowser.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(launchBrowser)
         } else {
-            (activity as SingleActivity).showStyledToastMessage(getString(R.string.no_internet_app))
+            singleActivity.showStyledToastMessage(getString(R.string.no_internet_app))
         }
     }
 
@@ -67,7 +69,7 @@ class MoreFragment : Fragment() {
         if (shareIntent.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(shareIntent)
         } else {
-            (activity as SingleActivity).showStyledToastMessage("No app to share found!\n" +
+            singleActivity.showStyledToastMessage("No app to share found!\n" +
                     "\n" +
                     "Go to ${playStoreLink} to share the app")
         }

@@ -17,11 +17,13 @@ import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 
 class FactsFragment : Fragment() {
 
+    private val singleActivity by lazy { activity as SingleActivity }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Facts Fragment")
-        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        singleActivity.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
 
         val dataBinding = FragmentFactsBinding.inflate(inflater)
 
@@ -36,7 +38,7 @@ class FactsFragment : Fragment() {
         if (launchBrowser.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(launchBrowser)
         } else {
-            (activity as SingleActivity).showStyledToastMessage(getString(R.string.no_internet_app))
+            singleActivity.showStyledToastMessage(getString(R.string.no_internet_app))
         }
     }
 

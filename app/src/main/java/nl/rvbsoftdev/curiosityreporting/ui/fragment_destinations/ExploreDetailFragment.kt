@@ -32,17 +32,20 @@ const val REQUEST_CODE = 1
 
 class ExploreDetailFragment : Fragment() {
 
+    private val singleActivity by lazy { (activity as SingleActivity) }
+
     lateinit var viewModelFactory: ExploreDetailViewModelFactory
+    lateinit var dataBinding: FragmentExploreDetailBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Explore Detail Fragment")
-        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        singleActivity.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
 
         val application = requireNotNull(activity).application
-        val dataBinding = FragmentExploreDetailBinding.inflate(inflater)
+        dataBinding = FragmentExploreDetailBinding.inflate(inflater)
         dataBinding.lifecycleOwner = this
         val photo = ExploreDetailFragmentArgs.fromBundle(arguments!!).selectedPhoto
         viewModelFactory = ExploreDetailViewModelFactory(photo, application)
@@ -53,39 +56,58 @@ class ExploreDetailFragment : Fragment() {
 
         /** a few simple Onclicklisteners with lambdas for single events instead of wiring it through the ViewModel with LiveData **/
 
+        dataBinding.backButton.setOnClickListener { singleActivity.onSupportNavigateUp() }
+
         dataBinding.shareButton.setOnClickListener {
             if (requireContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
             } else sharePhoto()
         }
-        dataBinding.backButton.setOnClickListener { (activity as SingleActivity).onSupportNavigateUp() }
         dataBinding.favoriteButton.setOnClickListener {
             viewModel.addPhotoToFavorites(viewModel.selectedPhoto.value!!)
-            (activity as SingleActivity).showStyledSnackbarMessage(requireView(), getString(R.string.photo_add_to_fav), null, 2500, R.drawable.icon_star_selected, null)
-            it.viewInvisible()
-            dataBinding.favoriteButtonSelected.viewVisible()
+            singleActivity.showStyledSnackbarMessage(
+                    requireView(),
+                    text = getString(R.string.photo_add_to_fav),
+                    durationMs = 2500,
+                    icon = R.drawable.icon_star_selected)
+            showFavButton(true)
         }
-
         dataBinding.favoriteButtonSelected.setOnClickListener {
             viewModel.removePhotoFromFavorites(viewModel.selectedPhoto.value!!)
-            (activity as SingleActivity).showStyledSnackbarMessage(requireView(), getString(R.string.photo_removed_from_fav), null, 2500, R.drawable.icon_star, null)
-            it.visibility = View.INVISIBLE
-            dataBinding.favoriteButton.viewVisible()
+            singleActivity.showStyledSnackbarMessage(requireView(),
+                    text = getString(R.string.photo_removed_from_fav),
+                    durationMs = 2500,
+                    icon = R.drawable.icon_star)
+            showFavButton(false)
         }
-
-        viewModel.selectedPhoto.observe(this, Observer {
-            val validatePhoto = viewModel.searchForPhotoInFavoritesDatabase(it)
-            if (viewModel.selectedPhoto.value?.id == validatePhoto?.value?.id) {
-                dataBinding.favoriteButtonSelected.viewVisible()
-                dataBinding.favoriteButton.viewInvisible()
-            } else {
-                dataBinding.favoriteButtonSelected.viewInvisible()
-                dataBinding.favoriteButton.viewVisible()
-            }
-        })
+        viewModel.selectedPhoto.observe(
+                this,
+                Observer {
+                    if (viewModel.selectedPhoto.value?.id == viewModel.searchForPhotoInFavoritesDatabase(it)?.value?.id) {
+                        showFavButton(true)
+                    } else {
+                        showFavButton(false)
+                    }
+                }
+        )
 
         return dataBinding.root
     }
+
+    /** function to reduce code duplication **/
+    private fun showFavButton(show: Boolean) {
+        when (show) {
+            true -> {
+                dataBinding.favoriteButton.viewInvisible()
+                dataBinding.favoriteButtonSelected.viewVisible()
+            }
+            false -> {
+                dataBinding.favoriteButton.viewVisible()
+                dataBinding.favoriteButtonSelected.viewInvisible()
+            }
+        }
+    }
+
     /** Uses Glide to convert the selected photo to a bitmap and share. Invokes requestPermission function to request runtime permission for storage access **/
     private fun sharePhoto() {
         try {
@@ -110,7 +132,7 @@ class ExploreDetailFragment : Fragment() {
                                     if (shareIntent.resolveActivity(requireActivity().packageManager) != null) {
                                         startActivity(shareIntent)
                                     } else {
-                                        (activity as SingleActivity).showStyledToastMessage("No app installed to share this photo!")
+                                        singleActivity.showStyledToastMessage("No app installed to share this photo!")
                                     }
                                 } catch (e: Exception) {
                                     e.printStackTrace()
@@ -132,7 +154,7 @@ class ExploreDetailFragment : Fragment() {
             REQUEST_CODE -> if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 sharePhoto()
             }
-            else -> (activity as SingleActivity).showStyledToastMessage("Access to storage is required to share this photo")
+            else -> singleActivity.showStyledToastMessage("Access to storage is required to share this photo")
         }
     }
 }

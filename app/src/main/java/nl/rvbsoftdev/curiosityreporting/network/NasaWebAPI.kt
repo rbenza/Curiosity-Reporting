@@ -15,13 +15,12 @@ private const val BASE_URL = "https://api.nasa.gov/"
 
 interface NasaWebAPI {
 
+    /** no CallBacks since using Kotlin Coroutines **/
     @GET("mars-photos/api/v1/rovers/curiosity/photos")
-    fun getNasaJsonResponse(@Query("earth_date") earthDate: String?,
+    suspend fun getNasaJsonResponse(@Query("earth_date") earthDate: String?,
                             @Query("sol") sol: Int?,
                             @Query("camera") camera: String?,
-                            @Query("api_key") apiKey: String):
-
-            Deferred<NetworkPhotoContainer> /** no CallBacks since using Kotlin Coroutines **/
+                            @Query("api_key") apiKey: String) : NetworkPhotoContainer
 
 }
 
@@ -31,7 +30,6 @@ private val moshi = Moshi.Builder()
 
 private val retrofit = Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .baseUrl(BASE_URL)
         .build()
 

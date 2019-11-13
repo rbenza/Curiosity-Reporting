@@ -142,8 +142,8 @@ class SingleActivity : AppCompatActivity() {
         } else StyleableToast.makeText(this, toastMessage, Toast.LENGTH_LONG, R.style.ToastStyleLight).show()
     }
 
-    fun showStyledSnackbarMessage(view: View, msg: String, msgAction: String?, durationMs: Int,
-                                  icon: Int, action: (() -> Unit)?) {
+    fun showStyledSnackbarMessage(view: View, text: String, durationMs: Int,
+                                  icon: Int, textAction: String = "", action: (() -> Unit)? = null) {
         when (setAndReturnUserTheme()) {
             "Dark" -> {
                 ChocoBar.builder()
@@ -152,9 +152,9 @@ class SingleActivity : AppCompatActivity() {
                         .setTextSize(15F)
                         .setTextColor(this.getColor(R.color.YellowSand))
                         .setTextTypefaceStyle(Typeface.BOLD_ITALIC)
-                        .setText(msg)
+                        .setText(text)
                         .setMaxLines(8)
-                        .setActionText(msgAction)
+                        .setActionText(textAction)
                         .setActionTextColor(this.getColor(R.color.DeepOrange))
                         .setActionTextSize(18F)
                         .setActionTextTypefaceStyle(Typeface.BOLD)
@@ -163,6 +163,7 @@ class SingleActivity : AppCompatActivity() {
                         .setActionClickListener { action?.invoke() }
                         .build()
                         .show()
+
             }
             "Light" -> {
                 ChocoBar.builder()
@@ -171,9 +172,9 @@ class SingleActivity : AppCompatActivity() {
                         .setTextSize(15F)
                         .setTextColor(this.getColor(R.color.DarkerGrey))
                         .setTextTypefaceStyle(Typeface.BOLD_ITALIC)
-                        .setText(msg)
+                        .setText(text)
                         .setMaxLines(8)
-                        .setActionText(msgAction)
+                        .setActionText(textAction)
                         .setActionTextColor(this.getColor(R.color.DarkBrown))
                         .setActionTextSize(18F)
                         .setActionTextTypefaceStyle(Typeface.BOLD)

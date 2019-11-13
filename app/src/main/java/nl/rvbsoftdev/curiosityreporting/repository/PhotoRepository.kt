@@ -77,9 +77,8 @@ class PhotoRepository(private val app: Application) {
                     apiKeySetbyUser = PreferenceManager.getDefaultSharedPreferences(app).getString("nasa_key", null)!!
                 }
 
-                val getPhotos = NasaApi.RETROFIT_SERVICE.getNasaJsonResponse(earthDate, sol, camera, apiKey = apiKeySetbyUser)
+                val photosResult = NasaApi.RETROFIT_SERVICE.getNasaJsonResponse(earthDate, sol, camera, apiKey = apiKeySetbyUser)
                 _connectionStatus.postValue(NasaApiConnectionStatus.LOADING)
-                val photosResult = getPhotos.await()
                 _connectionStatus.postValue(NasaApiConnectionStatus.DONE)
                 _photosResultFromNasaApi.postValue(photosResult.asAppDataModel())
                 if (photosResult.asAppDataModel().isEmpty()) {
@@ -100,7 +99,7 @@ class PhotoRepository(private val app: Application) {
                     apiKeySetbyUser = PreferenceManager.getDefaultSharedPreferences(app).getString("nasa_key", null)!!
                 }
 
-                val getMostRecentDates = NasaApi.RETROFIT_SERVICE.getNasaJsonResponse("2019-05-01", null, null, apiKey = apiKeySetbyUser).await()
+                val getMostRecentDates = NasaApi.RETROFIT_SERVICE.getNasaJsonResponse("2019-05-01", null, null, apiKey = apiKeySetbyUser)
                 val dateResults = getMostRecentDates.asAppDataModel()
                 _mostRecentEarthPhotoDate.postValue(dateResults[0].rover.max_date)
                 _mostRecentSolPhotoDate.postValue(dateResults[0].rover.max_sol)

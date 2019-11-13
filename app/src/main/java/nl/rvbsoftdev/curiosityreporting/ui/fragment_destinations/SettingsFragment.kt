@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelStore
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -30,8 +29,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("nasa_key", null).isNullOrEmpty()) {
-            singleActivity.showStyledSnackbarMessage(view, getString(R.string.nasa_key_warning),
-                    "GET KEY", 5000, R.drawable.icon_key) { getNasaKeyAtWebsite() }
+            singleActivity.showStyledSnackbarMessage(view,
+                    text = getString(R.string.nasa_key_warning),
+                    textAction = "GET KEY",
+                    durationMs = 5000,
+                    icon = R.drawable.icon_key,
+                    action = {getNasaKeyAtWebsite()})
         }
     }
 
@@ -48,57 +51,57 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             }
 
             "notifications" -> when (sharedPreferences.getBoolean("notifications", true)) {
-                true -> singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.noti_on),
-                        null, 4000, R.drawable.icon_notifications, null)
+                true -> singleActivity.showStyledSnackbarMessage(requireView(), text = getString(R.string.noti_on),
+                        durationMs = 4000, icon = R.drawable.icon_notifications)
                 false -> singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.noti_off),
-                        null, 3000, R.drawable.icon_notifications_off, null)
+                        durationMs = 3000, icon = R.drawable.icon_notifications_off)
             }
 
             "picture_quality" -> when (sharedPreferences.getString("picture_quality", "High")) {
                 "High" -> {
-                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.high_pic_qlty),
-                            null, 3000, R.drawable.icon_image, null)
+                    singleActivity.showStyledSnackbarMessage(requireView(), text = getString(R.string.high_pic_qlty),
+                            durationMs = 3000, icon = R.drawable.icon_image)
                 }
                 "Normal" -> {
-                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.normal_pic_qlty),
-                            null, 3000, R.drawable.icon_image, null)
+                    singleActivity.showStyledSnackbarMessage(requireView(), text = getString(R.string.normal_pic_qlty),
+                            durationMs = 3000, icon = R.drawable.icon_image)
                 }
                 "Low" -> {
-                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.low_pic_qlty),
-                            null, 3000, R.drawable.icon_image, null)
+                    singleActivity.showStyledSnackbarMessage(requireView(), text = getString(R.string.low_pic_qlty),
+                            durationMs = 3000, icon = R.drawable.icon_image)
                 }
             }
 
             "explore_photo_layout" -> when (sharedPreferences.getString("explore_photo_layout", "Grid")) {
                 "List" -> {
-                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.photo_expl_list_msg),
-                            null, 3000, R.drawable.icon_list, null)
+                    singleActivity.showStyledSnackbarMessage(requireView(), text = getString(R.string.photo_expl_list_msg),
+                            durationMs = 3000, icon = R.drawable.icon_list)
                 }
                 "Grid" -> {
-                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.photo_expl_grid_msg),
-                            null, 3000, R.drawable.icon_grid, null)
+                    singleActivity.showStyledSnackbarMessage(requireView(), text = getString(R.string.photo_expl_grid_msg),
+                            durationMs = 3000, icon = R.drawable.icon_grid)
                 }
             }
 
             "favorites_photo_layout" -> when (sharedPreferences.getString("favorites_photo_layout", "List")) {
                 "List" -> {
-                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.photo_fav_list_msg),
-                            null, 3000, R.drawable.icon_list, null)
+                    singleActivity.showStyledSnackbarMessage(requireView(), text = getString(R.string.photo_fav_list_msg),
+                            durationMs = 3000, icon = R.drawable.icon_list)
                 }
                 "Grid" -> {
-                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.photo_fav_grid_msg),
-                            null, 3000, R.drawable.icon_grid, null)
+                    singleActivity.showStyledSnackbarMessage(requireView(), text = getString(R.string.photo_fav_grid_msg),
+                            durationMs = 3000, icon = R.drawable.icon_grid)
                 }
             }
 
             "nasa_key" -> when (sharedPreferences.getString("nasa_key", null)) {
                 "" -> {
-                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.def_key),
-                            null, 4000, R.drawable.icon_key, null)
+                    singleActivity.showStyledSnackbarMessage(requireView(),text = getString(R.string.def_key),
+                            durationMs = 4000, icon = R.drawable.icon_key)
                 }
                 else -> {
-                    singleActivity.showStyledSnackbarMessage(requireView(), getString(R.string.personal_key_applied),
-                            null, 5000, R.drawable.icon_key, null)
+                    singleActivity.showStyledSnackbarMessage(requireView(), text = getString(R.string.personal_key_applied),
+                            durationMs = 5000, icon = R.drawable.icon_key)
                 }
             }
         }

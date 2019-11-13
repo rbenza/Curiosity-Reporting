@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.snackbar.Snackbar
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.domain.Photo
 import nl.rvbsoftdev.curiosityreporting.repository.NasaApiConnectionStatus
@@ -133,5 +134,6 @@ fun View.viewGone() {
 }
 
 fun View.viewVisibleOrGone(show: Boolean) = if (show) viewVisible() else viewGone()
+
 
 

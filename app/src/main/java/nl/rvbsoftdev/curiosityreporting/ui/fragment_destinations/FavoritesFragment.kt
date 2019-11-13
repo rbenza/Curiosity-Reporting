@@ -38,17 +38,16 @@ class FavoritesFragment : Fragment() {
             mViewModel.displayFavoritePhotoDetails(it)
         })
         dataBinding.recyclerviewPhotoFavorites.adapter = adapter
+
         /** Lets the user select a list or grid as preference **/
         var listOrGrid = 1
-        if (PreferenceManager.getDefaultSharedPreferences(requireContext()).
-                        getString("favorites_photo_layout", "List") == "Grid") {
+        if (PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("favorites_photo_layout", "List") == "Grid") {
             listOrGrid = 3
         }
         dataBinding.recyclerviewPhotoFavorites.layoutManager = GridLayoutManager(requireContext(), listOrGrid)
         mViewModel.navigateToSelectedPhoto.observe(this, Observer {
             if (it != null) {
-                this.findNavController().
-                        navigate(FavoritesFragmentDirections.actionFavoritesFragmentToFavoritesDetailFragment(it))
+                this.findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToFavoritesDetailFragment(it))
                 mViewModel.displayFavoritePhotoDetailsFinished()
             }
         })
@@ -75,11 +74,10 @@ class FavoritesFragment : Fragment() {
                     builder.setTitle("Delete all photos from favorites?")
                             .setPositiveButton("OK") { _, _ ->
                                 mViewModel.removeAllPhotoFromFavorites()
-                                (activity as SingleActivity).
-                                        showStyledSnackbarMessage(requireView(),
-                                                "Favorite photo(s) deleted!",
-                                        null, 3000,
-                                                R.drawable.icon_delete_all, null)
+                                (activity as SingleActivity).showStyledSnackbarMessage(requireView(),
+                                        text = "Favorite photo(s) deleted!",
+                                        durationMs = 3000,
+                                        icon = R.drawable.icon_delete_all)
                             }
                             .setNegativeButton("Cancel") { _, _ -> }
                     builder.show()
