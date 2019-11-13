@@ -28,6 +28,8 @@ import com.pd.chocobar.ChocoBar
 import kotlinx.android.synthetic.main.activity_single.*
 import nl.rvbsoftdev.curiosityreporting.BuildConfig
 import nl.rvbsoftdev.curiosityreporting.R
+import nl.rvbsoftdev.curiosityreporting.adapters.viewGone
+import nl.rvbsoftdev.curiosityreporting.adapters.viewVisible
 import nl.rvbsoftdev.curiosityreporting.ui.notifications.AppNotifications
 import nl.rvbsoftdev.curiosityreporting.ui.notifications.NotificationsBroadcastReceiver
 import nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel
@@ -84,26 +86,26 @@ class SingleActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.mission_fragment -> {
-                    bottom_nav?.visibility = View.VISIBLE
-                    global_toolbar?.visibility = View.GONE
+                    bottom_nav?.viewVisible()
+                    global_toolbar?.viewGone()
                 }
                 R.id.mission_detail_fragment1,
                 R.id.mission_detail_fragment2,
                 R.id.mission_detail_fragment3 -> {
-                    bottom_nav?.visibility = View.GONE
-                    global_toolbar?.visibility = View.VISIBLE
+                    bottom_nav?.viewGone()
+                    global_toolbar?.viewVisible()
                 }
                 R.id.about_fragment,
                 R.id.settings_fragment,
-                R.id.fragment_privacy_policy -> bottom_nav?.visibility = View.GONE
+                R.id.fragment_privacy_policy -> bottom_nav?.viewGone()
 
                 R.id.explore_detail_fragment, R.id.favorites_detail_fragment -> {
-                    bottom_nav?.visibility = View.GONE
-                    global_toolbar?.visibility = View.GONE
+                    bottom_nav?.viewGone()
+                    global_toolbar?.viewGone()
                 }
                 else -> {
-                    bottom_nav?.visibility = View.VISIBLE
-                    global_toolbar?.visibility = View.VISIBLE
+                    bottom_nav?.viewVisible()
+                    global_toolbar?.viewVisible()
                 }
             }
         }

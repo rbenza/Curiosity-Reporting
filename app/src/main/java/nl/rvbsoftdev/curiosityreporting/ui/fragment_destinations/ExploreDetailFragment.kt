@@ -18,6 +18,8 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.analytics.FirebaseAnalytics
 import nl.rvbsoftdev.curiosityreporting.R
+import nl.rvbsoftdev.curiosityreporting.adapters.viewInvisible
+import nl.rvbsoftdev.curiosityreporting.adapters.viewVisible
 import nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreDetailBinding
 import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
@@ -60,25 +62,25 @@ class ExploreDetailFragment : Fragment() {
         dataBinding.favoriteButton.setOnClickListener {
             viewModel.addPhotoToFavorites(viewModel.selectedPhoto.value!!)
             (activity as SingleActivity).showStyledSnackbarMessage(requireView(), getString(R.string.photo_add_to_fav), null, 2500, R.drawable.icon_star_selected, null)
-            it.visibility = View.INVISIBLE
-            dataBinding.favoriteButtonSelected.visibility = View.VISIBLE
+            it.viewInvisible()
+            dataBinding.favoriteButtonSelected.viewVisible()
         }
 
         dataBinding.favoriteButtonSelected.setOnClickListener {
             viewModel.removePhotoFromFavorites(viewModel.selectedPhoto.value!!)
             (activity as SingleActivity).showStyledSnackbarMessage(requireView(), getString(R.string.photo_removed_from_fav), null, 2500, R.drawable.icon_star, null)
             it.visibility = View.INVISIBLE
-            dataBinding.favoriteButton.visibility = View.VISIBLE
+            dataBinding.favoriteButton.viewVisible()
         }
 
         viewModel.selectedPhoto.observe(this, Observer {
             val validatePhoto = viewModel.searchForPhotoInFavoritesDatabase(it)
             if (viewModel.selectedPhoto.value?.id == validatePhoto?.value?.id) {
-                dataBinding.favoriteButtonSelected.visibility = View.VISIBLE
-                dataBinding.favoriteButton.visibility = View.INVISIBLE
+                dataBinding.favoriteButtonSelected.viewVisible()
+                dataBinding.favoriteButton.viewInvisible()
             } else {
-                dataBinding.favoriteButtonSelected.visibility = View.INVISIBLE
-                dataBinding.favoriteButton.visibility = View.VISIBLE
+                dataBinding.favoriteButtonSelected.viewInvisible()
+                dataBinding.favoriteButton.viewVisible()
             }
         })
 

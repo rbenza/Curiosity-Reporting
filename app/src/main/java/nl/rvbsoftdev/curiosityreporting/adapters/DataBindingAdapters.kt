@@ -3,7 +3,6 @@ package nl.rvbsoftdev.curiosityreporting.adapters
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
@@ -50,34 +49,36 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
         "Normal" -> pictureQualitySetting = 75
         "Low" -> pictureQualitySetting = 25
     }
-        Glide.with(imgView.context)
-                .load(imgUrl)
-                .encodeQuality(pictureQualitySetting)
-                .apply(RequestOptions()
-                        .placeholder(loadingSpinner)
-                        .error(R.drawable.icon_broken_image))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                /** no Room database needed for NetworkPhotos, very small chance users loads same photos twice (360k photos in NASA db). Glide cache impl works when user selects same date twice with Datepicker fragment. Max cache size 250mb **/
-                .into(imgView)
-    }
+    Glide.with(imgView.context)
+            .load(imgUrl)
+            .encodeQuality(pictureQualitySetting)
+            .apply(RequestOptions()
+                    .placeholder(loadingSpinner)
+                    .error(R.drawable.icon_broken_image))
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            /** no Room database needed for NetworkPhotos, very small chance users loads same photos twice (360k photos in NASA db).
+             * Glide cache impl works when user selects same date twice with Datepicker fragment. Max cache size 250mb **/
+            .into(imgView)
+}
 
 @BindingAdapter("imageConnectionStatus")
 fun imageConnectionStatus(imageConnectionStatus: ImageView, connectionStatus: NasaApiConnectionStatus?) {
     when (connectionStatus) {
-        NasaApiConnectionStatus.LOADING -> {
-            imageConnectionStatus.visibility = View.GONE
+        NasaApiConnectionStatus.LOADING,
+        NasaApiConnectionStatus.DONE -> {
+            imageConnectionStatus.viewGone()
         }
         NasaApiConnectionStatus.ERROR -> {
-            imageConnectionStatus.visibility = View.VISIBLE
-            imageConnectionStatus.setImageResource(R.drawable.icon_connection_error)
+            imageConnectionStatus.apply {
+                viewVisible()
+                setImageResource(R.drawable.icon_connection_error)
+            }
         }
         NasaApiConnectionStatus.NODATA -> {
-            imageConnectionStatus.visibility = View.VISIBLE
-            imageConnectionStatus.setImageResource(R.drawable.icon_database_no_data)
-
-        }
-        NasaApiConnectionStatus.DONE -> {
-            imageConnectionStatus.visibility = View.GONE
+            imageConnectionStatus.apply {
+                viewVisible()
+                setImageResource(R.drawable.icon_database_no_data)
+            }
         }
     }
 }
@@ -86,32 +87,51 @@ fun imageConnectionStatus(imageConnectionStatus: ImageView, connectionStatus: Na
 fun textConnectionStatus(textConnectionStatus: TextView, connectionStatus: NasaApiConnectionStatus?) {
     when (connectionStatus) {
         NasaApiConnectionStatus.LOADING -> {
-            textConnectionStatus.visibility = View.VISIBLE
-            textConnectionStatus.text = textConnectionStatus.context.getText(R.string.connecting_nasa_db)
+            textConnectionStatus.apply {
+                viewVisible()
+                text = context.getText(R.string.connecting_nasa_db)
+            }
         }
         NasaApiConnectionStatus.ERROR -> {
-            textConnectionStatus.visibility = View.VISIBLE
-            textConnectionStatus.text = textConnectionStatus.context.getText(R.string.no_conn_nasa_db)
+            textConnectionStatus.apply {
+                viewVisible()
+                text = context.getText(R.string.no_conn_nasa_db)
+            }
         }
         NasaApiConnectionStatus.NODATA -> {
-            textConnectionStatus.visibility = View.VISIBLE
-            textConnectionStatus.text = textConnectionStatus.context.getText(R.string.no_photos_in_nasa_db)
-
+            textConnectionStatus.apply {
+                viewVisible()
+                text = context.getText(R.string.no_photos_in_nasa_db)
+            }
         }
         NasaApiConnectionStatus.DONE -> {
-            textConnectionStatus.visibility = View.GONE
+            textConnectionStatus.viewGone()
         }
     }
 }
 
 @BindingAdapter("favoriteText")
-fun favoriteText(text: TextView, photo: List<Photo>?) {
-    if (photo.isNullOrEmpty()) text.visibility = View.VISIBLE else text.visibility = View.GONE
-}
+fun favoriteText(text: TextView, photo: List<Photo>?) = text.viewVisibleOrGone(photo.isNullOrEmpty())
+
 
 @BindingAdapter("favoriteImg")
-fun favoriteImg(img: ImageView, photo: List<Photo>?) {
-    if (photo.isNullOrEmpty()) img.visibility = View.VISIBLE else img.visibility = View.GONE
+fun favoriteImg(img: ImageView, photo: List<Photo>?) = img.viewVisibleOrGone(photo.isNullOrEmpty())
+
+
+/** Some convenient extension functions on the View class **/
+
+fun View.viewVisible() {
+    visibility = View.VISIBLE
 }
+
+fun View.viewInvisible() {
+    visibility = View.INVISIBLE
+}
+
+fun View.viewGone() {
+    visibility = View.GONE
+}
+
+fun View.viewVisibleOrGone(show: Boolean) = if (show) viewVisible() else viewGone()
 
 

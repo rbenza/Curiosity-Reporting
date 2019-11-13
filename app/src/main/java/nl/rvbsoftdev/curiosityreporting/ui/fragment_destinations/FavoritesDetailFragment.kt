@@ -63,7 +63,6 @@ class FavoritesDetailFragment : Fragment() {
             viewModel.removePhotoFromFavorites(viewModel.selectedPhoto.value!!)
             (activity as SingleActivity).showStyledSnackbarMessage(requireView(), getString(R.string.photo_removed_from_fav), null, 2500, R.drawable.icon_delete, null)
         }
-
         return dataBinding.root
     }
 
