@@ -10,7 +10,6 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
@@ -30,49 +29,38 @@ import nl.rvbsoftdev.curiosityreporting.viewmodels.ExploreDetailViewModelFactory
 
 const val REQUEST_CODE = 1
 
-class ExploreDetailFragment : Fragment() {
+class ExploreDetailFragment : BaseFragment<FragmentExploreDetailBinding>() {
 
+    override val layout = R.layout.fragment_explore_detail
+    override val firebaseTag = "Explore Detail Fragment"
     private val singleActivity by lazy { (activity as SingleActivity) }
+    private lateinit var viewModelFactory: ExploreDetailViewModelFactory
 
-    lateinit var viewModelFactory: ExploreDetailViewModelFactory
-    lateinit var dataBinding: FragmentExploreDetailBinding
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Explore Detail Fragment")
-        singleActivity.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val application = requireNotNull(activity).application
-        dataBinding = FragmentExploreDetailBinding.inflate(inflater)
-        dataBinding.lifecycleOwner = this
         val photo = ExploreDetailFragmentArgs.fromBundle(arguments!!).selectedPhoto
         viewModelFactory = ExploreDetailViewModelFactory(photo, application)
         val viewModel = ViewModelProviders.of(
                 this, viewModelFactory).get(ExploreDetailViewModel::class.java)
 
-        dataBinding.exploreDetailViewModel = viewModel
-
+        binding.exploreDetailViewModel = viewModel
         /** a few simple Onclicklisteners with lambdas for single events instead of wiring it through the ViewModel with LiveData **/
-
-        dataBinding.backButton.setOnClickListener { singleActivity.onSupportNavigateUp() }
-
-        dataBinding.shareButton.setOnClickListener {
+        binding.backButton.setOnClickListener { singleActivity.onSupportNavigateUp() }
+        binding.shareButton.setOnClickListener {
             if (requireContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
             } else sharePhoto()
         }
-        dataBinding.favoriteButton.setOnClickListener {
+        binding.favoriteButton.setOnClickListener {
             viewModel.addPhotoToFavorites(viewModel.selectedPhoto.value!!)
-            singleActivity.showStyledSnackbarMessage(
-                    requireView(),
+            singleActivity.showStyledSnackbarMessage(requireView(),
                     text = getString(R.string.photo_add_to_fav),
                     durationMs = 2500,
                     icon = R.drawable.icon_star_selected)
             showFavButton(true)
         }
-        dataBinding.favoriteButtonSelected.setOnClickListener {
+        binding.favoriteButtonSelected.setOnClickListener {
             viewModel.removePhotoFromFavorites(viewModel.selectedPhoto.value!!)
             singleActivity.showStyledSnackbarMessage(requireView(),
                     text = getString(R.string.photo_removed_from_fav),
@@ -90,20 +78,18 @@ class ExploreDetailFragment : Fragment() {
                     }
                 }
         )
-
-        return dataBinding.root
     }
 
     /** function to reduce code duplication **/
     private fun showFavButton(show: Boolean) {
         when (show) {
             true -> {
-                dataBinding.favoriteButton.viewInvisible()
-                dataBinding.favoriteButtonSelected.viewVisible()
+                binding.favoriteButton.viewInvisible()
+                binding.favoriteButtonSelected.viewVisible()
             }
             false -> {
-                dataBinding.favoriteButton.viewVisible()
-                dataBinding.favoriteButtonSelected.viewInvisible()
+                binding.favoriteButton.viewVisible()
+                binding.favoriteButtonSelected.viewInvisible()
             }
         }
     }
@@ -122,14 +108,16 @@ class ExploreDetailFragment : Fragment() {
                             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                                 try {
 
-                                    val imagePath = MediaStore.Images.Media.insertImage(requireActivity().contentResolver, resource, "Curiosity Mars Image " + viewModel.selectedPhoto.value?.earth_date, null)
+                                    val imagePath = MediaStore.Images.Media.insertImage(singleActivity.contentResolver,
+                                            resource, "Curiosity Mars Image " + viewModel.selectedPhoto.value?.earth_date, null)
                                     val uri = Uri.parse(imagePath)
 
                                     val shareIntent = Intent(Intent.ACTION_SEND)
                                     shareIntent.type = "image/*"
-                                    shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${SharedViewModel.DateFormatter.formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT,
+                                            "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${SharedViewModel.DateFormatter.formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
                                     shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
-                                    if (shareIntent.resolveActivity(requireActivity().packageManager) != null) {
+                                    if (shareIntent.resolveActivity(singleActivity.packageManager) != null) {
                                         startActivity(shareIntent)
                                     } else {
                                         singleActivity.showStyledToastMessage("No app installed to share this photo!")
@@ -158,5 +146,3 @@ class ExploreDetailFragment : Fragment() {
         }
     }
 }
-
-

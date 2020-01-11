@@ -3,7 +3,6 @@ package nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.MenuCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -12,33 +11,26 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel
-import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreBinding
 import java.util.*
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import nl.rvbsoftdev.curiosityreporting.adapters.ExplorePhotoAdapter
+import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreBinding
 import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 import nl.rvbsoftdev.curiosityreporting.viewmodels.ExploreViewModel
 
 /** Explore Fragment where the user can view the photos from the NASA database through a random Sol generator or DatePicker dialog **/
 
-class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog.OnDateSetListener {
 
-    private val mViewModel: ExploreViewModel by lazy {
-        ViewModelProviders.of(this).get(ExploreViewModel::class.java)
-    }
-
+    override val layout = R.layout.fragment_explore
+    override val firebaseTag = "Explore Fragment"
+    private val mViewModel: ExploreViewModel by lazy { ViewModelProviders.of(this).get(ExploreViewModel::class.java) }
     private val singleActivity by lazy { activity as SingleActivity }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Explore Fragment")
-        singleActivity.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-        val dataBinding = FragmentExploreBinding.inflate(inflater)
-        dataBinding.lifecycleOwner = this
-        dataBinding.exploreViewModel = mViewModel
-        dataBinding.recyclerviewPhotosExplore.adapter =
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.exploreViewModel = mViewModel
+        binding.recyclerviewPhotosExplore.adapter =
                 ExplorePhotoAdapter(ExplorePhotoAdapter.OnClickListener {
             mViewModel.displayPhotoDetails(it)
         })
@@ -48,7 +40,7 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                         getString("explore_photo_layout", "Grid") == "List") {
             gridOrList = 1
         }
-        dataBinding.recyclerviewPhotosExplore.layoutManager = GridLayoutManager(requireContext(), gridOrList)
+        binding.recyclerviewPhotosExplore.layoutManager = GridLayoutManager(requireContext(), gridOrList)
         mViewModel.navigateToSelectedPhoto.observe(this, Observer {
             if (it != null) {
                 this.findNavController().
@@ -56,14 +48,7 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 mViewModel.displayPhotoDetailsFinished()
             }
         })
-        mViewModel.cameraFilterStatus.observe(this, Observer {
-            if(it == "Error") {
-                singleActivity.
-                        showStyledToastMessage("Please reselect the date, this small issue will be fixed soon.") }
-        })
-
         setHasOptionsMenu(true)
-        return dataBinding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -73,7 +58,6 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     /**Camera filter options menu**/
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         fun showCameraFilterSnackBar(camera: String) {
@@ -152,8 +136,8 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         try {
             val mostRecentPhotoDate = mViewModel.mostRecentEarthPhotoDate.value
             val mostRecentYear = Integer.valueOf(mostRecentPhotoDate!!.slice(0..3))
-            val mostRecentMonth = (Integer.valueOf(mostRecentPhotoDate!!.slice(5..6))) - 1
-            val mostRecentDay = Integer.valueOf(mostRecentPhotoDate!!.slice(8..9))
+            val mostRecentMonth = (Integer.valueOf(mostRecentPhotoDate.slice(5..6))) - 1
+            val mostRecentDay = Integer.valueOf(mostRecentPhotoDate.slice(8..9))
 
             val dpd = DatePickerDialog.newInstance(this, mostRecentYear, mostRecentMonth, mostRecentDay)
             dpd.setTitle("Curiosity most recent Photos are taken on " +
@@ -191,8 +175,3 @@ class ExploreFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         mViewModel.refreshPhotos(userSelectedDate, null, null)
     }
 }
-
-
-
-
-

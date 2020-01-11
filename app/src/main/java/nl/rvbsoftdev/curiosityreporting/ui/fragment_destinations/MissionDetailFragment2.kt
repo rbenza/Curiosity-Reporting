@@ -2,33 +2,25 @@ package nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.analytics.FirebaseAnalytics
+import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.Fragment2MissionDetailBinding
 import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 import nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel
 
-class MissionDetailFragment2 : Fragment() {
+class MissionDetailFragment2 : BaseFragment<Fragment2MissionDetailBinding>() {
 
-    private val mViewModel: SharedViewModel by lazy {
-        ViewModelProviders.of(requireActivity()).get(SharedViewModel::class.java)
-    }
+    override val layout = R.layout.fragment2_mission_detail
+    override val firebaseTag = "Mission Detail Fragment 2"
+    private val mViewModel: SharedViewModel by lazy { ViewModelProviders.of(requireActivity()).get(SharedViewModel::class.java) }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Mission Detail Fragment 2")
-        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-
-        val dataBinding = Fragment2MissionDetailBinding.inflate(inflater)
-        dataBinding.sharedViewModel = mViewModel
-
-        return dataBinding.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.sharedViewModel = mViewModel
     }
 
     /** Only allow portrait orientation. Content in Mission Detail Fragment 2 not suitable for landscape orientation **/
@@ -37,12 +29,8 @@ class MissionDetailFragment2 : Fragment() {
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
-
     override fun onPause() {
         super.onPause()
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
     }
 }
-
-
-

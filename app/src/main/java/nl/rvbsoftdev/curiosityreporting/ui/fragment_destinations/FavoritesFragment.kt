@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -19,32 +18,25 @@ import nl.rvbsoftdev.curiosityreporting.viewmodels.FavoritesViewModel
 
 /** Favorites Fragment that provides a unique List of Photos sorted by most recent earth date contained in the local room database **/
 
-class FavoritesFragment : Fragment() {
+class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
 
-    private val mViewModel: FavoritesViewModel by lazy {
-        ViewModelProviders.of(this).get(FavoritesViewModel::class.java)
-    }
+    override val layout = R.layout.fragment_favorites
+    override val firebaseTag = "Favorite Fragment"
+    private val mViewModel: FavoritesViewModel by lazy { ViewModelProviders.of(this).get(FavoritesViewModel::class.java)  }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Favorite Fragment")
-        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-        val dataBinding = FragmentFavoritesBinding.inflate(inflater)
-        dataBinding.lifecycleOwner = this
-        dataBinding.favoritesViewModel = mViewModel
-        val adapter = FavoritesPhotoAdapter(FavoritesPhotoAdapter.OnClickListener {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.favoritesViewModel = mViewModel
+        binding.recyclerviewPhotoFavorites.adapter = FavoritesPhotoAdapter(FavoritesPhotoAdapter.OnClickListener {
             mViewModel.displayFavoritePhotoDetails(it)
         })
-        dataBinding.recyclerviewPhotoFavorites.adapter = adapter
 
         /** Lets the user select a list or grid as preference **/
         var listOrGrid = 1
         if (PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("favorites_photo_layout", "List") == "Grid") {
             listOrGrid = 3
         }
-        dataBinding.recyclerviewPhotoFavorites.layoutManager = GridLayoutManager(requireContext(), listOrGrid)
+        binding.recyclerviewPhotoFavorites.layoutManager = GridLayoutManager(requireContext(), listOrGrid)
         mViewModel.navigateToSelectedPhoto.observe(this, Observer {
             if (it != null) {
                 this.findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToFavoritesDetailFragment(it))
@@ -56,7 +48,6 @@ class FavoritesFragment : Fragment() {
             if (it.isNullOrEmpty()) setHasOptionsMenu(false) else setHasOptionsMenu(true)
         })
 
-        return dataBinding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -74,7 +65,7 @@ class FavoritesFragment : Fragment() {
                     builder.setTitle("Delete all photos from favorites?")
                             .setPositiveButton("OK") { _, _ ->
                                 mViewModel.removeAllPhotoFromFavorites()
-                                (activity as SingleActivity).showStyledSnackbarMessage(requireView(),
+                                (it as SingleActivity).showStyledSnackbarMessage(requireView(),
                                         text = "Favorite photo(s) deleted!",
                                         durationMs = 3000,
                                         icon = R.drawable.icon_delete_all)

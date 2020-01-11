@@ -16,25 +16,19 @@ import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 
 /** About Fragment that provides information about the app and the developer. **/
 
-class AboutFragment : Fragment() {
+class AboutFragment : BaseFragment<FragmentAboutBinding>() {
+
+    override val layout = R.layout.fragment_about
+    override val firebaseTag = "About Fragment"
 
     private val singleActivity by lazy { (activity as SingleActivity) }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "About Fragment")
-        singleActivity.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-
-        val dataBinding = FragmentAboutBinding.inflate(inflater)
-        dataBinding.lifecycleOwner = this
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         /** simple Onclicklisteners with lambda for single events instead of wiring it through a ViewModel with LiveData **/
-        dataBinding.sendEmailButton.setOnClickListener { sendEmail() }
-        dataBinding.githubImg.setOnClickListener { visitGitHubRepository() }
-        dataBinding.privacyImg.setOnClickListener { findNavController().navigate(AboutFragmentDirections.actionAboutFragmentToPrivacyPolicyFragment()) }
-
-        return dataBinding.root
+        binding.sendEmailButton.setOnClickListener { sendEmail() }
+        binding.githubImg.setOnClickListener { visitGitHubRepository() }
+        binding.privacyImg.setOnClickListener { findNavController().navigate(AboutFragmentDirections.actionAboutFragmentToPrivacyPolicyFragment()) }
     }
 
     private fun sendEmail() {
@@ -53,11 +47,12 @@ class AboutFragment : Fragment() {
     }
 
     private fun visitGitHubRepository() {
-        val launchBrowser = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/rbenza/Curiosity-Reporting/blob/master/README.md"))
-        if (launchBrowser.resolveActivity(requireActivity().packageManager) != null) {
-            startActivity(launchBrowser)
-        } else {
-            singleActivity.showStyledToastMessage("No internet app found!\n\nGo to: github.com/rbenza/Curiosity-Reporting")
+        Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/rbenza/Curiosity-Reporting/blob/master/README.md")).apply {
+            if (this.resolveActivity(requireActivity().packageManager) != null) {
+                startActivity(this)
+            } else {
+                singleActivity.showStyledToastMessage("No internet app found!\n\nGo to: github.com/rbenza/Curiosity-Reporting")
+            }
         }
     }
 
@@ -67,15 +62,8 @@ class AboutFragment : Fragment() {
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
-
     override fun onPause() {
         super.onPause()
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
     }
 }
-
-
-
-
-
-

@@ -29,5 +29,3 @@ class FavoritesDetailViewModel(photo: Photo, app: Application) : AndroidViewMode
     }
 
 }
-
-

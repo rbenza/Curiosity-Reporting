@@ -48,11 +48,10 @@ class SingleActivity : AppCompatActivity() {
     lateinit var mViewModel: SharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         setAndReturnUserTheme()
+        super.onCreate(savedInstanceState)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         mViewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
-        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single)
         setSupportActionBar(global_toolbar)
         val navController = findNavController(R.id.nav_host_fragment)
@@ -139,7 +138,9 @@ class SingleActivity : AppCompatActivity() {
     fun showStyledToastMessage(toastMessage: String) {
         if (setAndReturnUserTheme() == "Dark") {
             StyleableToast.makeText(this, toastMessage, Toast.LENGTH_LONG, R.style.ToastStyleDark).show()
-        } else StyleableToast.makeText(this, toastMessage, Toast.LENGTH_LONG, R.style.ToastStyleLight).show()
+        } else {
+            StyleableToast.makeText(this, toastMessage, Toast.LENGTH_LONG, R.style.ToastStyleLight).show()
+        }
     }
 
     fun showStyledSnackbarMessage(view: View, text: String, durationMs: Int,
@@ -213,24 +214,3 @@ class SingleActivity : AppCompatActivity() {
         this.recreate()
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

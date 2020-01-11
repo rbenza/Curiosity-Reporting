@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,21 +14,16 @@ import nl.rvbsoftdev.curiosityreporting.databinding.Fragment1MissionDetailBindin
 import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 import nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel
 
-class MissionDetailFragment1 : Fragment() {
+class MissionDetailFragment1 : BaseFragment<Fragment1MissionDetailBinding>() {
 
-    private val mViewModel: SharedViewModel by lazy {
-        ViewModelProviders.of(requireActivity()).get(SharedViewModel::class.java)
-    }
+    override val layout = R.layout.fragment1_mission_detail
+    override val firebaseTag = "Mission Detail Fragment 1"
+    private val mViewModel: SharedViewModel by lazy { ViewModelProviders.of(requireActivity()).get(SharedViewModel::class.java) }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Mission Detail Fragment 1")
-        (activity as SingleActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-        val dataBinding = Fragment1MissionDetailBinding.inflate(inflater)
-        dataBinding.sharedViewModel = mViewModel
-        dataBinding.missionPhoto2.setOnClickListener { watchCuriosityLandingOnYouTube() }
-        return dataBinding.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.sharedViewModel = mViewModel
+        binding.missionPhoto2.setOnClickListener { watchCuriosityLandingOnYouTube() }
     }
 
     private fun watchCuriosityLandingOnYouTube() {
@@ -50,7 +44,6 @@ class MissionDetailFragment1 : Fragment() {
         super.onResume()
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
-
 
     override fun onPause() {
         super.onPause()

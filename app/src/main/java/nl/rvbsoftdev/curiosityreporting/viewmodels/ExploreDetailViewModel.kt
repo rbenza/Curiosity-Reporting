@@ -43,6 +43,3 @@ class ExploreDetailViewModel(photo: Photo, app: Application) : AndroidViewModel(
         return searchResult
     }
 }
-
-
-
