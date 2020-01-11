@@ -18,29 +18,25 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     private val singleActivity by lazy { (activity as SingleActivity) }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings Fragment")
-        singleActivity.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Bundle().apply {
+            putString(FirebaseAnalytics.Param.ITEM_ID, "Settings Fragment")
+            singleActivity.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, this)
+        }
+
         if (PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("nasa_key", null).isNullOrEmpty()) {
             singleActivity.showStyledSnackbarMessage(view,
                     text = getString(R.string.nasa_key_warning),
                     textAction = "GET KEY",
                     durationMs = 5000,
                     icon = R.drawable.icon_key,
-                    action = {getNasaKeyAtWebsite()})
+                    action = { getNasaKeyAtWebsite() })
         }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_preferences, rootKey)
-
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
@@ -96,7 +92,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
             "nasa_key" -> when (sharedPreferences.getString("nasa_key", null)) {
                 "" -> {
-                    singleActivity.showStyledSnackbarMessage(requireView(),text = getString(R.string.def_key),
+                    singleActivity.showStyledSnackbarMessage(requireView(), text = getString(R.string.def_key),
                             durationMs = 4000, icon = R.drawable.icon_key)
                 }
                 else -> {
@@ -119,13 +115,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             if (launchBrowser.resolveActivity(requireActivity().packageManager) != null) {
                 startActivity(launchBrowser)
             } else {
-                (activity as SingleActivity).showStyledToastMessage(getString(R.string.no_internet_app))
+                singleActivity.showStyledToastMessage(getString(R.string.no_internet_app))
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
     }
+
     /** Prevent memory leak, unregister OnSharedPreferenceChangeListener when fragment looses focus for user **/
     override fun onResume() {
         super.onResume()
@@ -138,7 +134,3 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
 }
-
-
-
-

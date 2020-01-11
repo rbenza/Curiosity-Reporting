@@ -17,40 +17,36 @@ import nl.rvbsoftdev.curiosityreporting.repository.NasaApiConnectionStatus
 
 /** Custom databinding adapters to bind data to different views.
  * By setting the fragment in which the views are present as lifecycle owner the data is then observed
- * and the UI updates automatically when the data changes (see androidx.databinding.ViewDataBinding.setLifecycleOwner) **/
+ * and the UI updates automatically when the data changes (see BaseFragment in UI folder) **/
 
 @BindingAdapter("explorePhotos")
-fun bindRecyclerViewExplore(recyclerView: RecyclerView, data: List<Photo>?) {
-    val adapter = recyclerView.adapter as ExplorePhotoAdapter
-    adapter.submitList(data)
-}
+fun RecyclerView.explorePhotos(data: List<Photo>?) = (adapter as ExplorePhotoAdapter).apply { submitList(data) }
 
 @BindingAdapter("favoritesPhotos")
-fun bindRecyclerViewFavorites(recyclerView: RecyclerView, data: List<Photo>?) {
-    val adapter = recyclerView.adapter as FavoritesPhotoAdapter
-    adapter.submitList(data)
-}
+fun RecyclerView.favoritesPhotos(data: List<Photo>?) = (adapter as FavoritesPhotoAdapter).apply { submitList(data) }
+
 
 @BindingAdapter("imageUrl")
-fun bindImage(imgView: ImageView, imgUrl: String?) {
+fun ImageView.imageUrl(imgUrl: String?) {
 
-    val loadingSpinner = CircularProgressDrawable(imgView.context)
-    loadingSpinner.strokeWidth = 4f
-    loadingSpinner.centerRadius = 20f
-    if (PreferenceManager.getDefaultSharedPreferences(imgView.context).getString("theme", "Dark") == "Dark") {
-        loadingSpinner.setColorSchemeColors(imgView.context.getColor(R.color.DeepOrange))
-    } else {
-        loadingSpinner.setColorSchemeColors(imgView.context.getColor(R.color.DarkBrown))
+    val loadingSpinner = CircularProgressDrawable(context).apply {
+        strokeWidth = 4f
+        centerRadius = 20f
+        if (PreferenceManager.getDefaultSharedPreferences(context).getString("theme", "Dark") == "Dark") {
+            setColorSchemeColors(context.getColor(R.color.DeepOrange))
+        } else {
+            setColorSchemeColors(context.getColor(R.color.DarkBrown))
+        }
+        start()
     }
-    loadingSpinner.start()
 
     var pictureQualitySetting = 100
-    when (PreferenceManager.getDefaultSharedPreferences(imgView.context).getString("picture_quality", "High")) {
+    when (PreferenceManager.getDefaultSharedPreferences(context).getString("picture_quality", "High")) {
         "High" -> pictureQualitySetting = 100
         "Normal" -> pictureQualitySetting = 75
         "Low" -> pictureQualitySetting = 25
     }
-    Glide.with(imgView.context)
+    Glide.with(context)
             .load(imgUrl)
             .encodeQuality(pictureQualitySetting)
             .apply(RequestOptions()
@@ -59,24 +55,24 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             /** no Room database needed for NetworkPhotos, very small chance users loads same photos twice (360k photos in NASA db).
              * Glide cache impl works when user selects same date twice with Datepicker fragment. Max cache size 250mb **/
-            .into(imgView)
+            .into(this)
 }
 
 @BindingAdapter("imageConnectionStatus")
-fun imageConnectionStatus(imageConnectionStatus: ImageView, connectionStatus: NasaApiConnectionStatus?) {
+fun ImageView.imageConnectionStatus(connectionStatus: NasaApiConnectionStatus?) {
     when (connectionStatus) {
         NasaApiConnectionStatus.LOADING,
         NasaApiConnectionStatus.DONE -> {
-            imageConnectionStatus.viewGone()
+            viewGone()
         }
         NasaApiConnectionStatus.ERROR -> {
-            imageConnectionStatus.apply {
+            apply {
                 viewVisible()
                 setImageResource(R.drawable.icon_connection_error)
             }
         }
         NasaApiConnectionStatus.NODATA -> {
-            imageConnectionStatus.apply {
+            apply {
                 viewVisible()
                 setImageResource(R.drawable.icon_database_no_data)
             }
@@ -85,38 +81,38 @@ fun imageConnectionStatus(imageConnectionStatus: ImageView, connectionStatus: Na
 }
 
 @BindingAdapter("textConnectionStatus")
-fun textConnectionStatus(textConnectionStatus: TextView, connectionStatus: NasaApiConnectionStatus?) {
+fun TextView.textConnectionStatus(connectionStatus: NasaApiConnectionStatus?) {
     when (connectionStatus) {
         NasaApiConnectionStatus.LOADING -> {
-            textConnectionStatus.apply {
+            apply {
                 viewVisible()
                 text = context.getText(R.string.connecting_nasa_db)
             }
         }
         NasaApiConnectionStatus.ERROR -> {
-            textConnectionStatus.apply {
+            apply {
                 viewVisible()
                 text = context.getText(R.string.no_conn_nasa_db)
             }
         }
         NasaApiConnectionStatus.NODATA -> {
-            textConnectionStatus.apply {
+            apply {
                 viewVisible()
                 text = context.getText(R.string.no_photos_in_nasa_db)
             }
         }
         NasaApiConnectionStatus.DONE -> {
-            textConnectionStatus.viewGone()
+            viewGone()
         }
     }
 }
 
 @BindingAdapter("favoriteText")
-fun favoriteText(text: TextView, photo: List<Photo>?) = text.viewVisibleOrGone(photo.isNullOrEmpty())
+fun TextView.favoriteText(photo: List<Photo>?) = viewVisibleOrGone(photo.isNullOrEmpty())
 
 
 @BindingAdapter("favoriteImg")
-fun favoriteImg(img: ImageView, photo: List<Photo>?) = img.viewVisibleOrGone(photo.isNullOrEmpty())
+fun ImageView.favoriteImg(photo: List<Photo>?) = viewVisibleOrGone(photo.isNullOrEmpty())
 
 
 /** Some convenient extension functions on the View class **/

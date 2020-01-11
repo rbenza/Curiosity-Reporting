@@ -12,9 +12,9 @@
         <item name="background_mission_cards">@drawable/background_mission_cards_dark</item>
         <item name="background_color_bottom_nav">@color/DarkerGrey</item>
         <item name="background_color_side_nav">@color/DarkerGrey</item>
-        <item name="icon_color_bottom_nav">@drawable/background_bottom_nav_selector_color_dark
+        <item name="icon_color_bottom_nav">@drawable/bottom_nav_selector_color_dark
         </item>
-        <item name="icon_color_side_nav">@drawable/background_bottom_nav_selector_color_dark</item>
+        <item name="icon_color_side_nav">@drawable/bottom_nav_selector_color_dark</item>
         <item name="image_collapsing_toolbar">@drawable/image_collapsing_toolbar_dark</item>
         <item name="background_color_toolbar">@color/DarkerGrey</item>
         <item name="text_color_toolbar">@color/DeepOrange</item>
@@ -39,9 +39,9 @@
         <item name="background_mission_cards">@drawable/background_mission_cards_light</item>
         <item name="background_color_bottom_nav">@color/YellowSand</item>
         <item name="background_color_side_nav">@color/YellowSand</item>
-        <item name="icon_color_bottom_nav">@drawable/background_bottom_nav_selector_color_light
+        <item name="icon_color_bottom_nav">@drawable/bottom_nav_selector_color_light
         </item>
-        <item name="icon_color_side_nav">@drawable/background_bottom_nav_selector_color_light</item>
+        <item name="icon_color_side_nav">@drawable/bottom_nav_selector_color_light</item>
         <item name="background_color_toolbar">@color/YellowSand</item>
         <item name="text_color_toolbar">@color/DarkBrown</item>
         <item name="icon_color_preferences">@color/DarkBrown</item>

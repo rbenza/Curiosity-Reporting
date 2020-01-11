@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,22 +14,16 @@ import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
 
 /** Facts Fragment with information about Mars**/
 
-class FactsFragment : Fragment() {
+class FactsFragment : BaseFragment<FragmentFactsBinding>() {
 
+    override val layout = R.layout.fragment_facts
+    override val firebaseTag = "Facts Fragment"
     private val singleActivity by lazy { activity as SingleActivity }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Facts Fragment")
-        singleActivity.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-
-        val dataBinding = FragmentFactsBinding.inflate(inflater)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         /** simple Onclicklistener with lambda for single event instead of wiring it through a ViewModel with LiveData (overkill here) **/
-        dataBinding.spacexImg.setOnClickListener { visitSpaceXWebsite() }
-
-        return dataBinding.root
+        binding.spacexImg.setOnClickListener { visitSpaceXWebsite() }
     }
 
     private fun visitSpaceXWebsite() {
@@ -54,6 +47,3 @@ class FactsFragment : Fragment() {
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
     }
 }
-
-
-

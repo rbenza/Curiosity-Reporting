@@ -11,7 +11,6 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -26,49 +25,38 @@ import nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel
 
 /** Favorites Detail Fragment that lets the user zoom in on the selected photo. The photo can also be shared or removed from favorites**/
 
-class FavoritesDetailFragment : Fragment() {
-
-    val REQUEST_CODE: Int = 1
-
-    lateinit var mViewModelFactory: FavoritesDetailViewModelFactory
-
+class FavoritesDetailFragment : BaseFragment<FragmentFavoritesDetailBinding>() {
+    
+    override val layout = R.layout.fragment_favorites_detail
+    private val REQUEST_CODE: Int = 1
+    override val firebaseTag = "Favorites Detail Fragment"
+    private lateinit var mViewModelFactory: FavoritesDetailViewModelFactory
     private val singleActivity by lazy { activity as SingleActivity }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Favorites Detail Fragment")
-        singleActivity.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val application = requireNotNull(activity).application
-        val dataBinding = FragmentFavoritesDetailBinding.inflate(inflater)
-        dataBinding.lifecycleOwner = this
         val favoritePhoto = FavoritesDetailFragmentArgs.fromBundle(arguments!!).selectedPhoto
         mViewModelFactory = FavoritesDetailViewModelFactory(favoritePhoto, application)
         val viewModel = ViewModelProviders.of(
                 this, mViewModelFactory).get(FavoritesDetailViewModel::class.java)
 
-        dataBinding.favoritesDetailViewModel = viewModel
+        binding.favoritesDetailViewModel = viewModel
 
         /** some simple Onclicklisteners with lambda for single events instead of wiring it through a ViewModel with LiveData **/
-        dataBinding.shareButton.setOnClickListener {
+        binding.shareButton.setOnClickListener {
             if (requireContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
             } else sharePhoto()
         }
-        dataBinding.backButton.setOnClickListener { singleActivity.onSupportNavigateUp() }
-        dataBinding.deleteFavoritePhoto.setOnClickListener {
+        binding.backButton.setOnClickListener { singleActivity.onSupportNavigateUp() }
+        binding.deleteFavoritePhoto.setOnClickListener {
             viewModel.removePhotoFromFavorites(viewModel.selectedPhoto.value!!)
             singleActivity.showStyledSnackbarMessage(requireView(),
                     text = getString(R.string.photo_removed_from_fav),
                     durationMs = 2500,
                     icon = R.drawable.icon_delete)
         }
-        return dataBinding.root
     }
 
     /** Uses Glide to convert the selected photo to a bitmap and share.
@@ -124,4 +112,3 @@ class FavoritesDetailFragment : Fragment() {
         }
     }
 }
-

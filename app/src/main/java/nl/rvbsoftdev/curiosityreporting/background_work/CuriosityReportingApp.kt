@@ -2,7 +2,6 @@ package nl.rvbsoftdev.curiosityreporting.background_work
 
 import android.app.Application
 import android.os.Build
-import android.util.Log
 import androidx.work.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,12 +24,12 @@ class CuriosityReportingApp : Application() {
         val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.UNMETERED)
                 .setRequiresBatteryNotLow(true)
-                .setRequiresCharging(true)
-                .apply {
+                .setRequiresCharging(true).apply {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         setRequiresDeviceIdle(true)
                     }
-                }.build()
+                }
+                .build()
 
         val repeatingRequest
                 = PeriodicWorkRequestBuilder<RefreshPhotos>(1, TimeUnit.DAYS)
