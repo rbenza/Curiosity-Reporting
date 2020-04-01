@@ -82,11 +82,11 @@
 
     <data>
 
-        <import type="nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel" />
+        <import type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
 
         <variable
             name="ExploreDetailViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.viewmodels.ExploreDetailViewModel" />
+            type="nl.rvbsoftdev.curiosityreporting.explore.ExploreDetailViewModel" />
     </data>
 
 </layout>

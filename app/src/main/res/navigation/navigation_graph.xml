@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/explore_fragment"
-        android:name="nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations.ExploreFragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.explore.ExploreFragment"
         android:label="Curiosity at Mars"
         tools:layout="@layout/fragment_explore">
         <action
@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/explore_detail_fragment"
-        android:name="nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations.ExploreDetailFragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.explore.ExploreDetailFragment"
         android:label="Photo details"
         tools:layout="@layout/fragment_explore_detail">
         <action
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/mission_fragment"
-        android:name="nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations.MissionFragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.mission.MissionFragment"
         android:label="Curiosity Reporting"
         tools:layout="@layout/fragment_mission">
         <action
@@ -65,12 +65,12 @@
     </fragment>
     <fragment
         android:id="@+id/facts_fragment"
-        android:name="nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations.FactsFragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.facts.FactsFragment"
         android:label="Mars Facts"
         tools:layout="@layout/fragment_facts" />
     <fragment
         android:id="@+id/more_fragment"
-        android:name="nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations.MoreFragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.more.MoreFragment"
         android:label="More"
         tools:layout="@layout/fragment_more">
         <action
@@ -94,11 +94,11 @@
     </fragment>
     <fragment
         android:id="@+id/settings_fragment"
-        android:name="nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations.SettingsFragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.more.SettingsFragment"
         android:label="Settings" />
     <fragment
         android:id="@+id/about_fragment"
-        android:name="nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations.AboutFragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.more.AboutFragment"
         android:label="About this app" >
         <action
             android:id="@+id/action_about_fragment_to_privacyPolicyFragment"
@@ -110,7 +110,7 @@
     </fragment>
     <fragment
         android:id="@+id/mission_detail_fragment1"
-        android:name="nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations.MissionDetailFragment1"
+        android:name="nl.rvbsoftdev.curiosityreporting.mission.MissionDetailFragment1"
         android:label="Journey to Mars"
         tools:layout="@layout/fragment1_mission_detail">
         <argument
@@ -119,7 +119,7 @@
     </fragment>
     <fragment
         android:id="@+id/favorites_fragment"
-        android:name="nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations.FavoritesFragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.favorite.FavoritesFragment"
         android:label="Your favorite photos"
         tools:layout="@layout/fragment_favorites" >
         <action
@@ -132,7 +132,7 @@
     </fragment>
     <fragment
         android:id="@+id/favorites_detail_fragment"
-        android:name="nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations.FavoritesDetailFragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.favorite.FavoritesDetailFragment"
         android:label="Favorite photo details"
         tools:layout="@layout/fragment_favorites_detail">
         <argument
@@ -141,17 +141,17 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_privacy_policy"
-        android:name="nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations.PrivacyPolicyFragment"
+        android:name="nl.rvbsoftdev.curiosityreporting.more.PrivacyPolicyFragment"
         android:label="Privacy "
         tools:layout="@layout/fragment_privacy_policy" />
     <fragment
         android:id="@+id/mission_detail_fragment2"
-        android:name="nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations.MissionDetailFragment2"
+        android:name="nl.rvbsoftdev.curiosityreporting.mission.MissionDetailFragment2"
         android:label="Goals of the mission"
         tools:layout="@layout/fragment2_mission_detail" />
     <fragment
         android:id="@+id/mission_detail_fragment3"
-        android:name="nl.rvbsoftdev.curiosityreporting.ui.fragment_destinations.MissionDetailFragment3"
+        android:name="nl.rvbsoftdev.curiosityreporting.mission.MissionDetailFragment3"
         android:label="Equipment of Curiosity"
         tools:layout="@layout/fragment3_mission_detail" />
 

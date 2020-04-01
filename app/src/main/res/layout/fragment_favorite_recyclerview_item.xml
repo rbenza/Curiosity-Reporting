@@ -11,10 +11,10 @@
 
         <variable
             name="FavoritesViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.viewmodels.FavoritesViewModel" />
+            type="nl.rvbsoftdev.curiosityreporting.favorite.FavoritesViewModel" />
 
         <import
-            type="nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel" />
+            type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

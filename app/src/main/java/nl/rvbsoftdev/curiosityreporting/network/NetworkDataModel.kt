@@ -51,21 +51,12 @@ fun NetworkPhotoContainer.asAppDataModel(): List<Photo> {
 
 fun NetworkRover.asAppDataModel(): Rover {
     return let {
-        Rover(
-                max_date = it.max_date,
-                max_sol = it.max_sol,
-                total_photos = it.total_photos)
+        Rover(max_date = it.max_date, max_sol = it.max_sol, total_photos = it.total_photos)
     }
 }
 
 fun NetworkCamera.asAppDataModel(): Camera {
     return let {
-        Camera(
-                full_name = it.full_name,
-                name = it.name)
+        Camera(full_name = it.full_name, name = it.name)
     }
 }
-
-
-
-

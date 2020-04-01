@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ScrollView
+        android:id="@+id/scroll_blur_test"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/background_fragments">
@@ -14,8 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            android:isScrollContainer="true"
-            >
+            android:isScrollContainer="true">
 
             <ImageView
                 android:id="@+id/mission_photo"
@@ -27,14 +27,25 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/image_spacex_to_mars" />
 
+            <ImageView
+                android:background="@android:color/white"
+                android:id="@+id/blur_test"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.2" />
+
             <TextView
                 android:id="@+id/mission_photo_text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="18dp"
+                android:text="@string/mission_curiosity_description1"
                 android:textSize="16sp"
                 android:textStyle="normal"
-                android:text="@string/mission_curiosity_description1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mission_photo"
                 tools:text="@string/mission_curiosity_description1" />
@@ -54,9 +65,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="18dp"
+                android:text="@string/mission_curiosity_description1a"
                 android:textSize="16sp"
                 android:textStyle="normal"
-                android:text="@string/mission_curiosity_description1a"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mission_photo2"
                 tools:text="@string/mission_curiosity_description2" />
@@ -70,6 +81,6 @@
 
         <variable
             name="SharedViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel" />
+            type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
     </data>
 </layout>

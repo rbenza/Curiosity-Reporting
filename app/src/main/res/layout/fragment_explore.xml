@@ -7,7 +7,7 @@
 
         <variable
         name="ExploreViewModel"
-        type="nl.rvbsoftdev.curiosityreporting.viewmodels.ExploreViewModel" />
+        type="nl.rvbsoftdev.curiosityreporting.explore.ExploreViewModel" />
 
     </data>
 
@@ -15,7 +15,7 @@
         android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity">
+        tools:context="nl.rvbsoftdev.curiosityreporting.global.NavigationActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_photos_explore"

@@ -5,7 +5,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import nl.rvbsoftdev.curiosityreporting.repository.PhotoRepository
+import nl.rvbsoftdev.curiosityreporting.global.PhotoRepository
 import retrofit2.HttpException
 import java.util.*
 

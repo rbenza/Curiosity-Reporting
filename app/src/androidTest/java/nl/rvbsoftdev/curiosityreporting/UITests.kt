@@ -9,7 +9,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import nl.rvbsoftdev.curiosityreporting.R
-import nl.rvbsoftdev.curiosityreporting.ui.single_activity.SingleActivity
+import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
 
 /** Some Espresso UI tests **/
 
@@ -19,7 +19,7 @@ class UITests {
     @Rule
     @JvmField
 
-    val app = ActivityTestRule(SingleActivity::class.java)
+    val app = ActivityTestRule(NavigationActivity::class.java)
 
     @Test
     fun goToExploreFragmentAndSelectRandomDate() {

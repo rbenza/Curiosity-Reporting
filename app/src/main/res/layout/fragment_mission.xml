@@ -295,7 +295,7 @@
 
         <variable
             name="SharedViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel" />
+            type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
 
     </data>
 </layout>

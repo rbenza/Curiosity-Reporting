@@ -11,10 +11,10 @@
 
         <variable
             name="ExploreViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.viewmodels.ExploreViewModel" />
+            type="nl.rvbsoftdev.curiosityreporting.explore.ExploreViewModel" />
 
         <import
-            type="nl.rvbsoftdev.curiosityreporting.viewmodels.SharedViewModel" />
+            type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
 
     </data>
 
