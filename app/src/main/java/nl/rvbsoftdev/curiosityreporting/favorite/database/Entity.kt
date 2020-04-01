@@ -1,9 +1,9 @@
-package nl.rvbsoftdev.curiosityreporting.database
+package nl.rvbsoftdev.curiosityreporting.favorite.database
 
 import androidx.room.*
-import nl.rvbsoftdev.curiosityreporting.domain.Camera
-import nl.rvbsoftdev.curiosityreporting.domain.Photo
-import nl.rvbsoftdev.curiosityreporting.domain.Rover
+import nl.rvbsoftdev.curiosityreporting.data.Camera
+import nl.rvbsoftdev.curiosityreporting.data.Photo
+import nl.rvbsoftdev.curiosityreporting.data.Rover
 
 /** Room database table with only unique items (id property is unique) and ordered by earth_date **/
 

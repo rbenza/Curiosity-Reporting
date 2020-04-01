@@ -25,7 +25,7 @@ import androidx.preference.PreferenceManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.muddzdev.styleabletoast.StyleableToast
 import com.pd.chocobar.ChocoBar
-import kotlinx.android.synthetic.main.activity_single.*
+import kotlinx.android.synthetic.main.activity_navigation.*
 import nl.rvbsoftdev.curiosityreporting.BuildConfig
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.notifications.AppNotifications
@@ -49,7 +49,7 @@ class NavigationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         viewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
-        setContentView(R.layout.activity_single)
+        setContentView(R.layout.activity_navigation)
         setSupportActionBar(global_toolbar)
         val navController = findNavController(R.id.nav_host_fragment)
         setupActionBarWithNavController(navController, setTopLevelDestinations)

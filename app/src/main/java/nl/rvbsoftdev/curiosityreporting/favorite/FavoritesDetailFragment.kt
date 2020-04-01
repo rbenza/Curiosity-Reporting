@@ -17,7 +17,6 @@ import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoritesDetailBindi
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
 import nl.rvbsoftdev.curiosityreporting.global.SharedViewModel
-import nl.rvbsoftdev.curiosityreporting.favorite.FavoritesDetailFragmentArgs
 
 /** Favorites Detail Fragment that lets the user zoom in on the selected photo. The photo can also be shared or removed from favorites**/
 
@@ -26,16 +25,16 @@ class FavoritesDetailFragment : BaseFragment<FragmentFavoritesDetailBinding>() {
     override val layout = R.layout.fragment_favorites_detail
     private val REQUEST_CODE: Int = 1
     override val firebaseTag = "Favorites Detail Fragment"
-    private lateinit var mViewModelFactory: FavoritesDetailViewModelFactory
+    private lateinit var viewModelFactory: FavoritesDetailViewModelFactory
     private val singleActivity by lazy { activity as NavigationActivity }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val application = requireNotNull(activity).application
         val favoritePhoto = FavoritesDetailFragmentArgs.fromBundle(arguments!!).selectedPhoto
-        mViewModelFactory = FavoritesDetailViewModelFactory(favoritePhoto, application)
+        viewModelFactory = FavoritesDetailViewModelFactory(favoritePhoto, application)
         val viewModel = ViewModelProviders.of(
-                this, mViewModelFactory).get(FavoritesDetailViewModel::class.java)
+                this, viewModelFactory).get(FavoritesDetailViewModel::class.java)
 
         binding.favoritesDetailViewModel = viewModel
 
@@ -61,7 +60,7 @@ class FavoritesDetailFragment : BaseFragment<FragmentFavoritesDetailBinding>() {
     private fun sharePhoto() {
         try {
             val viewModel = ViewModelProviders.of(
-                    this, mViewModelFactory).get(FavoritesDetailViewModel::class.java)
+                    this, viewModelFactory).get(FavoritesDetailViewModel::class.java)
 
             if (!viewModel.selectedPhoto.value?.img_src.isNullOrEmpty()) {
                 Glide.with(requireContext())

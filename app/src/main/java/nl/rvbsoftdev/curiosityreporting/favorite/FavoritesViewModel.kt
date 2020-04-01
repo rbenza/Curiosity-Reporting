@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rvbsoftdev.curiosityreporting.domain.Photo
+import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.global.PhotoRepository.Companion.getRepository
 
 class FavoritesViewModel(app: Application) : AndroidViewModel(app) {

@@ -34,7 +34,7 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <argument
             android:name="selectedPhoto"
-            app:argType="nl.rvbsoftdev.curiosityreporting.domain.Photo" />
+            app:argType="nl.rvbsoftdev.curiosityreporting.data.Photo" />
     </fragment>
     <fragment
         android:id="@+id/mission_fragment"
@@ -137,7 +137,7 @@
         tools:layout="@layout/fragment_favorites_detail">
         <argument
             android:name="selectedPhoto"
-            app:argType="nl.rvbsoftdev.curiosityreporting.domain.Photo" />
+            app:argType="nl.rvbsoftdev.curiosityreporting.data.Photo" />
     </fragment>
     <fragment
         android:id="@+id/fragment_privacy_policy"

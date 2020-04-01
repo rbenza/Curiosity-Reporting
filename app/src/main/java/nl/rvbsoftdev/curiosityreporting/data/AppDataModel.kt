@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.domain
+package nl.rvbsoftdev.curiosityreporting.data
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

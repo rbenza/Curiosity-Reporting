@@ -2,6 +2,7 @@ package nl.rvbsoftdev.curiosityreporting.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import nl.rvbsoftdev.curiosityreporting.data.NetworkPhotoContainer
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -11,7 +12,7 @@ import retrofit2.http.Query
 
 private const val BASE_URL = "https://api.nasa.gov/"
 
-interface NasaWebAPI {
+interface NasaAPI {
 
     /** no CallBacks since using Kotlin Coroutines **/
     @GET("mars-photos/api/v1/rovers/curiosity/photos")
@@ -31,6 +32,6 @@ private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .build()
 
-object NasaApi {
-    val RETROFIT_SERVICE: NasaWebAPI by lazy { retrofit.create(NasaWebAPI::class.java) }
+object NetworkService {
+    val NETWORK_SERVICE: NasaAPI by lazy { retrofit.create(NasaAPI::class.java) }
 }

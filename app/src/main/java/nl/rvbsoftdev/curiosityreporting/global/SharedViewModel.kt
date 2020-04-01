@@ -20,7 +20,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                 if (!this.mostRecentEarthPhotoDate.value.isNullOrEmpty()) {
                     getPhotos(this.mostRecentEarthPhotoDate.value)
                 } else {
-                    getPhotos(null, Random().nextInt(2540))
+                    getPhotos(null, Random().nextInt(2580))
                 }
             }
         }

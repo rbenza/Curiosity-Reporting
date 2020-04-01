@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoriteRecyclerviewItemBinding
-import nl.rvbsoftdev.curiosityreporting.domain.Photo
+import nl.rvbsoftdev.curiosityreporting.data.Photo
 
 /** Recyclerview adapter with DiffUtil for photos in the 'Favorites' fragment **/
 

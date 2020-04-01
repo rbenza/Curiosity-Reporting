@@ -20,8 +20,6 @@ import nl.rvbsoftdev.curiosityreporting.global.*
 
 /** Explore Detail Fragment that lets the user zoom in on the selected photo. The photo can also be shared or added/removed from the Room local database **/
 
-const val REQUEST_CODE = 1
-
 class ExploreDetailFragment : BaseFragment<FragmentExploreDetailBinding>() {
 
     override val layout = R.layout.fragment_explore_detail
@@ -42,7 +40,7 @@ class ExploreDetailFragment : BaseFragment<FragmentExploreDetailBinding>() {
         binding.backButton.setOnClickListener { singleActivity.onSupportNavigateUp() }
         binding.shareButton.setOnClickListener {
             if (requireContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
+                requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), Companion.REQUEST_CODE)
             } else sharePhoto()
         }
         binding.favoriteButton.setOnClickListener {
@@ -132,10 +130,14 @@ class ExploreDetailFragment : BaseFragment<FragmentExploreDetailBinding>() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
-            REQUEST_CODE -> if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            Companion.REQUEST_CODE -> if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 sharePhoto()
             }
             else -> singleActivity.showStyledToastMessage("Access to storage is required to share this photo")
         }
+    }
+
+    companion object {
+        const val REQUEST_CODE = 1
     }
 }

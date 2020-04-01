@@ -3,7 +3,7 @@ package nl.rvbsoftdev.curiosityreporting.favorite
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import nl.rvbsoftdev.curiosityreporting.domain.Photo
+import nl.rvbsoftdev.curiosityreporting.data.Photo
 
 class FavoritesDetailViewModelFactory(
         val photo: Photo,

@@ -7,10 +7,10 @@ import androidx.lifecycle.Transformations
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
-import nl.rvbsoftdev.curiosityreporting.database.*
-import nl.rvbsoftdev.curiosityreporting.domain.Photo
-import nl.rvbsoftdev.curiosityreporting.network.NasaApi
-import nl.rvbsoftdev.curiosityreporting.network.asAppDataModel
+import nl.rvbsoftdev.curiosityreporting.favorite.database.*
+import nl.rvbsoftdev.curiosityreporting.data.Photo
+import nl.rvbsoftdev.curiosityreporting.network.NetworkService
+import nl.rvbsoftdev.curiosityreporting.data.asAppDataModel
 import java.util.*
 
 /** The PhotoRepository is the single data source for the app.
@@ -62,7 +62,6 @@ class PhotoRepository(private val app: Application) {
         get() = _mostRecentSolPhotoDate
 
     /** All network and database operations run on the Kotlin Coroutine Dispatcher IO to prevent blocking the UI/Main Thread **/
-
     suspend fun getPhotos(earthDate: String? = null, sol: Int? = null, camera: String? = null) {
         withContext(IO) {
             var apiKeySetbyUser = "HViCqNaudnl7iRBSheUO7kJLzq2Ja0tewak9xiY5"
@@ -72,7 +71,7 @@ class PhotoRepository(private val app: Application) {
                     apiKeySetbyUser = PreferenceManager.getDefaultSharedPreferences(app).getString("nasa_key", null)!!
                 }
 
-                val photosResult = NasaApi.RETROFIT_SERVICE.getNasaJsonResponse(earthDate, sol, camera, apiKey = apiKeySetbyUser)
+                val photosResult = NetworkService.NETWORK_SERVICE.getNasaJsonResponse(earthDate, sol, camera, apiKey = apiKeySetbyUser)
                 _connectionStatus.postValue(NasaApiConnectionStatus.LOADING)
                 _connectionStatus.postValue(NasaApiConnectionStatus.DONE)
                 _photosResultFromNasaApi.postValue(photosResult.asAppDataModel())
@@ -94,7 +93,7 @@ class PhotoRepository(private val app: Application) {
                     apiKeySetbyUser = PreferenceManager.getDefaultSharedPreferences(app).getString("nasa_key", null)!!
                 }
 
-                val getMostRecentDates = NasaApi.RETROFIT_SERVICE.getNasaJsonResponse("2019-05-01", null, null, apiKey = apiKeySetbyUser)
+                val getMostRecentDates = NetworkService.NETWORK_SERVICE.getNasaJsonResponse("2019-05-01", null, null, apiKey = apiKeySetbyUser)
                 val dateResults = getMostRecentDates.asAppDataModel()
                 _mostRecentEarthPhotoDate.postValue(dateResults[0].rover.max_date)
                 _mostRecentSolPhotoDate.postValue(dateResults[0].rover.max_sol)

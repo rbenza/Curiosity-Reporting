@@ -1,10 +1,7 @@
-package nl.rvbsoftdev.curiosityreporting.network
+package nl.rvbsoftdev.curiosityreporting.data
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import nl.rvbsoftdev.curiosityreporting.domain.Camera
-import nl.rvbsoftdev.curiosityreporting.domain.Photo
-import nl.rvbsoftdev.curiosityreporting.domain.Rover
 
 /** Data model for the Retrofit network requests. '@Parcelize' instructs the Kotlin compiler to generate parcelable methods automatically.**/
 

@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.fragment1_mission_detail.*
@@ -18,20 +19,12 @@ class MissionDetailFragment1 : BaseFragment<Fragment1MissionDetailBinding>() {
 
     override val layout = R.layout.fragment1_mission_detail
     override val firebaseTag = "Mission Detail Fragment 1"
-    private val viewModel: SharedViewModel by lazy { ViewModelProviders.of(requireActivity()).get(SharedViewModel::class.java) }
+    private val viewModel: SharedViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.sharedViewModel = viewModel
         binding.missionPhoto2.setOnClickListener { watchCuriosityLandingOnYouTube() }
-
-        Blurry.with(context)
-                .radius(10)
-                .sampling(8)
-                .async()
-                .animate(500)
-                .capture(blur_test)
-                .into(blur_test)
     }
 
     private fun watchCuriosityLandingOnYouTube() {

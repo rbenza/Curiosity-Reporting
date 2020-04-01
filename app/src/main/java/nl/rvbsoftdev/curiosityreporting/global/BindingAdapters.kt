@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import nl.rvbsoftdev.curiosityreporting.R
-import nl.rvbsoftdev.curiosityreporting.domain.Photo
+import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.explore.ExplorePhotoAdapter
 import nl.rvbsoftdev.curiosityreporting.favorite.FavoritesPhotoAdapter
 
@@ -61,21 +61,14 @@ fun ImageView.imageUrl(imgUrl: String?) {
 @BindingAdapter("imageConnectionStatus")
 fun ImageView.imageConnectionStatus(connectionStatus: NasaApiConnectionStatus?) {
     when (connectionStatus) {
-        NasaApiConnectionStatus.LOADING,
-        NasaApiConnectionStatus.DONE -> {
-            setGone()
-        }
+        NasaApiConnectionStatus.DONE, NasaApiConnectionStatus.LOADING -> setGone()
         NasaApiConnectionStatus.ERROR -> {
-            apply {
-                setVisible()
-                setImageResource(R.drawable.icon_connection_error)
-            }
+            setVisible()
+            setImageResource(R.drawable.icon_connection_error)
         }
         NasaApiConnectionStatus.NODATA -> {
-            apply {
-                setVisible()
-                setImageResource(R.drawable.icon_database_no_data)
-            }
+            setVisible()
+            setImageResource(R.drawable.icon_database_no_data)
         }
     }
 }
