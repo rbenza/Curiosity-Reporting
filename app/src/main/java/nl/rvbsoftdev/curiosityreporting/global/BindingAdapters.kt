@@ -1,6 +1,5 @@
 package nl.rvbsoftdev.curiosityreporting.global
 
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -11,9 +10,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import nl.rvbsoftdev.curiosityreporting.R
+import nl.rvbsoftdev.curiosityreporting.data.NasaApiConnectionStatus
 import nl.rvbsoftdev.curiosityreporting.data.Photo
-import nl.rvbsoftdev.curiosityreporting.explore.ExplorePhotoAdapter
-import nl.rvbsoftdev.curiosityreporting.favorite.FavoritesPhotoAdapter
+import nl.rvbsoftdev.curiosityreporting.feature.explore.ExplorePhotoAdapter
+import nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesPhotoAdapter
 
 /** Custom databinding adapters to bind data to different views.
  * By setting the fragment in which the views are present as lifecycle owner the data is then observed
@@ -101,28 +101,6 @@ fun TextView.favoriteText(photo: List<Photo>?) = viewVisibleOrGone(photo.isNullO
 @BindingAdapter("favoriteImg")
 fun ImageView.favoriteImg(photo: List<Photo>?) = viewVisibleOrGone(photo.isNullOrEmpty())
 
-
-/** Some convenient extension functions on the View class **/
-
-fun View.setVisible() {
-    visibility = View.VISIBLE
-}
-
-fun View.setInvisible() {
-    visibility = View.INVISIBLE
-}
-
-fun View.setGone() {
-    visibility = View.GONE
-}
-
-fun View.viewVisibleOrGone(show: Boolean) = if (show) setVisible() else setGone()
-
-fun setViewsGone(vararg views: View) = views.forEach { it.setGone() }
-
-fun setViewsVisible(vararg views: View) = views.forEach { it.setVisible() }
-
-fun setViewsInVisible(vararg views: View) = views.forEach { it.setInvisible() }
 
 
 

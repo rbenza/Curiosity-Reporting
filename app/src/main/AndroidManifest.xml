@@ -4,7 +4,7 @@
     package="nl.rvbsoftdev.curiosityreporting">
 
     <application
-        android:name=".background_work.CuriosityReportingApp"
+        android:name=".background_work.CuriosityReportingApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon_app"
         android:label="@string/app_name"
@@ -27,7 +27,7 @@
             android:value="true" />
 
         <receiver
-            android:name="nl.rvbsoftdev.curiosityreporting.notifications.NotificationsBroadcastReceiver"
+            android:name="nl.rvbsoftdev.curiosityreporting.feature.notification.NotificationsBroadcastReceiver"
             android:enabled="true"
             android:exported="true"/>
     </application>

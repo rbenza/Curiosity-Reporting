@@ -28,8 +28,8 @@ import com.pd.chocobar.ChocoBar
 import kotlinx.android.synthetic.main.activity_navigation.*
 import nl.rvbsoftdev.curiosityreporting.BuildConfig
 import nl.rvbsoftdev.curiosityreporting.R
-import nl.rvbsoftdev.curiosityreporting.notifications.AppNotifications
-import nl.rvbsoftdev.curiosityreporting.notifications.NotificationsBroadcastReceiver
+import nl.rvbsoftdev.curiosityreporting.feature.notification.AppNotifications
+import nl.rvbsoftdev.curiosityreporting.feature.notification.NotificationsBroadcastReceiver
 
 /** Single Activity for the whole app, sets up all the UI elements (Toolbar, Bottom Nav, Side Nav,
  * Snackbar/Toast messages, user Theme and Notification Channel).

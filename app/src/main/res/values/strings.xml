@@ -70,7 +70,7 @@
 "</string>
 
     <!--explore & favorites fragment strings-->
-    <string name="connecting_nasa_db">Connecting to the NASA database...</string>
+    <string name="connecting_nasa_db">Connecting to the NASA database…</string>
     <string name="no_conn_nasa_db">Could not connect to the NASA database. Check your internet connection or applied personal key in the settings menu.</string>
     <string name="no_photos_added_to_favorites">No photos added to favorites</string>
     <string name="no_photos_in_nasa_db">No photos in the database available to display. Try selecting a different date, camera filter or roll the dice!</string>
@@ -78,5 +78,6 @@
     <string name="photo_removed_from_fav">Photo removed from favorites</string>
     <string name="disk_access_required">Access to storage is required to share this photo</string>
     <string name="most_recent_date_not_available">Curiosity most recent photo date not available. Select a date manually.</string>
+    <string name="explore_detail_photo_taken_on">Curiosity captured this image with it\'s %s on %s (Mars solar day %d since Curiosity landed on Mars).</string>
 
 </resources>

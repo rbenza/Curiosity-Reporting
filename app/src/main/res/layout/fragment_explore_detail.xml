@@ -72,7 +72,7 @@
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="1"
-            android:text="@{`Curiosity captured this image with it's ` + ExploreDetailViewModel.selectedPhoto.camera.full_name + ` on ` + SharedViewModel.DateFormatter.formatDate(ExploreDetailViewModel.selectedPhoto.earth_date) + ` (Mars solar day ` + ExploreDetailViewModel.selectedPhoto.sol + ` since Curiosity landed on Mars).`}"
+            android:text="@{@string/explore_detail_photo_taken_on(ExploreDetailViewModel.selectedPhoto.camera.full_name, ExploreDetailViewModel.selectedPhoto.earth_date, ExploreDetailViewModel.selectedPhoto.sol)}"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,11 +82,11 @@
 
     <data>
 
-        <import type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
+        <import type="nl.rvbsoftdev.curiosityreporting.global.UtilKt" />
 
         <variable
             name="ExploreDetailViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.explore.ExploreDetailViewModel" />
+            type="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreDetailViewModel" />
     </data>
 
 </layout>

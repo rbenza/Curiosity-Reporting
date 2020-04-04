@@ -11,7 +11,7 @@
 
         <variable
             name="ExploreViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.explore.ExploreViewModel" />
+            type="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel" />
 
         <import
             type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
@@ -43,7 +43,7 @@
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="1"
-            android:text="@{SharedViewModel.DateFormatterCompact.formatDate(photo.earth_date)}"
+            android:text="@{photo.earth_date}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?attr/color_camera_menu_icon"
             android:textSize="11sp"

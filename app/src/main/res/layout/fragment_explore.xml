@@ -7,7 +7,7 @@
 
         <variable
         name="ExploreViewModel"
-        type="nl.rvbsoftdev.curiosityreporting.explore.ExploreViewModel" />
+        type="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel" />
 
     </data>
 

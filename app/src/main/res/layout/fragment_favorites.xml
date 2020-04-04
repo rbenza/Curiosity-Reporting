@@ -56,7 +56,7 @@
 
         <variable
             name="FavoritesViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.favorite.FavoritesViewModel" />
+            type="nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesViewModel" />
 
     </data>
 </layout>

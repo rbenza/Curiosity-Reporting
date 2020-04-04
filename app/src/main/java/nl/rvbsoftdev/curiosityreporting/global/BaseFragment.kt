@@ -10,6 +10,8 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
 
+/** BaseFragment from which all fragments inherit, sets databinding and lifecycleowner **/
+
 abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
 
     protected lateinit var binding: B
