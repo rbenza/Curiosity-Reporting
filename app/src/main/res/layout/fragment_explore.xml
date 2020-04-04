@@ -26,7 +26,7 @@
             app:layout_constraintBottom_toBottomOf="@id/constraint_layout"
             app:layout_constraintEnd_toEndOf="@id/constraint_layout"
             app:layout_constraintStart_toStartOf="@id/constraint_layout"
-            app:explorePhotos="@{ExploreViewModel.photosFromNasaApi}"
+            app:adaptPhotos="@{ExploreViewModel.photosFromNasaApi}"
             tools:itemCount="40"
             tools:listitem="@layout/fragment_explore_recyclerview_item" />
 

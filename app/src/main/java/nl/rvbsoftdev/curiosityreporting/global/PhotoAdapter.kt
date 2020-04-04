@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.feature.favorite
+package nl.rvbsoftdev.curiosityreporting.global
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,8 +10,8 @@ import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoriteRecyclerview
 
 /** Recyclerview adapter with DiffUtil for photos in the 'Favorites' fragment **/
 
-class FavoritesPhotoAdapter(private val onClickListener: OnClickListener) :
-        ListAdapter<Photo, FavoritesPhotoAdapter.FavoritePhotoViewHolder>(DiffCallback) {
+class PhotoAdapter(private val onClickListener: OnClickListener) :
+        ListAdapter<Photo, PhotoAdapter.FavoritePhotoViewHolder>(DiffCallback) {
 
     class FavoritePhotoViewHolder(private var dataBinding: FragmentFavoriteRecyclerviewItemBinding) :
             RecyclerView.ViewHolder(dataBinding.root) {

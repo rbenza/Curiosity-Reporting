@@ -12,19 +12,14 @@ import com.bumptech.glide.request.RequestOptions
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.data.NasaApiConnectionStatus
 import nl.rvbsoftdev.curiosityreporting.data.Photo
-import nl.rvbsoftdev.curiosityreporting.feature.explore.ExplorePhotoAdapter
-import nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesPhotoAdapter
 
 /** Custom databinding adapters to bind data to different views.
  * By setting the fragment in which the views are present as lifecycle owner the data is then observed
  * and the UI updates automatically when the data changes (see BaseFragment in UI folder) **/
 
-@BindingAdapter("explorePhotos")
-fun RecyclerView.explorePhotos(data: List<Photo>?) = (adapter as ExplorePhotoAdapter).apply { submitList(data) }
 
-@BindingAdapter("favoritesPhotos")
-fun RecyclerView.favoritesPhotos(data: List<Photo>?) = (adapter as FavoritesPhotoAdapter).apply { submitList(data) }
-
+@BindingAdapter("adaptPhotos")
+fun RecyclerView.adaptPhotos(data: List<Photo>?) = (adapter as PhotoAdapter).apply { submitList(data) }
 
 @BindingAdapter("imageUrl")
 fun ImageView.imageUrl(imgUrl: String?) {

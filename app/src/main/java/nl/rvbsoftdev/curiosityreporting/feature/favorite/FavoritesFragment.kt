@@ -16,6 +16,7 @@ import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoritesBinding
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
+import nl.rvbsoftdev.curiosityreporting.global.PhotoAdapter
 
 /** Favorites Fragment that provides a unique List of Photos sorted by most recent earth date contained in the local room database **/
 
@@ -28,7 +29,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.favoritesViewModel = viewModel
-        binding.recyclerviewPhotoFavorites.adapter = FavoritesPhotoAdapter(FavoritesPhotoAdapter.OnClickListener {
+        binding.recyclerviewPhotoFavorites.adapter = PhotoAdapter(PhotoAdapter.OnClickListener {
             viewModel.displayFavoritePhotoDetails(it)
         })
 

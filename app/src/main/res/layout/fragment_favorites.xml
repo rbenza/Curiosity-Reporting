@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical"
             android:scrollbarSize="8dp"
-            app:favoritesPhotos="@{FavoritesViewModel.favoritePhotos}"
+            app:adaptPhotos="@{FavoritesViewModel.favoritePhotos}"
             app:layout_constraintBottom_toBottomOf="@id/constraint_layout_favorites"
             app:layout_constraintEnd_toEndOf="@id/constraint_layout_favorites"
             app:layout_constraintStart_toStartOf="@id/constraint_layout_favorites"

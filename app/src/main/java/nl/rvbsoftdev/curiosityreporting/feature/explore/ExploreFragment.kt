@@ -30,7 +30,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
         super.onViewCreated(view, savedInstanceState)
         binding.exploreViewModel = viewModel
         binding.recyclerviewPhotosExplore.adapter =
-                ExplorePhotoAdapter(ExplorePhotoAdapter.OnClickListener {
+                PhotoAdapter(PhotoAdapter.OnClickListener {
                     viewModel.displayPhotoDetails(it)
                 })
         /** Lets the user select a list or grid as preference **/
