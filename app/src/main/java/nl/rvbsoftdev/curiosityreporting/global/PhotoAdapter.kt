@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoriteRecyclerviewItemBinding
 
-/** Recyclerview adapter with DiffUtil for photos in the 'Favorites' fragment **/
+/** Recyclerview ListAdapter with DiffUtil for photos in the 'Explore' and 'Favorites' fragments **/
 
 class PhotoAdapter(private val onClickListener: OnClickListener) :
         ListAdapter<Photo, PhotoAdapter.FavoritePhotoViewHolder>(DiffCallback) {

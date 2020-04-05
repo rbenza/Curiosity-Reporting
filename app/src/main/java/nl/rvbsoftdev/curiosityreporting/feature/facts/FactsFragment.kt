@@ -16,7 +16,7 @@ class FactsFragment : BaseFragment<FragmentFactsBinding>() {
 
     override val layout = R.layout.fragment_facts
     override val firebaseTag = "Facts Fragment"
-    private val singleActivity by lazy { activity as NavigationActivity }
+    private val navigationActivity by lazy { activity as NavigationActivity }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,7 +29,7 @@ class FactsFragment : BaseFragment<FragmentFactsBinding>() {
         if (launchBrowser.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(launchBrowser)
         } else {
-            singleActivity.showStyledToastMessage(getString(R.string.no_internet_app))
+            navigationActivity.showStyledToastMessage(getString(R.string.no_internet_app))
         }
     }
 

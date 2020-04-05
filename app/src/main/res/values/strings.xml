@@ -79,5 +79,13 @@
     <string name="disk_access_required">Access to storage is required to share this photo</string>
     <string name="most_recent_date_not_available">Curiosity most recent photo date not available. Select a date manually.</string>
     <string name="explore_detail_photo_taken_on">Curiosity captured this image with it\'s %s on %s (Mars solar day %d since Curiosity landed on Mars).</string>
+    <string name="fragment_mission_equipment">Equipment</string>
+    <string name="fragment_mission_discover_the_amazing_equipment_curiosity_brought_to_mars">Discover the amazing equipment Curiosity brought to Mars</string>
+    <string name="fragment_mission_the_goal_of_the_mission_on_mars">The goal of the mission on Mars</string>
+    <string name="fragment_mission_mars">Mars</string>
+    <string name="fragment_mission_curiosity_s_journey_to_mars">Curiosity\'s journey to Mars</string>
+    <string name="fragment_mission_journey">Journey</string>
+    <string name="fragment_mission_twitter">Twitter</string>
+    <string name="fragment_mission_get_the_latest_news_from_curiosity_on_twitter">Get the latest news from Curiosity on Twitter</string>
 
 </resources>

@@ -24,7 +24,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
     override val layout = R.layout.fragment_explore
     override val firebaseTag = "Explore Fragment"
     private val viewModel: ExploreViewModel by lazy { ViewModelProviders.of(this).get(ExploreViewModel::class.java) }
-    private val singleActivity by lazy { activity as NavigationActivity }
+    private val navigationActivity by lazy { activity as NavigationActivity }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,7 +59,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         fun showCameraFilterSnackBar(camera: String) {
-            singleActivity.showStyledSnackbarMessage(requireView(),
+            navigationActivity.showStyledSnackbarMessage(requireView(),
                     text = "Camera filter for $camera selected",
                     durationMs = 2500,
                     icon = R.drawable.icon_camera)
@@ -117,7 +117,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
                 }
                 val randomSol = Random().nextInt(randomBound)
                 viewModel.refreshPhotos(null, randomSol, null)
-                singleActivity.showStyledSnackbarMessage(requireView(),
+                navigationActivity.showStyledSnackbarMessage(requireView(),
                         text ="Roll the dice!\nSelected Mars solar day $randomSol!",
                         durationMs = 3000,
                         icon = R.drawable.icon_dice)
@@ -140,7 +140,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
             val dpd = DatePickerDialog.newInstance(this, mostRecentYear, mostRecentMonth, mostRecentDay)
             dpd.setTitle("Curiosity most recent Photos are taken on " +
                     formatDate(mostRecentPhotoDate))
-            if (singleActivity.setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
+            if (navigationActivity.setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
             dpd.showYearPickerFirst(true)
             dpd.setCancelText("Dismiss")
             dpd.minDate = provideCalender("2012-08-07")
@@ -154,7 +154,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
             val currentDay = calender.get(Calendar.DAY_OF_MONTH)
 
             val dpd = DatePickerDialog.newInstance(this, currentYear, currentMonth, currentDay)
-            if (singleActivity.setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
+            if (navigationActivity.setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
             dpd.setTitle(getString(R.string.most_recent_date_not_available))
             dpd.showYearPickerFirst(true)
             dpd.setCancelText("Dismiss")
@@ -166,7 +166,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
     override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
         val monthConverted = monthOfYear + 1
         val userSelectedDate = "${year}-${monthConverted}-${dayOfMonth}"
-        singleActivity.showStyledSnackbarMessage(requireView(),
+        navigationActivity.showStyledSnackbarMessage(requireView(),
                 text = "Date selected: " + formatDate(userSelectedDate),
                 durationMs = 3500,
                 icon = R.drawable.icon_calender)

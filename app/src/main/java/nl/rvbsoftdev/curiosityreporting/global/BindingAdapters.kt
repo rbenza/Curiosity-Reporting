@@ -53,6 +53,9 @@ fun ImageView.imageUrl(imgUrl: String?) {
             .into(this)
 }
 
+@BindingAdapter("setDrawable")
+fun ImageView.setDrawable(resource: Int) = setImageResource(resource)
+
 @BindingAdapter("imageConnectionStatus")
 fun ImageView.imageConnectionStatus(connectionStatus: NasaApiConnectionStatus?) {
     when (connectionStatus) {

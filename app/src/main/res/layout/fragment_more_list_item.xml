@@ -1,42 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="moreItem"
+            type="nl.rvbsoftdev.curiosityreporting.feature.more.MoreItem" />
+
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parent_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="30dp">
+        android:padding="32dp"
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/icon_more_list"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            tools:srcCompat="@drawable/icon_appearance" />
+            android:id="@+id/icon_more_item"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:setDrawable="@{moreItem.icon}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/icon_mission" />
 
-        <TextView
-            android:id="@+id/text_header_more_list"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/title_more_item"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_toEndOf="@+id/icon_more_list"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:text="@string/title_activity_settings" />
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="32dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/icon_more_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/icon_more_item"
+            app:layout_constraintTop_toTopOf="@+id/icon_more_item">
 
-        <TextView
-            android:id="@+id/text_detail_more_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_header_more_list"
-            android:layout_marginStart="30dp"
-            android:layout_toEndOf="@+id/icon_more_list"
-            android:textSize="14sp"
-            tools:text="Adjust settings" />
+            <TextView
+                android:id="@+id/text_header_more_list"
+                android:layout_width="wrap_content"
+                android:text="@{moreItem.textTitle}"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="@string/title_activity_settings" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/text_detail_more_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="@{moreItem.textSubTitle}"
+                tools:text="Adjust settings" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

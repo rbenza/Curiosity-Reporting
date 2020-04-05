@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import nl.rvbsoftdev.curiosityreporting.data.PhotoRepository
 import java.util.*
 
-/** SharedViewModel tied to SingleActivity LifeCycle (which hosts the nav fragment) to enable sharing of data between fragments **/
+/** SharedViewModel tied to navigationActivity LifeCycle (which hosts the nav fragment) to enable sharing of data between fragments **/
 
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
 

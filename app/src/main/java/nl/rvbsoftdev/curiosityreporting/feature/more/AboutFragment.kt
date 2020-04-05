@@ -18,7 +18,7 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>() {
     override val layout = R.layout.fragment_about
     override val firebaseTag = "About Fragment"
 
-    private val singleActivity by lazy { (activity as NavigationActivity) }
+    private val navigationActivity by lazy { (activity as NavigationActivity) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,7 +37,7 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>() {
         if (startEmailApp.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(startEmailApp)
         } else {
-            singleActivity.showStyledSnackbarMessage(requireView(),
+            navigationActivity.showStyledSnackbarMessage(requireView(),
                     text = getString(R.string.email_toast1),
                     durationMs = 8000,
                     icon = R.drawable.icon_email)
@@ -49,7 +49,7 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>() {
             if (this.resolveActivity(requireActivity().packageManager) != null) {
                 startActivity(this)
             } else {
-                singleActivity.showStyledToastMessage("No internet app found!\n\nGo to: github.com/rbenza/Curiosity-Reporting")
+                navigationActivity.showStyledToastMessage("No internet app found!\n\nGo to: github.com/rbenza/Curiosity-Reporting")
             }
         }
     }

@@ -1,71 +1,39 @@
 package nl.rvbsoftdev.curiosityreporting.feature.more
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ImageView
-import android.widget.TextView
-import nl.rvbsoftdev.curiosityreporting.R
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import nl.rvbsoftdev.curiosityreporting.databinding.FragmentMoreListItemBinding
 
-/** Legacy ListView with findViewById for demo purpose. It's a static list with 4 items so no performance from RecyclerView DiffUtil required **/
+/** Recyclerview ListAdapter for MoreItems in the 'More' fragment **/
 
-class ListViewAdapter(var context: Context, var moreItems: ArrayList<MoreItems>) : BaseAdapter() {
+class MoreAdapter(private val onClickListener: OnClickListener) : ListAdapter<MoreItem, MoreAdapter.ViewHolder>(DiffCallback) {
 
-    class ViewHolder(row: View) {
-        var icon: ImageView
-        var textTitle: TextView
-        var textSubtitle: TextView
-
-        init {
-            this.icon = row.findViewById(R.id.icon_more_list) as ImageView
-            this.textTitle = row.findViewById(R.id.text_header_more_list) as TextView
-            this.textSubtitle = row.findViewById(R.id.text_detail_more_list) as TextView
+    class ViewHolder(private var binding: FragmentMoreListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(moreItem: MoreItem) {
+            binding.moreItem = moreItem
+            binding.executePendingBindings()
         }
     }
 
-    override fun getView(position: Int, convertView: View?, viewGroup: ViewGroup?): View {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(FragmentMoreListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-        val view: View?
-        val viewHolder: ViewHolder
-        if (convertView == null) {
-            val layout = LayoutInflater.from(context)
-            view = layout.inflate(R.layout.fragment_more_list_item, convertView, false)
-            viewHolder = ViewHolder(view)
-            view.tag = viewHolder
-
-        } else {
-            view = convertView
-            viewHolder = view.tag as ViewHolder
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val moreItem: MoreItem = getItem(position)
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(moreItem)
         }
-
-        val moreItems: MoreItems = getItem(position) as MoreItems
-        viewHolder.icon.setImageResource(moreItems.icon)
-        viewHolder.textTitle.text = moreItems.textTitle
-        viewHolder.textSubtitle.text = moreItems.textSubTitle
-        return view as View
+        holder.bind(moreItem)
     }
 
-    override fun getItem(position: Int): Any {
-        return moreItems[position]
+    class OnClickListener(val clickListener: (moreItem: MoreItem) -> Unit) {
+        fun onClick(moreItem: MoreItem) = clickListener(moreItem)
     }
 
-    override fun getItemId(position: Int): Long {
-        return 0
-    }
-
-    override fun getCount(): Int {
-        return 4
+    companion object DiffCallback : DiffUtil.ItemCallback<MoreItem>() {
+        override fun areItemsTheSame(oldItem: MoreItem, newItem: MoreItem) = oldItem.id == newItem.id
+        override fun areContentsTheSame(oldItem: MoreItem, newItem: MoreItem) = oldItem == newItem
     }
 }
-
-data class MoreItems(var id: Int, var icon: Int, var textTitle: String, var textSubTitle: String)
-
-
-
-
-
-
-
-
