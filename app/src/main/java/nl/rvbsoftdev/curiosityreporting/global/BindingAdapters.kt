@@ -14,15 +14,11 @@ import nl.rvbsoftdev.curiosityreporting.data.NasaApiConnectionStatus
 import nl.rvbsoftdev.curiosityreporting.data.Photo
 
 /** Custom databinding adapters to bind data to different views.
- * By setting the fragment in which the views are present as lifecycle owner the data is then observed
- * and the UI updates automatically when the data changes (see BaseFragment in UI folder) **/
+ * By setting the views as lifecycle owner the data is then observed and the UI updates automatically when the data changes (see BaseFragment in UI folder) **/
 
-
-@BindingAdapter("adaptPhotos")
-fun RecyclerView.adaptPhotos(data: List<Photo>?) = (adapter as PhotoAdapter).apply { submitList(data) }
 
 @BindingAdapter("imageUrl")
-fun ImageView.imageUrl(imgUrl: String?) {
+fun ImageView.loadImageUrl(imgUrl: String?) {
 
     val loadingSpinner = CircularProgressDrawable(context).apply {
         strokeWidth = 4f

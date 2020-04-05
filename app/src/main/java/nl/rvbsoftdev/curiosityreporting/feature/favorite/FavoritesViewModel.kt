@@ -27,20 +27,6 @@ class FavoritesViewModel(app: Application) : AndroidViewModel(app) {
     val selectedPhoto: LiveData<Photo>
         get() = _selectedFavoritePhoto
 
-    private val _navigateToSelectedFavoritePhoto = MutableLiveData<Photo>()
-
-    val navigateToSelectedPhoto: LiveData<Photo>
-        get() = _navigateToSelectedFavoritePhoto
-
-
-    fun displayFavoritePhotoDetails(photo: Photo) {
-        _navigateToSelectedFavoritePhoto.value = photo
-    }
-
-    fun displayFavoritePhotoDetailsFinished() {
-        _navigateToSelectedFavoritePhoto.value = null
-    }
-
     fun removeAllPhotoFromFavorites() {
         viewModelScope.launch {
             photoRepository.deleteAllFavoritesPhotos()

@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.MenuCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -23,29 +24,24 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
 
     override val layout = R.layout.fragment_explore
     override val firebaseTag = "Explore Fragment"
-    private val viewModel: ExploreViewModel by lazy { ViewModelProviders.of(this).get(ExploreViewModel::class.java) }
+    private val viewModel: ExploreViewModel by viewModels()
     private val navigationActivity by lazy { activity as NavigationActivity }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.exploreViewModel = viewModel
-        binding.recyclerviewPhotosExplore.adapter =
-                PhotoAdapter(PhotoAdapter.OnClickListener {
-                    viewModel.displayPhotoDetails(it)
-                })
+        viewModel.photosFromNasaApi.observe(viewLifecycleOwner, Observer { listOfPhotos ->
+            binding.recyclerviewPhotosExplore.adapter = ExplorePhotoAdapter(ExplorePhotoAdapter.OnClickListener { photo ->
+                findNavController().navigate(ExploreFragmentDirections.actionExploreFragmentToExploreDetailFragment(photo)) }).apply { submitList(listOfPhotos) }
+        })
+
         /** Lets the user select a list or grid as preference **/
         var gridOrList = 4
-        if (PreferenceManager.getDefaultSharedPreferences(requireContext()).
-                        getString("explore_photo_layout", "Grid") == "List") {
-            gridOrList = 1
+        when (PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("explore_photo_layout", "Grid")) {
+            "Grid" -> gridOrList = 4
+            "List" -> gridOrList = 1
         }
         binding.recyclerviewPhotosExplore.layoutManager = GridLayoutManager(requireContext(), gridOrList)
-        viewModel.navigateToSelectedPhoto.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                this.findNavController().navigate(ExploreFragmentDirections.actionExploreFragmentToExploreDetailFragment(it))
-                viewModel.displayPhotoDetailsFinished()
-            }
-        })
         setHasOptionsMenu(true)
     }
 

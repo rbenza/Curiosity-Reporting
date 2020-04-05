@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -16,7 +17,6 @@ import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoritesBinding
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
-import nl.rvbsoftdev.curiosityreporting.global.PhotoAdapter
 
 /** Favorites Fragment that provides a unique List of Photos sorted by most recent earth date contained in the local room database **/
 
@@ -24,13 +24,14 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
 
     override val layout = R.layout.fragment_favorites
     override val firebaseTag = "Favorite Fragment"
-    private val viewModel: FavoritesViewModel by lazy { ViewModelProviders.of(this).get(FavoritesViewModel::class.java)  }
+    private val viewModel: FavoritesViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.favoritesViewModel = viewModel
-        binding.recyclerviewPhotoFavorites.adapter = PhotoAdapter(PhotoAdapter.OnClickListener {
-            viewModel.displayFavoritePhotoDetails(it)
+        viewModel.favoritePhotos.observe(viewLifecycleOwner, Observer { listOfPhotos ->
+            binding.recyclerviewPhotoFavorites.adapter = FavoritePhotoAdapter(FavoritePhotoAdapter.OnClickListener { photo ->
+                findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToFavoritesDetailFragment(photo))}).apply { submitList(listOfPhotos) }
         })
 
         /** Lets the user select a list or grid as preference **/
@@ -39,16 +40,6 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
             listOrGrid = 3
         }
         binding.recyclerviewPhotoFavorites.layoutManager = GridLayoutManager(requireContext(), listOrGrid)
-        viewModel.navigateToSelectedPhoto.observe(this, Observer {
-            if (it != null) {
-                this.findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToFavoritesDetailFragment(it))
-                viewModel.displayFavoritePhotoDetailsFinished()
-            }
-        })
-        /** Disables 'delete all' menu option when no photos present**/
-        viewModel.favoritePhotos.observe(this, Observer {
-            if (it.isNullOrEmpty()) setHasOptionsMenu(false) else setHasOptionsMenu(true)
-        })
 
     }
 

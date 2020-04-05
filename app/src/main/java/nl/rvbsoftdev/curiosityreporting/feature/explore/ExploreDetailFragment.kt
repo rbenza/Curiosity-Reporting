@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -36,8 +37,7 @@ class ExploreDetailFragment : BaseFragment<FragmentExploreDetailBinding>() {
                 this, viewModelFactory).get(ExploreDetailViewModel::class.java)
 
         binding.exploreDetailViewModel = viewModel
-        /** a few simple Onclicklisteners with lambdas for single events instead of wiring it through the ViewModel with LiveData **/
-        binding.backButton.setOnClickListener { navigationActivity.onSupportNavigateUp() }
+        binding.backButton.setOnClickListener { findNavController().navigateUp() }
         binding.shareButton.setOnClickListener {
             if (requireContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), Companion.REQUEST_CODE)
@@ -130,7 +130,7 @@ class ExploreDetailFragment : BaseFragment<FragmentExploreDetailBinding>() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
-            Companion.REQUEST_CODE -> if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            REQUEST_CODE -> if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 sharePhoto()
             }
             else -> navigationActivity.showStyledToastMessage("Access to storage is required to share this photo")

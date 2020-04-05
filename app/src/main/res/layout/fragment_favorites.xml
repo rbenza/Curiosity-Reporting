@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="favoritesViewModel"
+            type="nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesViewModel" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout_favorites"
         android:layout_width="match_parent"
@@ -15,7 +23,6 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical"
             android:scrollbarSize="8dp"
-            app:adaptPhotos="@{FavoritesViewModel.favoritePhotos}"
             app:layout_constraintBottom_toBottomOf="@id/constraint_layout_favorites"
             app:layout_constraintEnd_toEndOf="@id/constraint_layout_favorites"
             app:layout_constraintStart_toStartOf="@id/constraint_layout_favorites"
@@ -29,7 +36,7 @@
             android:src="@drawable/icon_star_selected"
             app:layout_constraintBottom_toBottomOf="@id/text_no_fav"
             app:layout_constraintEnd_toEndOf="parent"
-            app:favoriteImg="@{FavoritesViewModel.favoritePhotos}"
+            app:favoriteImg="@{favoritesViewModel.favoritePhotos}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.851" />
@@ -42,22 +49,14 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:textAlignment="center"
-            app:favoriteText="@{FavoritesViewModel.favoritePhotos}"
+            app:favoriteText="@{favoritesViewModel.favoritePhotos}"
             android:textColor="?attr/text_color_toolbar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <data>
-
-        <variable
-            name="FavoritesViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesViewModel" />
-
-    </data>
 </layout>
 
