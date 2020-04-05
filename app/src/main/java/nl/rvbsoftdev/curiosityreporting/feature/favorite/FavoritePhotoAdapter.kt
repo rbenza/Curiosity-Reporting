@@ -2,31 +2,33 @@ package nl.rvbsoftdev.curiosityreporting.feature.favorite
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import nl.rvbsoftdev.curiosityreporting.data.Photo
-import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoriteRecyclerviewItemBinding
+import nl.rvbsoftdev.curiosityreporting.databinding.ListItemFragmentExploreBinding
 
 /** Recyclerview ListAdapter with DiffUtil for photos in the 'Favorites' fragment **/
 
-class FavoritePhotoAdapter(private val onClickListener: OnClickListener) : ListAdapter<Photo, FavoritePhotoAdapter.ViewHolder>(DiffCallback) {
+class FavoritePhotoAdapter(private val lifecycleOwner: LifecycleOwner, private val onClickListener: OnClickListener) : ListAdapter<Photo, FavoritePhotoAdapter.ViewHolder>(DiffCallback) {
 
-    class ViewHolder(private var dataBinding: FragmentFavoriteRecyclerviewItemBinding) : RecyclerView.ViewHolder(dataBinding.root) {
+    class ViewHolder(private val binding: ListItemFragmentExploreBinding, private val lifecycleOwner: LifecycleOwner) : RecyclerView.ViewHolder(binding.root) {
         fun bind(photo: Photo) {
-            dataBinding.photo = photo
-            dataBinding.executePendingBindings()
+            binding.photo = photo
+            binding.lifecycleOwner = lifecycleOwner
+            binding.executePendingBindings()
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(FragmentFavoriteRecyclerviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(ListItemFragmentExploreBinding.inflate(LayoutInflater.from(parent.context), parent, false), lifecycleOwner)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo: Photo = getItem(position)
-        holder.apply {
-            itemView.setOnClickListener { onClickListener.onClick(photo) }
-            bind(photo)
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(photo)
         }
+        holder.bind(photo)
     }
 
     class OnClickListener(val clickListener: (photo: Photo) -> Unit) {

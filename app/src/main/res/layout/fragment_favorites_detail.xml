@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
+
+        <variable
+            name="favoritesDetailViewModel"
+            type="nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesDetailViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_explore_detail_constraint_layout"
@@ -16,7 +24,7 @@
             android:scaleType="fitCenter"
             app:gest_doubleTapZoom="1.25"
             app:gest_maxZoom="6"
-            app:imageUrl="@{FavoritesDetailViewModel.selectedPhoto.img_src}"
+            app:imageUrl="@{favoritesDetailViewModel.selectedPhoto.img_src}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -63,7 +71,7 @@
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="1"
-            android:text="@{@string/explore_detail_photo_taken_on(FavoritesDetailViewModel.selectedPhoto.camera.full_name, FavoritesDetailViewModel.selectedPhoto.earth_date, FavoritesDetailViewModel.selectedPhoto.sol)}"
+            android:text="@{@string/explore_detail_photo_taken_on(favoritesDetailViewModel.selectedPhoto.camera.full_name, favoritesDetailViewModel.selectedPhoto.earth_date, favoritesDetailViewModel.selectedPhoto.sol)}"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,13 +79,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <data>
-
-        <import type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
-
-        <variable
-            name="FavoritesDetailViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesDetailViewModel" />
-    </data>
 
 </layout>

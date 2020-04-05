@@ -1,6 +1,7 @@
 package nl.rvbsoftdev.curiosityreporting.data
 
 import android.os.Parcelable
+import androidx.lifecycle.MutableLiveData
 import kotlinx.android.parcel.Parcelize
 
 /** Data model for the app, the app does not interact with 'NetworkPhoto' or 'FavoriteDataBasePhoto',
@@ -9,6 +10,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Photo(
+        var isFavorite: Boolean = false,
         val camera: Camera,
         val earth_date: String,
         val id: Int,

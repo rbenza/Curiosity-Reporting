@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/fragment_more_list_item" />
+            tools:listitem="@layout/list_item_fragment_more" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

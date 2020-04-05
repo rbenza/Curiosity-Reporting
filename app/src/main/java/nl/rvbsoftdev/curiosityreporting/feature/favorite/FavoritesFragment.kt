@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -30,8 +29,10 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.favoritesViewModel = viewModel
         viewModel.favoritePhotos.observe(viewLifecycleOwner, Observer { listOfPhotos ->
-            binding.recyclerviewPhotoFavorites.adapter = FavoritePhotoAdapter(FavoritePhotoAdapter.OnClickListener { photo ->
-                findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToFavoritesDetailFragment(photo))}).apply { submitList(listOfPhotos) }
+            binding.recyclerviewPhotoFavorites.adapter = FavoritePhotoAdapter(viewLifecycleOwner, FavoritePhotoAdapter.OnClickListener { photo ->
+                findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToFavoritesDetailFragment(photo))
+            }).apply { submitList(listOfPhotos) }
+            if (listOfPhotos.isNullOrEmpty()) setHasOptionsMenu(false) else setHasOptionsMenu(true)
         })
 
         /** Lets the user select a list or grid as preference **/
@@ -53,18 +54,19 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
         when (item.itemId) {
             R.id.delete_all -> {
                 activity?.let {
-                    val builder = AlertDialog.Builder(it)
-                    builder.setView(android.R.layout.select_dialog_item)
-                    builder.setTitle("Delete all photos from favorites?")
-                            .setPositiveButton("OK") { _, _ ->
-                                viewModel.removeAllPhotoFromFavorites()
-                                (it as NavigationActivity).showStyledSnackbarMessage(requireView(),
-                                        text = "Favorite photo(s) deleted!",
-                                        durationMs = 3000,
-                                        icon = R.drawable.icon_delete_all)
-                            }
-                            .setNegativeButton("Cancel") { _, _ -> }
-                    builder.show()
+                    AlertDialog.Builder(it).apply {
+                        setView(android.R.layout.select_dialog_item)
+                        setTitle("Delete all photos from favorites?")
+                        setPositiveButton("OK") { _, _ ->
+                            viewModel.removeAllPhotoFromFavorites()
+                            (it as NavigationActivity).showStyledSnackbarMessage(requireView(),
+                                    text = "Favorite photo(s) deleted!",
+                                    durationMs = 3000,
+                                    icon = R.drawable.icon_delete_all)
+                        }
+                        setNegativeButton("Cancel") { _, _ -> }
+                        show()
+                    }
                 }
             }
         }

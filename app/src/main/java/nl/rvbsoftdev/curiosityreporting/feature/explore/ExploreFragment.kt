@@ -8,14 +8,16 @@ import android.view.View
 import androidx.core.view.MenuCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreBinding
-import nl.rvbsoftdev.curiosityreporting.global.*
+import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
+import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
+import nl.rvbsoftdev.curiosityreporting.global.formatDate
+import nl.rvbsoftdev.curiosityreporting.global.provideCalender
 import java.util.*
 
 /** Explore Fragment where the user can view the photos from the NASA database through a random Sol generator or DatePicker dialog **/
@@ -30,9 +32,20 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.exploreViewModel = viewModel
-        viewModel.photosFromNasaApi.observe(viewLifecycleOwner, Observer { listOfPhotos ->
-            binding.recyclerviewPhotosExplore.adapter = ExplorePhotoAdapter(ExplorePhotoAdapter.OnClickListener { photo ->
-                findNavController().navigate(ExploreFragmentDirections.actionExploreFragmentToExploreDetailFragment(photo)) }).apply { submitList(listOfPhotos) }
+
+        /** Set up observer for the photo's loaded from the NASA API **/
+        viewModel.photosFromNasaApi.observe(viewLifecycleOwner, Observer { listOfNetworkPhotos ->
+            // Get a list of favorite photo id's
+            val favoritePhotosIds: List<Int> = viewModel.favoritePhotos.value?.map { it.id } ?: emptyList()
+            // mark every networkPhoto that matches an id in favoritePhotosIds as a favorite
+            listOfNetworkPhotos.forEach { networkPhoto ->
+                if (favoritePhotosIds.contains(networkPhoto.id))
+                    networkPhoto.isFavorite = true
+            }
+            binding.recyclerviewPhotosExplore.adapter = ExplorePhotoAdapter(viewLifecycleOwner, ExplorePhotoAdapter.OnClickListener { photo ->
+                findNavController().navigate(ExploreFragmentDirections.actionExploreFragmentToExploreDetailFragment(photo))
+            }).apply { submitList(listOfNetworkPhotos) }
+
         })
 
         /** Lets the user select a list or grid as preference **/
@@ -114,7 +127,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
                 val randomSol = Random().nextInt(randomBound)
                 viewModel.refreshPhotos(null, randomSol, null)
                 navigationActivity.showStyledSnackbarMessage(requireView(),
-                        text ="Roll the dice!\nSelected Mars solar day $randomSol!",
+                        text = "Roll the dice!\nSelected Mars solar day $randomSol!",
                         durationMs = 3000,
                         icon = R.drawable.icon_dice)
             }
@@ -141,7 +154,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
             dpd.setCancelText("Dismiss")
             dpd.minDate = provideCalender("2012-08-07")
             dpd.maxDate = provideCalender(mostRecentPhotoDate)
-            dpd.show(fragmentManager!!, "Datepickerdialog")
+            dpd.show(activity?.supportFragmentManager!!, "Datepickerdialog")
 
         } catch (e: Exception) {
             val calender = Calendar.getInstance()
@@ -155,7 +168,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
             dpd.showYearPickerFirst(true)
             dpd.setCancelText("Dismiss")
             dpd.minDate = provideCalender("2012-08-07")
-            dpd.show(fragmentManager!!, "Datepickerdialog")
+            dpd.show(activity?.supportFragmentManager!!, "Datepickerdialog")
         }
     }
 

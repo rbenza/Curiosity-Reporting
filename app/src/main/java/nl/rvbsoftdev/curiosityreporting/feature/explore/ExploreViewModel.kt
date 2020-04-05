@@ -16,6 +16,7 @@ class ExploreViewModel(app: Application) : AndroidViewModel(app) {
 
     val connectionStatus: LiveData<NasaApiConnectionStatus> = photoRepository.connectionStatus
     val photosFromNasaApi: LiveData<List<Photo>> = photoRepository.photosResultFromNasaApi
+    val favoritePhotos: LiveData<List<Photo>> = photoRepository.favoritePhotos
     val mostRecentSolPhotoDate: LiveData<Int> = photoRepository.mostRecentSolPhotoDate
     val mostRecentEarthPhotoDate: LiveData<String> = photoRepository.mostRecentEarthPhotoDate
 
@@ -37,5 +38,4 @@ class ExploreViewModel(app: Application) : AndroidViewModel(app) {
             _cameraFilterStatus.value = "Error"
         }
     }
-
 }

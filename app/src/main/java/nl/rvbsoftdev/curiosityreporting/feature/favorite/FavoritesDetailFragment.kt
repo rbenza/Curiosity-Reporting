@@ -8,7 +8,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -23,28 +26,23 @@ import nl.rvbsoftdev.curiosityreporting.global.formatDate
 class FavoritesDetailFragment : BaseFragment<FragmentFavoritesDetailBinding>() {
     
     override val layout = R.layout.fragment_favorites_detail
-    private val REQUEST_CODE: Int = 1
     override val firebaseTag = "Favorites Detail Fragment"
-    private lateinit var viewModelFactory: FavoritesDetailViewModelFactory
+
+    private val REQUEST_CODE: Int = 1
+    private val viewModel: FavoritesDetailViewModel by viewModels()
+    private val safeArgs by navArgs<FavoritesDetailFragmentArgs>()
     private val navigationActivity by lazy { activity as NavigationActivity }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val application = requireNotNull(activity).application
-        val favoritePhoto = FavoritesDetailFragmentArgs.fromBundle(arguments!!).selectedPhoto
-        viewModelFactory = FavoritesDetailViewModelFactory(favoritePhoto, application)
-        val viewModel = ViewModelProviders.of(
-                this, viewModelFactory).get(FavoritesDetailViewModel::class.java)
-
         binding.favoritesDetailViewModel = viewModel
+        viewModel.selectedPhoto.value = safeArgs.selectedPhoto
 
-        /** some simple Onclicklisteners with lambda for single events instead of wiring it through a ViewModel with LiveData **/
         binding.shareButton.setOnClickListener {
             if (requireContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
             } else sharePhoto()
         }
-        binding.backButton.setOnClickListener { navigationActivity.onSupportNavigateUp() }
+        binding.backButton.setOnClickListener { findNavController().navigateUp() }
         binding.deleteFavoritePhoto.setOnClickListener {
             viewModel.removePhotoFromFavorites(viewModel.selectedPhoto.value!!)
             navigationActivity.showStyledSnackbarMessage(requireView(),
@@ -59,9 +57,6 @@ class FavoritesDetailFragment : BaseFragment<FragmentFavoritesDetailBinding>() {
 
     private fun sharePhoto() {
         try {
-            val viewModel = ViewModelProviders.of(
-                    this, viewModelFactory).get(FavoritesDetailViewModel::class.java)
-
             if (!viewModel.selectedPhoto.value?.img_src.isNullOrEmpty()) {
                 Glide.with(requireContext())
                         .asBitmap()

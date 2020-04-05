@@ -9,23 +9,14 @@ import kotlinx.coroutines.launch
 import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.data.PhotoRepository
 
-class FavoritesDetailViewModel(photo: Photo, app: Application) : AndroidViewModel(app) {
+class FavoritesDetailViewModel(app: Application) : AndroidViewModel(app) {
 
-    private val photoRepository = PhotoRepository.getRepository(getApplication())
-
-    private val _selectedPhoto = MutableLiveData<Photo>()
-
-    val selectedPhoto: LiveData<Photo>
-        get() = _selectedPhoto
-
-    init {
-        _selectedPhoto.value = photo
-    }
+    private val photoRepository = PhotoRepository.getRepository(app)
+    val selectedPhoto = MutableLiveData<Photo>()
 
     fun removePhotoFromFavorites(photo: Photo) {
         viewModelScope.launch {
             photoRepository.removePhotoFromFavorites(photo)
         }
     }
-
 }

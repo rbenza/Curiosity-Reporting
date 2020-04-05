@@ -27,7 +27,7 @@
             app:layout_constraintEnd_toEndOf="@id/constraint_layout_favorites"
             app:layout_constraintStart_toStartOf="@id/constraint_layout_favorites"
             tools:itemCount="40"
-            tools:listitem="@layout/fragment_explore_recyclerview_item" />
+            tools:listitem="@layout/list_item_fragment_explore" />
 
         <ImageView
             android:id="@+id/img_no_fav"

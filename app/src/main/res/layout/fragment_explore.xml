@@ -6,7 +6,7 @@
     <data>
 
         <variable
-        name="ExploreViewModel"
+        name="exploreViewModel"
         type="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel" />
 
     </data>
@@ -27,14 +27,13 @@
             app:layout_constraintEnd_toEndOf="@id/constraint_layout"
             app:layout_constraintStart_toStartOf="@id/constraint_layout"
             tools:itemCount="40"
-            tools:listitem="@layout/fragment_explore_recyclerview_item" />
-
+            tools:listitem="@layout/list_item_fragment_explore" />
 
         <ImageView
             android:id="@+id/status_image"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            app:imageConnectionStatus="@{ExploreViewModel.connectionStatus}"
+            app:imageConnectionStatus="@{exploreViewModel.connectionStatus}"
             app:layout_constraintBottom_toTopOf="@id/no_photos_available_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +59,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:textConnectionStatus="@{ExploreViewModel.connectionStatus}"
+            app:textConnectionStatus="@{exploreViewModel.connectionStatus}"
             tools:text="Connecting to the NASA Database.." />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

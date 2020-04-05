@@ -5,20 +5,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import nl.rvbsoftdev.curiosityreporting.databinding.FragmentMoreListItemBinding
+import nl.rvbsoftdev.curiosityreporting.databinding.ListItemFragmentMoreBinding
 
 /** Recyclerview ListAdapter for MoreItems in the 'More' fragment **/
 
 class MoreAdapter(private val onClickListener: OnClickListener) : ListAdapter<MoreItem, MoreAdapter.ViewHolder>(DiffCallback) {
 
-    class ViewHolder(private var binding: FragmentMoreListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private var binding: ListItemFragmentMoreBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(moreItem: MoreItem) {
             binding.moreItem = moreItem
             binding.executePendingBindings()
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(FragmentMoreListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(ListItemFragmentMoreBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val moreItem: MoreItem = getItem(position)

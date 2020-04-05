@@ -10,12 +10,11 @@
             type="nl.rvbsoftdev.curiosityreporting.data.Photo" />
 
         <variable
-            name="ExploreViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel" />
+            name="FavoritesViewModel"
+            type="nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesViewModel" />
 
         <import
             type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +24,7 @@
         <ImageView
             android:id="@+id/photo_curiosity"
             android:layout_width="match_parent"
-            android:layout_height="125dp"
+            android:layout_height="200dp"
             android:adjustViewBounds="true"
             android:padding="1dp"
             android:scaleType="centerCrop"
@@ -46,7 +45,7 @@
             android:text="@{photo.earth_date}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?attr/color_camera_menu_icon"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:textStyle="italic|bold"
             app:layout_constraintBottom_toBottomOf="@id/photo_curiosity"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +63,7 @@
             android:text="@{photo.camera.name}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?attr/color_camera_menu_icon"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

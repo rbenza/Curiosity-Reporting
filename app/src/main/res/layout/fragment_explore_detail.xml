@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="photo"
+            type="nl.rvbsoftdev.curiosityreporting.data.Photo" />
+
+        <variable
+            name="exploreDetailViewModel"
+            type="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreDetailViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_explore_detail_constraint_layout"
@@ -16,7 +26,7 @@
             android:scaleType="fitCenter"
             app:gest_doubleTapZoom="1.25"
             app:gest_maxZoom="6"
-            app:imageUrl="@{ExploreDetailViewModel.selectedPhoto.img_src}"
+            app:imageUrl="@{exploreDetailViewModel.selectedPhoto.img_src}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -27,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fillColor="?attr/icon_color_preferences"
+            android:foreground="?attr/actionBarItemBackground"
             android:padding="16dp"
             android:src="@drawable/icon_back_arrow"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,19 +48,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fillColor="?attr/icon_color_preferences"
+            android:foreground="?attr/actionBarItemBackground"
             android:padding="16dp"
             android:src="@drawable/icon_share"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/favorite_button_selected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fillColor="?attr/icon_color_preferences"
-            android:padding="16dp"
-            android:src="@drawable/icon_star_selected"
-            app:layout_constraintEnd_toStartOf="@id/share_button"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -57,6 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fillColor="?attr/icon_color_preferences"
+            android:foreground="?attr/actionBarItemBackground"
             android:padding="16dp"
             android:src="@drawable/icon_star"
             app:layout_constraintEnd_toStartOf="@id/share_button"
@@ -72,21 +75,12 @@
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="1"
-            android:text="@{@string/explore_detail_photo_taken_on(ExploreDetailViewModel.selectedPhoto.camera.full_name, ExploreDetailViewModel.selectedPhoto.earth_date, ExploreDetailViewModel.selectedPhoto.sol)}"
+            android:text="@{@string/explore_detail_photo_taken_on(exploreDetailViewModel.selectedPhoto.camera.full_name, exploreDetailViewModel.selectedPhoto.earth_date, exploreDetailViewModel.selectedPhoto.sol)}"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Placeholder Text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <data>
-
-        <import type="nl.rvbsoftdev.curiosityreporting.global.UtilKt" />
-
-        <variable
-            name="ExploreDetailViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreDetailViewModel" />
-    </data>
 
 </layout>

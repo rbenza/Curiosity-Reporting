@@ -6,15 +6,17 @@
     <data>
 
         <variable
-            name="Photo"
+            name="photo"
             type="nl.rvbsoftdev.curiosityreporting.data.Photo" />
 
         <variable
-            name="FavoritesViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesViewModel" />
+            name="ExploreViewModel"
+            type="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel" />
 
-        <import
-            type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
+        <import type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
+
+        <import type="android.view.View" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,14 +26,24 @@
         <ImageView
             android:id="@+id/photo_curiosity"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="125dp"
             android:adjustViewBounds="true"
             android:padding="1dp"
             android:scaleType="centerCrop"
-            app:imageUrl="@{Photo.img_src}"
+            app:imageUrl="@{photo.img_src}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/image_mars_hill" />
+
+        <ImageView
+            android:id="@+id/favorite_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:padding="2dp"
+            android:src="@drawable/icon_star_selected"
+            android:visibility="@{photo.isFavorite ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/photo_curiosity_date_captured"
@@ -42,10 +54,10 @@
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="1"
-            android:text="@{Photo.earth_date}"
+            android:text="@{photo.earth_date}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?attr/color_camera_menu_icon"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:textStyle="italic|bold"
             app:layout_constraintBottom_toBottomOf="@id/photo_curiosity"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,10 +72,10 @@
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="1"
-            android:text="@{Photo.camera.name}"
+            android:text="@{photo.camera.name}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?attr/color_camera_menu_icon"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
