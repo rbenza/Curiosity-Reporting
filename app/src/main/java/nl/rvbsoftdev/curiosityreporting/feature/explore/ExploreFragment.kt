@@ -35,17 +35,9 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
 
         /** Set up observer for the photo's loaded from the NASA API **/
         viewModel.photosFromNasaApi.observe(viewLifecycleOwner, Observer { listOfNetworkPhotos ->
-            // Get a list of favorite photo id's
-            val favoritePhotosIds: List<Int> = viewModel.favoritePhotos.value?.map { it.id } ?: emptyList()
-            // mark every networkPhoto that matches an id in favoritePhotosIds as a favorite
-            listOfNetworkPhotos.forEach { networkPhoto ->
-                if (favoritePhotosIds.contains(networkPhoto.id))
-                    networkPhoto.isFavorite = true
-            }
-            binding.recyclerviewPhotosExplore.adapter = ExplorePhotoAdapter(viewLifecycleOwner, ExplorePhotoAdapter.OnClickListener { photo ->
+                       binding.recyclerviewPhotosExplore.adapter = ExplorePhotoAdapter(viewLifecycleOwner, ExplorePhotoAdapter.OnClickListener { photo ->
                 findNavController().navigate(ExploreFragmentDirections.actionExploreFragmentToExploreDetailFragment(photo))
             }).apply { submitList(listOfNetworkPhotos) }
-
         })
 
         /** Lets the user select a list or grid as preference **/
@@ -66,21 +58,12 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
 
     /**Camera filter options menu**/
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        fun showCameraFilterSnackBar(camera: String) {
-            navigationActivity.showStyledSnackbarMessage(requireView(),
-                    text = "Camera filter for $camera selected",
-                    durationMs = 2500,
-                    icon = R.drawable.icon_camera)
-        }
-
         when (item.itemId) {
             R.id.all_cameras -> {
                 viewModel.setCameraFilter(null)
                 showCameraFilterSnackBar("all cameras")
                 item.isChecked = true
             }
-
             R.id.FHAZ -> {
                 viewModel.setCameraFilter("FHAZ")
                 showCameraFilterSnackBar("the Front Hazard Avoidance Camera")
@@ -133,6 +116,13 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
             }
         }
         return true
+    }
+
+   private fun showCameraFilterSnackBar(camera: String) {
+        navigationActivity.showStyledSnackbarMessage(requireView(),
+                text = "Camera filter for $camera selected",
+                durationMs = 2500,
+                icon = R.drawable.icon_camera)
     }
 
     /** Custom Datepicker fragment where user can select a photo date.

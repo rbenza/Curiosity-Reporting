@@ -15,14 +15,12 @@ class ExploreViewModel(app: Application) : AndroidViewModel(app) {
     private val photoRepository = getRepository(app)
 
     val connectionStatus: LiveData<NasaApiConnectionStatus> = photoRepository.connectionStatus
-    val photosFromNasaApi: LiveData<List<Photo>> = photoRepository.photosResultFromNasaApi
-    val favoritePhotos: LiveData<List<Photo>> = photoRepository.favoritePhotos
+    val photosFromNasaApi: LiveData<List<Photo>> = photoRepository.photosFromNasaApi
     val mostRecentSolPhotoDate: LiveData<Int> = photoRepository.mostRecentSolPhotoDate
     val mostRecentEarthPhotoDate: LiveData<String> = photoRepository.mostRecentEarthPhotoDate
 
     private val _cameraFilterStatus = MutableLiveData<String>()
-    val cameraFilterStatus: LiveData<String>
-    get() = _cameraFilterStatus
+    val cameraFilterStatus: LiveData<String> = _cameraFilterStatus
 
     fun refreshPhotos(earthDate: String? = null, sol: Int? = null, camera: String? = null) {
         viewModelScope.launch {

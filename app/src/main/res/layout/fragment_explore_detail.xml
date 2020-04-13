@@ -4,11 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <variable
-            name="photo"
-            type="nl.rvbsoftdev.curiosityreporting.data.Photo" />
-
         <variable
             name="exploreDetailViewModel"
             type="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreDetailViewModel" />
@@ -61,7 +56,8 @@
             android:fillColor="?attr/icon_color_preferences"
             android:foreground="?attr/actionBarItemBackground"
             android:padding="16dp"
-            android:src="@drawable/icon_star"
+            tools:src="@drawable/icon_star_selected"
+            android:src="@{exploreDetailViewModel.isFavorite ? @drawable/icon_star_selected : @drawable/icon_star}"
             app:layout_constraintEnd_toStartOf="@id/share_button"
             app:layout_constraintTop_toTopOf="parent" />
 

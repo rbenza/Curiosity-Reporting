@@ -1,10 +1,7 @@
 package nl.rvbsoftdev.curiosityreporting.feature.favorite
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.data.PhotoRepository.Companion.getRepository
@@ -16,7 +13,7 @@ class FavoritesViewModel(app: Application) : AndroidViewModel(app) {
     /** Get all favorite photos from Room database through repository (uses suspend function)**/
     init {
         viewModelScope.launch {
-            photoRepository.getAllFavoritesPhotos()
+            photoRepository.getAllPhotosFromDatabase()
         }
     }
 
@@ -29,7 +26,7 @@ class FavoritesViewModel(app: Application) : AndroidViewModel(app) {
 
     fun removeAllPhotoFromFavorites() {
         viewModelScope.launch {
-            photoRepository.deleteAllFavoritesPhotos()
+            photoRepository.deleteAllPhotosFromDatabase()
         }
     }
 }

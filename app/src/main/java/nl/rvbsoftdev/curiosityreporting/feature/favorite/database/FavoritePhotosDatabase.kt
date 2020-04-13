@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 
 /** Local Room database to store favorite photos selected by the user in the 'Explore' Fragment **/
 
-
 @Database(entities = [FavoriteDatabasePhoto::class], version = 8, exportSchema = false)
 abstract class FavoritePhotosDatabase : RoomDatabase() {
     abstract val favoritePhotoDao: Dao

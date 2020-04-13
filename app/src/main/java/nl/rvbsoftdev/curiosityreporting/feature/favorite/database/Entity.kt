@@ -1,9 +1,7 @@
 package nl.rvbsoftdev.curiosityreporting.feature.favorite.database
 
 import androidx.room.*
-import nl.rvbsoftdev.curiosityreporting.data.Camera
 import nl.rvbsoftdev.curiosityreporting.data.Photo
-import nl.rvbsoftdev.curiosityreporting.data.Rover
 
 /** Room database table with only unique items (id property is unique) and ordered by earth_date **/
 
@@ -32,52 +30,52 @@ data class DatabaseCamera (
         val full_name: String,
         val name: String)
 
-/** Various Kotlin Extension Functions to map a (List of) 'FavoriteDatabasePhoto' to a (List of) 'Photo' for the app **/
+/** Various Kotlin Extension Functions to map a (List of) 'FavoriteDatabasePhoto' to a (List of) 'Photo' **/
 
-fun List<FavoriteDatabasePhoto>.asDataBaseModel(): List<Photo> {
+fun List<FavoriteDatabasePhoto>.toListOfPhoto(): List<Photo> {
     return map {
         Photo(
                 id = it.id,
-                camera = it.camera.asAppDataModel(),
+                camera = it.camera.toCamera(),
                 earth_date = it.earth_date,
                 img_src = it.img_src,
                 sol = it.sol,
-                rover = it.rover.asAppDataModel())
+                rover = it.rover.toRover())
     }
 }
 
-fun Photo.asDataBaseModel(): FavoriteDatabasePhoto {
+fun Photo.toFavoriteDatabasePhoto(): FavoriteDatabasePhoto {
     return let {
         FavoriteDatabasePhoto(
                 id = it.id,
-                camera = it.camera.asDataBaseModel(),
+                camera = it.camera.toFavoriteDatabasePhoto(),
                 earth_date = it.earth_date,
                 img_src = it.img_src,
                 sol = it.sol,
-                rover = it.rover.asDataBaseModel())
+                rover = it.rover.toFavoriteDatabasePhoto())
     }
 }
 
-fun FavoriteDatabasePhoto.asAppDataModel(): Photo {
+fun FavoriteDatabasePhoto.toPhoto(): Photo {
     return let {
         Photo(
                 id = it.id,
-                camera = it.camera.asAppDataModel(),
+                camera = it.camera.toCamera(),
                 earth_date = it.earth_date,
                 img_src = it.img_src,
                 sol = it.sol,
-                rover = it.rover.asAppDataModel())
+                rover = it.rover.toRover())
     }
 }
 
-fun Camera.asDataBaseModel(): DatabaseCamera {
+fun Photo.Camera.toFavoriteDatabasePhoto(): DatabaseCamera {
     return let {
         DatabaseCamera(full_name = it.full_name, name = it.name)
     }
 }
 
 
-fun Rover.asDataBaseModel(): DatabaseRover {
+fun Photo.Rover.toFavoriteDatabasePhoto(): DatabaseRover {
     return let {
         DatabaseRover(
                 max_date = it.max_date,
@@ -86,15 +84,15 @@ fun Rover.asDataBaseModel(): DatabaseRover {
     }
 }
 
-fun DatabaseCamera.asAppDataModel(): Camera {
+fun DatabaseCamera.toCamera(): Photo.Camera {
     return let {
-        Camera(full_name = it.full_name, name = it.name)
+        Photo.Camera(full_name = it.full_name, name = it.name)
     }
 }
 
-fun DatabaseRover.asAppDataModel(): Rover {
+fun DatabaseRover.toRover(): Photo.Rover {
     return let {
-        Rover(max_date = it.max_date, max_sol = it.max_sol, total_photos = it.total_photos)
+        Photo.Rover(max_date = it.max_date, max_sol = it.max_sol, total_photos = it.total_photos)
     }
 }
 

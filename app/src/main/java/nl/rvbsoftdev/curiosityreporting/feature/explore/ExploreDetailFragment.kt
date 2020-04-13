@@ -19,7 +19,6 @@ import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreDetailBinding
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
 import nl.rvbsoftdev.curiosityreporting.global.formatDate
-import nl.rvbsoftdev.curiosityreporting.global.setDrawable
 
 /** Explore Detail Fragment that lets the user zoom in on the selected photo. The photo can also be shared or added/removed from the Room local database **/
 
@@ -37,16 +36,15 @@ class ExploreDetailFragment : BaseFragment<FragmentExploreDetailBinding>() {
         binding.apply {
 
             exploreDetailViewModel = viewModel
-            photo = viewModel.selectedPhoto.value
             backButton.setOnClickListener { findNavController().navigateUp() }
             shareButton.setOnClickListener {
                 if (requireContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                     requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
                 } else sharePhoto()
             }
+
             favoriteButton.setOnClickListener {
                 if (viewModel.selectedPhoto.value!!.isFavorite) {
-                    binding.favoriteButton.setImageResource(R.drawable.icon_star)
                     viewModel.selectedPhoto.value!!.isFavorite = false
                     viewModel.removePhotoFromFavorites(viewModel.selectedPhoto.value!!)
                     navigationActivity.showStyledSnackbarMessage(requireView(),
@@ -55,7 +53,6 @@ class ExploreDetailFragment : BaseFragment<FragmentExploreDetailBinding>() {
                             icon = R.drawable.icon_star)
 
                 } else {
-                    binding.favoriteButton.setImageResource(R.drawable.icon_star_selected)
                     viewModel.selectedPhoto.value!!.isFavorite = true
                     viewModel.addPhotoToFavorites(viewModel.selectedPhoto.value!!)
                     navigationActivity.showStyledSnackbarMessage(requireView(),

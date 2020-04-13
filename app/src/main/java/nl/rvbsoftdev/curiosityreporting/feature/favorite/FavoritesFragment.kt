@@ -28,11 +28,12 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.favoritesViewModel = viewModel
+
         viewModel.favoritePhotos.observe(viewLifecycleOwner, Observer { listOfPhotos ->
             binding.recyclerviewPhotoFavorites.adapter = FavoritePhotoAdapter(viewLifecycleOwner, FavoritePhotoAdapter.OnClickListener { photo ->
                 findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToFavoritesDetailFragment(photo))
             }).apply { submitList(listOfPhotos) }
-            if (listOfPhotos.isNullOrEmpty()) setHasOptionsMenu(false) else setHasOptionsMenu(true)
+             setHasOptionsMenu(!listOfPhotos.isNullOrEmpty())
         })
 
         /** Lets the user select a list or grid as preference **/

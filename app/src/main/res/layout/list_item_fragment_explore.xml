@@ -9,12 +9,6 @@
             name="photo"
             type="nl.rvbsoftdev.curiosityreporting.data.Photo" />
 
-        <variable
-            name="ExploreViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel" />
-
-        <import type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
-
         <import type="android.view.View" />
 
     </data>

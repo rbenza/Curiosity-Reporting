@@ -31,29 +31,29 @@ data class NetworkCamera(
         val name: String
 ) : Parcelable
 
-/** Various Kotlin Extension Functions to map a (List of) 'NetworkPhoto' to a (List of) 'Photo' **/
+/** Kotlin Extension Functions to map 'NetworkPhoto' to 'Photo' **/
 
-fun NetworkPhotoContainer.asAppDataModel(): List<Photo> {
+fun NetworkPhotoContainer.toListOfPhoto(): List<Photo> {
     return photos.map {
         Photo(
-                camera = it.camera.asAppDataModel(),
+                camera = it.camera.toCamera(),
                 earth_date = it.earth_date,
                 id = it.id,
                 img_src = it.img_src,
-                rover = it.rover.asAppDataModel(),
+                rover = it.rover.toRover(),
                 sol = it.sol)
 
     }
 }
 
-fun NetworkRover.asAppDataModel(): Rover {
+fun NetworkRover.toRover(): Photo.Rover {
     return let {
-        Rover(max_date = it.max_date, max_sol = it.max_sol, total_photos = it.total_photos)
+        Photo.Rover(max_date = it.max_date, max_sol = it.max_sol, total_photos = it.total_photos)
     }
 }
 
-fun NetworkCamera.asAppDataModel(): Camera {
+fun NetworkCamera.toCamera(): Photo.Camera {
     return let {
-        Camera(full_name = it.full_name, name = it.name)
+        Photo.Camera(full_name = it.full_name, name = it.name)
     }
 }

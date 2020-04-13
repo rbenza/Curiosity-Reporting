@@ -2,7 +2,6 @@ package nl.rvbsoftdev.curiosityreporting.feature.favorite
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -16,7 +15,7 @@ class FavoritesDetailViewModel(app: Application) : AndroidViewModel(app) {
 
     fun removePhotoFromFavorites(photo: Photo) {
         viewModelScope.launch {
-            photoRepository.removePhotoFromFavorites(photo)
+            photoRepository.removePhotoFromDatabase(photo)
         }
     }
 }
