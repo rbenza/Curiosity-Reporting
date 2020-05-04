@@ -21,7 +21,7 @@
             android:id="@+id/icon_more_item"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            app:setDrawable="@{moreItem.icon}"
+            app:setImageResource="@{moreItem.icon}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

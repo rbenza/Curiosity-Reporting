@@ -20,7 +20,6 @@ class FactsFragment : BaseFragment<FragmentFactsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /** simple Onclicklistener with lambda for single event instead of wiring it through a ViewModel with LiveData (overkill here) **/
         binding.spacexImg.setOnClickListener { visitSpaceXWebsite() }
     }
 

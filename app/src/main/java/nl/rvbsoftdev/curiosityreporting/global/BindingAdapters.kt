@@ -48,8 +48,8 @@ fun ImageView.loadImageUrl(imgUrl: String?) {
             .into(this)
 }
 
-@BindingAdapter("setDrawable")
-fun ImageView.setDrawable(resource: Int) = setImageResource(resource)
+@BindingAdapter("setImageResource")
+fun ImageView.setImageResource(resource: Int) = setImageResource(resource)
 
 @BindingAdapter("imageConnectionStatus")
 fun ImageView.imageConnectionStatus(connectionStatus: NasaApiConnectionStatus?) {

@@ -9,7 +9,7 @@ import nl.rvbsoftdev.curiosityreporting.databinding.ListItemFragmentMoreBinding
 
 /** Recyclerview ListAdapter for MoreItems in the 'More' fragment **/
 
-class MoreAdapter(private val onClickListener: OnClickListener) : ListAdapter<MoreItem, MoreAdapter.ViewHolder>(DiffCallback) {
+class MoreAdapter(private val clickListener: (moreItem: MoreItem) -> Unit) : ListAdapter<MoreItem, MoreAdapter.ViewHolder>(DiffCallback) {
 
     class ViewHolder(private var binding: ListItemFragmentMoreBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(moreItem: MoreItem) {
@@ -18,18 +18,13 @@ class MoreAdapter(private val onClickListener: OnClickListener) : ListAdapter<Mo
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(ListItemFragmentMoreBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            ViewHolder(ListItemFragmentMoreBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val moreItem: MoreItem = getItem(position)
-        holder.itemView.setOnClickListener {
-            onClickListener.onClick(moreItem)
-        }
+        holder.itemView.setOnClickListener { clickListener(moreItem) }
         holder.bind(moreItem)
-    }
-
-    class OnClickListener(val clickListener: (moreItem: MoreItem) -> Unit) {
-        fun onClick(moreItem: MoreItem) = clickListener(moreItem)
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<MoreItem>() {

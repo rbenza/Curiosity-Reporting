@@ -6,6 +6,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.MenuCompat
+import androidx.core.view.forEach
+import androidx.core.view.forEachIndexed
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -35,7 +37,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
 
         /** Set up observer for the photo's loaded from the NASA API **/
         viewModel.photosFromNasaApi.observe(viewLifecycleOwner, Observer { listOfNetworkPhotos ->
-                       binding.recyclerviewPhotosExplore.adapter = ExplorePhotoAdapter(viewLifecycleOwner, ExplorePhotoAdapter.OnClickListener { photo ->
+            binding.recyclerviewPhotosExplore.adapter = ExplorePhotoAdapter(viewLifecycleOwner, { photo ->
                 findNavController().navigate(ExploreFragmentDirections.actionExploreFragmentToExploreDetailFragment(photo))
             }).apply { submitList(listOfNetworkPhotos) }
         })
@@ -48,10 +50,26 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
         }
         binding.recyclerviewPhotosExplore.layoutManager = GridLayoutManager(requireContext(), gridOrList)
         setHasOptionsMenu(true)
+
+        viewModel.iconConnectionStatus.observe(viewLifecycleOwner, Observer {
+            binding.statusImage.setImageDrawable(it)
+        })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_explore_menu, menu)
+        viewModel.photosFromNasaApi.observe(viewLifecycleOwner, Observer { listOfNetworkPhotos ->
+
+            listOfNetworkPhotos.any { photo ->
+                menu.forEach { menuItem ->
+                    photo.camera.full_name != menuItem.title
+                    menuItem.isVisible = true
+                }
+                true
+            }
+        })
+
         MenuCompat.setGroupDividerEnabled(menu, true)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -60,16 +78,19 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.all_cameras -> {
+                viewModel.photosFromNasaApi.value = viewModel.photosFromNasaApiBeforeFiltering.value
                 viewModel.setCameraFilter(null)
                 showCameraFilterSnackBar("all cameras")
                 item.isChecked = true
             }
             R.id.FHAZ -> {
+                viewModel.photosFromNasaApi.value = viewModel.photosFromNasaApiBeforeFiltering.value
                 viewModel.setCameraFilter("FHAZ")
                 showCameraFilterSnackBar("the Front Hazard Avoidance Camera")
                 item.isChecked = true
             }
             R.id.RHAZ -> {
+                viewModel.photosFromNasaApi.value = viewModel.photosFromNasaApiBeforeFiltering.value
                 viewModel.setCameraFilter("RHAZ")
                 showCameraFilterSnackBar("the Rear Hazard Avoidance Camera")
                 item.isChecked = true
@@ -118,7 +139,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
         return true
     }
 
-   private fun showCameraFilterSnackBar(camera: String) {
+    private fun showCameraFilterSnackBar(camera: String) {
         navigationActivity.showStyledSnackbarMessage(requireView(),
                 text = "Camera filter for $camera selected",
                 durationMs = 2500,

@@ -23,14 +23,14 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rvMoreItems.adapter = MoreAdapter(MoreAdapter.OnClickListener {
+        binding.rvMoreItems.adapter = MoreAdapter {
             when (it.id) {
                 0 -> visitNasaWebsite()
                 1 -> shareTheApp()
                 2 -> findNavController().navigate(R.id.action_more_fragment_to_settings_fragment)
                 3 -> findNavController().navigate(R.id.action_more_fragment_to_about_fragment)
             }
-        }).apply { submitList(viewModel.moreItemslist) }
+        }.apply { submitList(viewModel.moreItemslist) }
     }
 
     private fun visitNasaWebsite() {

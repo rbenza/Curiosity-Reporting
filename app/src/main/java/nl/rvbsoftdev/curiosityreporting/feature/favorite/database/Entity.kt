@@ -33,14 +33,14 @@ data class DatabaseCamera (
 /** Various Kotlin Extension Functions to map a (List of) 'FavoriteDatabasePhoto' to a (List of) 'Photo' **/
 
 fun List<FavoriteDatabasePhoto>.toListOfPhoto(): List<Photo> {
-    return map {
+    return map { favoriteDatabasePhoto ->
         Photo(
-                id = it.id,
-                camera = it.camera.toCamera(),
-                earth_date = it.earth_date,
-                img_src = it.img_src,
-                sol = it.sol,
-                rover = it.rover.toRover())
+                id = favoriteDatabasePhoto.id,
+                camera = favoriteDatabasePhoto.camera.toCamera(),
+                earth_date = favoriteDatabasePhoto.earth_date,
+                img_src = favoriteDatabasePhoto.img_src,
+                sol = favoriteDatabasePhoto.sol,
+                rover = favoriteDatabasePhoto.rover.toRover())
     }
 }
 

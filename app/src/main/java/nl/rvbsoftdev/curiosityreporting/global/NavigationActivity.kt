@@ -13,9 +13,13 @@ import android.os.StrictMode
 import android.os.SystemClock
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -28,6 +32,7 @@ import com.pd.chocobar.ChocoBar
 import kotlinx.android.synthetic.main.activity_navigation.*
 import nl.rvbsoftdev.curiosityreporting.BuildConfig
 import nl.rvbsoftdev.curiosityreporting.R
+import nl.rvbsoftdev.curiosityreporting.databinding.ActivityNavigationBinding
 import nl.rvbsoftdev.curiosityreporting.feature.notification.AppNotifications
 import nl.rvbsoftdev.curiosityreporting.feature.notification.NotificationsBroadcastReceiver
 
@@ -43,14 +48,15 @@ class NavigationActivity : AppCompatActivity() {
     /** Firebase setup to monitor app performance and usage **/
     lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var viewModel: SharedViewModel
+    private lateinit var binding: ActivityNavigationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setAndReturnUserTheme()
         super.onCreate(savedInstanceState)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         viewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
-        setContentView(R.layout.activity_navigation)
-        setSupportActionBar(global_toolbar)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_navigation)
+        setSupportActionBar(binding.globalToolbar)
         val navController = findNavController(R.id.nav_host_fragment)
         setupActionBarWithNavController(navController, setTopLevelDestinations)
         setupBottomNavigation(navController)
@@ -67,13 +73,13 @@ class NavigationActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation(navController: NavController) {
-        bottom_nav?.let {
+        binding.bottomNav?.let {
             NavigationUI.setupWithNavController(it, navController)
         }
     }
 
     private fun setupSideNavigationMenu(navController: NavController) {
-        side_nav?.let {
+        binding.sideNav?.let {
             NavigationUI.setupWithNavController(it, navController)
         }
     }
@@ -82,27 +88,27 @@ class NavigationActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.mission_fragment -> {
-                    bottom_nav?.setVisible()
-                    global_toolbar?.setGone()
+                    binding.bottomNav?.setVisible()
+                    binding.globalToolbar.setGone()
                 }
                 R.id.mission_detail_fragment1,
                 R.id.mission_detail_fragment2,
                 R.id.mission_detail_fragment3 -> {
-                    bottom_nav?.setGone()
-                    global_toolbar?.setVisible()
+                    binding.bottomNav?.setGone()
+                    binding.globalToolbar.setVisible()
                 }
                 R.id.about_fragment,
                 R.id.settings_fragment,
-                R.id.fragment_privacy_policy -> bottom_nav?.setGone()
+                R.id.fragment_privacy_policy -> binding.bottomNav?.setGone()
 
                 R.id.explore_detail_fragment,
                 R.id.favorites_detail_fragment -> {
-                    bottom_nav?.setGone()
-                    global_toolbar?.setGone()
+                    binding.bottomNav?.setGone()
+                    binding.globalToolbar.setGone()
                 }
                 else -> {
-                    bottom_nav?.setVisible()
-                    global_toolbar?.setVisible()
+                    binding.bottomNav?.setVisible()
+                    binding.globalToolbar.setVisible()
                 }
             }
         }
@@ -201,8 +207,8 @@ class NavigationActivity : AppCompatActivity() {
             val intent = Intent(this, NotificationsBroadcastReceiver::class.java)
             val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
             alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HALF_DAY * 7,
-                    AlarmManager.INTERVAL_HALF_DAY * 7,
+                    SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_DAY * 7,
+                    AlarmManager.INTERVAL_DAY * 7,
                     pendingIntent)
         }
     }

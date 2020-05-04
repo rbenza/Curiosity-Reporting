@@ -11,7 +11,7 @@ import nl.rvbsoftdev.curiosityreporting.databinding.ListItemFragmentExploreBindi
 
 /** Recyclerview ListAdapter with DiffUtil for photos in the 'Favorites' fragment **/
 
-class FavoritePhotoAdapter(private val lifecycleOwner: LifecycleOwner, private val onClickListener: OnClickListener) : ListAdapter<Photo, FavoritePhotoAdapter.ViewHolder>(DiffCallback) {
+class FavoritePhotoAdapter(private val lifecycleOwner: LifecycleOwner, private val onClickListener: (Photo) -> Unit) : ListAdapter<Photo, FavoritePhotoAdapter.ViewHolder>(DiffCallback) {
 
     class ViewHolder(private val binding: ListItemFragmentExploreBinding, private val lifecycleOwner: LifecycleOwner) : RecyclerView.ViewHolder(binding.root) {
         fun bind(photo: Photo) {
@@ -21,18 +21,15 @@ class FavoritePhotoAdapter(private val lifecycleOwner: LifecycleOwner, private v
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(ListItemFragmentExploreBinding.inflate(LayoutInflater.from(parent.context), parent, false), lifecycleOwner)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            ViewHolder(ListItemFragmentExploreBinding.inflate(LayoutInflater.from(parent.context), parent, false), lifecycleOwner)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo: Photo = getItem(position)
-        holder.itemView.setOnClickListener {
-            onClickListener.onClick(photo)
+        holder.apply {
+            itemView.setOnClickListener { onClickListener(photo) }
+            bind(photo)
         }
-        holder.bind(photo)
-    }
-
-    class OnClickListener(val clickListener: (photo: Photo) -> Unit) {
-        fun onClick(photo: Photo) = clickListener(photo)
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<Photo>() {

@@ -88,5 +88,7 @@
     <string name="fragment_mission_twitter">Twitter</string>
     <string name="fragment_mission_get_the_latest_news_from_curiosity_on_twitter">Get the latest news from Curiosity on Twitter</string>
     <string name="nasa_api_key">HViCqNaudnl7iRBSheUO7kJLzq2Ja0tewak9xiY5</string>
+    <string name="no_app_to_share_photo">No app installed to share this photo!</string>
+    <string name="storage_access_required">Access to storage is required to share this photo</string>
 
 </resources>

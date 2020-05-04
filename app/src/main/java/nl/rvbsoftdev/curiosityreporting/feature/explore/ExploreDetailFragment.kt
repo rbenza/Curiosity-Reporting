@@ -75,28 +75,23 @@ class ExploreDetailFragment : BaseFragment<FragmentExploreDetailBinding>() {
                         .into(object : CustomTarget<Bitmap>() {
                             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                                 try {
-
                                     val imagePath = MediaStore.Images.Media.insertImage(navigationActivity.contentResolver,
                                             resource, "Curiosity Mars Image " + viewModel.selectedPhoto.value?.earth_date, null)
-                                    val uri = Uri.parse(imagePath)
+                                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                        type = "image/*"
+                                        putExtra(Intent.EXTRA_TEXT,"Check out this amazing photo NASA's Mars Rover Curiosity captured on ${formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
+                                        putExtra(Intent.EXTRA_STREAM, Uri.parse(imagePath)) }
 
-                                    val shareIntent = Intent(Intent.ACTION_SEND)
-                                    shareIntent.type = "image/*"
-                                    shareIntent.putExtra(Intent.EXTRA_TEXT,
-                                            "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
-                                    shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
                                     if (shareIntent.resolveActivity(navigationActivity.packageManager) != null) {
                                         startActivity(shareIntent)
                                     } else {
-                                        navigationActivity.showStyledToastMessage("No app installed to share this photo!")
+                                        navigationActivity.showStyledToastMessage(getString(R.string.no_app_to_share_photo))
                                     }
                                 } catch (e: Exception) {
                                     e.printStackTrace()
                                 }
                             }
-
                             override fun onLoadCleared(placeholder: Drawable?) {
-
                             }
                         })
             }
@@ -109,7 +104,7 @@ class ExploreDetailFragment : BaseFragment<FragmentExploreDetailBinding>() {
         if (requestCode == REQUEST_CODE && (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
             sharePhoto()
         } else {
-            navigationActivity.showStyledToastMessage("Access to storage is required to share this photo")
+            navigationActivity.showStyledToastMessage(getString(R.string.storage_access_required))
         }
     }
 

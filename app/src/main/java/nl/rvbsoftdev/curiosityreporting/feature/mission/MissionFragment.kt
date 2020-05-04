@@ -21,7 +21,7 @@ class MissionFragment : BaseFragment<FragmentMissionBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.apply {
+        with(binding) {
 
             journeyCardview.setOnClickListener { findNavController().navigate(R.id.action_mission_fragment_to_mission_detail_fragment1) }
             marsCardview.setOnClickListener { findNavController().navigate(R.id.action_mission_fragment_to_mission_detail_fragment2) }

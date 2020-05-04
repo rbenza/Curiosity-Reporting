@@ -30,7 +30,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
         binding.favoritesViewModel = viewModel
 
         viewModel.favoritePhotos.observe(viewLifecycleOwner, Observer { listOfPhotos ->
-            binding.recyclerviewPhotoFavorites.adapter = FavoritePhotoAdapter(viewLifecycleOwner, FavoritePhotoAdapter.OnClickListener { photo ->
+            binding.recyclerviewPhotoFavorites.adapter = FavoritePhotoAdapter(viewLifecycleOwner, { photo ->
                 findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToFavoritesDetailFragment(photo))
             }).apply { submitList(listOfPhotos) }
              setHasOptionsMenu(!listOfPhotos.isNullOrEmpty())

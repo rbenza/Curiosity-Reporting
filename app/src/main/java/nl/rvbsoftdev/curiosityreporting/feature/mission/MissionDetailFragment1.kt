@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.Fragment1MissionDetailBinding
@@ -16,7 +17,7 @@ class MissionDetailFragment1 : BaseFragment<Fragment1MissionDetailBinding>() {
 
     override val layout = R.layout.fragment1_mission_detail
     override val firebaseTag = "Mission Detail Fragment 1"
-    private val viewModel: SharedViewModel by viewModels()
+    private val viewModel: SharedViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

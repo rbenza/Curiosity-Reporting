@@ -44,7 +44,7 @@ class PhotoRepository(private val app: Application) {
     val connectionStatus: LiveData<NasaApiConnectionStatus> = _connectionStatus
 
     private val _photosFromNasaApi = MutableLiveData<List<Photo>>()
-    val photosFromNasaApi: LiveData<List<Photo>> = _photosFromNasaApi
+    val photosFromNasaApi: MutableLiveData<List<Photo>> = _photosFromNasaApi
 
     var favoritePhotos: LiveData<List<Photo>> = favoritePhotosDatabase.favoritePhotoDao.getAllPhotos().map { it.toListOfPhoto() }
 

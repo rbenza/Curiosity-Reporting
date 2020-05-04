@@ -3,6 +3,8 @@ package nl.rvbsoftdev.curiosityreporting.feature.mission
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.Fragment3MissionDetailBinding
@@ -13,7 +15,7 @@ class MissionDetailFragment3 : BaseFragment<Fragment3MissionDetailBinding>() {
 
     override val layout = R.layout.fragment3_mission_detail
     override val firebaseTag = "Mission Detail Fragment 3"
-    private val viewModel: SharedViewModel by lazy { ViewModelProviders.of(requireActivity()).get(SharedViewModel::class.java) }
+    private val viewModel: SharedViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

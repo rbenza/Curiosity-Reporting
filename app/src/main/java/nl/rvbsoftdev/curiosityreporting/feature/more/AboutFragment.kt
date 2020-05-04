@@ -22,7 +22,6 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /** simple Onclicklisteners with lambda for single events instead of wiring it through a ViewModel with LiveData **/
         binding.sendEmailButton.setOnClickListener { sendEmail() }
         binding.githubImg.setOnClickListener { visitGitHubRepository() }
         binding.privacyImg.setOnClickListener { findNavController().navigate(AboutFragmentDirections.actionAboutFragmentToPrivacyPolicyFragment()) }
