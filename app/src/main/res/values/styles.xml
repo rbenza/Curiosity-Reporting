@@ -71,7 +71,6 @@
     <style name="CameraMenuIcon" parent="android:style/Widget.Holo.ActionButton.Overflow">
         <item name="android:src">@drawable/icon_filter</item>
         <item name="android:layout_margin">12dp</item>
-
         <item name="android:layout_marginTop">8dp</item>
 
     </style>
@@ -82,19 +81,21 @@
 
     <style name="collapsed_toolbar" parent="TextAppearance.AppCompat.Title">
         <item name="android:textColor">?attr/text_color_toolbar</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
 
     </style>
 
     <style name="expanded_toolbar" parent="TextAppearance.AppCompat.Title">
         <item name="android:textColor">?attr/text_color_toolbar</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">28sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:shadowColor">@color/DarkGrey</item>
         <item name="android:shadowDx">-3</item>
         <item name="android:shadowDy">-3</item>
         <item name="android:shadowRadius">1</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="ToastStyleDark">

@@ -24,7 +24,6 @@
             app:showAsAction="never" />
         <item
             android:id="@+id/RHAZ"
-
             android:title="Rear Hazard Avoidance Camera"
             app:showAsAction="never" />
         <item

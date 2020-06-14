@@ -7,12 +7,12 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.view.MenuCompat
 import androidx.core.view.forEach
-import androidx.core.view.forEachIndexed
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreBinding
@@ -36,10 +36,13 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
         binding.exploreViewModel = viewModel
 
         /** Set up observer for the photo's loaded from the NASA API **/
-        viewModel.photosFromNasaApi.observe(viewLifecycleOwner, Observer { listOfNetworkPhotos ->
+        viewModel.photosFromNasaApi.observe(viewLifecycleOwner, Observer { list ->
             binding.recyclerviewPhotosExplore.adapter = ExplorePhotoAdapter(viewLifecycleOwner, { photo ->
                 findNavController().navigate(ExploreFragmentDirections.actionExploreFragmentToExploreDetailFragment(photo))
-            }).apply { submitList(listOfNetworkPhotos) }
+            }).apply {
+                stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+                submitList(list)
+            }
         })
 
         /** Lets the user select a list or grid as preference **/
@@ -59,67 +62,33 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_explore_menu, menu)
-        viewModel.photosFromNasaApi.observe(viewLifecycleOwner, Observer { listOfNetworkPhotos ->
+        val menuItemsToAlwaysShow = listOf(R.id.select_random_date, R.id.launch_date_picker_dialog, R.id.camera_filter_title, R.id.all_cameras)
 
-            listOfNetworkPhotos.any { photo ->
-                menu.forEach { menuItem ->
-                    photo.camera.full_name != menuItem.title
-                    menuItem.isVisible = true
-                }
-                true
-            }
-        })
+//        /** Dynamically hide the camera filters for photos not in the list **/
+//        viewModel.photosFromNasaApi.observe(viewLifecycleOwner, Observer { list ->
+//            list.any { photo ->
+//                menu.forEach { menuItem ->
+//                    menuItem.isVisible = photo.camera.full_name == menuItem.title || menuItemsToAlwaysShow.all { it == menuItem.itemId }
+//                }
+//                true
+//            }
+//        })
 
         MenuCompat.setGroupDividerEnabled(menu, true)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    /**Camera filter options menu**/
+    /** Camera filter options menu **/
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.all_cameras -> {
-                viewModel.photosFromNasaApi.value = viewModel.photosFromNasaApiBeforeFiltering.value
-                viewModel.setCameraFilter(null)
-                showCameraFilterSnackBar("all cameras")
-                item.isChecked = true
-            }
-            R.id.FHAZ -> {
-                viewModel.photosFromNasaApi.value = viewModel.photosFromNasaApiBeforeFiltering.value
-                viewModel.setCameraFilter("FHAZ")
-                showCameraFilterSnackBar("the Front Hazard Avoidance Camera")
-                item.isChecked = true
-            }
-            R.id.RHAZ -> {
-                viewModel.photosFromNasaApi.value = viewModel.photosFromNasaApiBeforeFiltering.value
-                viewModel.setCameraFilter("RHAZ")
-                showCameraFilterSnackBar("the Rear Hazard Avoidance Camera")
-                item.isChecked = true
-            }
-            R.id.MAST -> {
-                viewModel.setCameraFilter("MAST")
-                showCameraFilterSnackBar("the Mast Camera")
-                item.isChecked = true
-            }
-            R.id.CHEMCAM -> {
-                viewModel.setCameraFilter("CHEMCAM")
-                showCameraFilterSnackBar("the Chemistry and Camera Complex")
-                item.isChecked = true
-            }
-            R.id.MAHLI -> {
-                viewModel.setCameraFilter("MAHLI")
-                showCameraFilterSnackBar("the Mars Hand Lens Imager")
-                item.isChecked = true
-            }
-            R.id.MARDI -> {
-                viewModel.setCameraFilter("MARDI")
-                showCameraFilterSnackBar("the Mars Descent Imager")
-                item.isChecked = true
-            }
-            R.id.NAVCAM -> {
-                viewModel.setCameraFilter("NAVCAM")
-                showCameraFilterSnackBar("the Navigation Camera")
-                item.isChecked = true
-            }
+            R.id.all_cameras -> setCameraFilter(null, "all cameras", item)
+            R.id.FHAZ -> setCameraFilter("FHAZ", "the Front Hazard Avoidance Camera", item)
+            R.id.RHAZ -> setCameraFilter("RHAZ", "the Rear Hazard Avoidance Camera", item)
+            R.id.MAST -> setCameraFilter("MAST", "the Mast Camera", item)
+            R.id.CHEMCAM -> setCameraFilter("CHEMCAM", "the Chemistry and Camera Complex", item)
+            R.id.MAHLI -> setCameraFilter("MAHLI", "the Mars Hand Lens Imager", item)
+            R.id.MARDI -> setCameraFilter("MARDI", "the Mars Descent Imager", item)
+            R.id.NAVCAM -> setCameraFilter("NAVCAM", "the Navigation Camera", item)
             R.id.launch_date_picker_dialog -> showDatePickerDialog()
 
             R.id.select_random_date -> {
@@ -129,7 +98,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
                     randomBound = mostRecentSol
                 }
                 val randomSol = Random().nextInt(randomBound)
-                viewModel.refreshPhotos(null, randomSol, null)
+                viewModel.getPhotos(null, randomSol, null)
                 navigationActivity.showStyledSnackbarMessage(requireView(),
                         text = "Roll the dice!\nSelected Mars solar day $randomSol!",
                         durationMs = 3000,
@@ -139,11 +108,10 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
         return true
     }
 
-    private fun showCameraFilterSnackBar(camera: String) {
-        navigationActivity.showStyledSnackbarMessage(requireView(),
-                text = "Camera filter for $camera selected",
-                durationMs = 2500,
-                icon = R.drawable.icon_camera)
+    private fun setCameraFilter(cameraFilter: String?, cameraSnackbar: String, menuItem: MenuItem) {
+        viewModel.setCameraFilter(cameraFilter)
+        navigationActivity.showStyledSnackbarMessage(requireView(), "Camera filter for $cameraSnackbar selected", 2500, R.drawable.icon_camera)
+        menuItem.isChecked = true
     }
 
     /** Custom Datepicker fragment where user can select a photo date.
@@ -190,6 +158,6 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
                 text = "Date selected: " + formatDate(userSelectedDate),
                 durationMs = 3500,
                 icon = R.drawable.icon_calender)
-        viewModel.refreshPhotos(userSelectedDate, null, null)
+        viewModel.getPhotos(userSelectedDate, null, null)
     }
 }

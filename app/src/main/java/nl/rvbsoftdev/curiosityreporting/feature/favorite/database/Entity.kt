@@ -11,6 +11,7 @@ import nl.rvbsoftdev.curiosityreporting.data.Photo
 data class FavoriteDatabasePhoto (
         @PrimaryKey
         val id: Int,
+        val isFavorite: Boolean = true,
         @Embedded val camera: DatabaseCamera,
         val earth_date: String,
         val img_src: String,
@@ -48,6 +49,7 @@ fun Photo.toFavoriteDatabasePhoto(): FavoriteDatabasePhoto {
     return let {
         FavoriteDatabasePhoto(
                 id = it.id,
+                isFavorite = true,
                 camera = it.camera.toFavoriteDatabasePhoto(),
                 earth_date = it.earth_date,
                 img_src = it.img_src,

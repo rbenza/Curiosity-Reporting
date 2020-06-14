@@ -1,7 +1,9 @@
 package nl.rvbsoftdev.curiosityreporting.global
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.preference.PreferenceManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -50,6 +52,11 @@ fun ImageView.loadImageUrl(imgUrl: String?) {
 
 @BindingAdapter("setImageResource")
 fun ImageView.setImageResource(resource: Int) = setImageResource(resource)
+
+@BindingAdapter("isVisible")
+fun View.setVisibility(value: Boolean) {
+    isVisible = value
+}
 
 @BindingAdapter("imageConnectionStatus")
 fun ImageView.imageConnectionStatus(connectionStatus: NasaApiConnectionStatus?) {

@@ -47,11 +47,11 @@ class MoreFragment : BaseFragment<FragmentMoreBinding>() {
         val playStoreLink = "https://play.google.com/store/apps/details?id=nl.rvbsoftdev.curiosityreporting"
         Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, "Check out this cool app that let's you Explore Mars!\n\nGet it at ${playStoreLink}")
+            putExtra(Intent.EXTRA_TEXT, "Check out this cool app that let's you Explore Mars!\n\nGet it at $playStoreLink")
             if (this.resolveActivity(requireActivity().packageManager) != null) {
                 startActivity(this)
             } else {
-                navigationActivity.showStyledToastMessage("No app to share found!\n" + "\n" + "Go to ${playStoreLink} to share the app")
+                navigationActivity.showStyledToastMessage("No app to share found!\n\nGo to $playStoreLink to share the app")
             }
         }
     }

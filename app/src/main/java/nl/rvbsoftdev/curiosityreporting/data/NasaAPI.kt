@@ -1,8 +1,7 @@
-package nl.rvbsoftdev.curiosityreporting.network
+package nl.rvbsoftdev.curiosityreporting.data
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import nl.rvbsoftdev.curiosityreporting.data.NetworkPhotoContainer
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET

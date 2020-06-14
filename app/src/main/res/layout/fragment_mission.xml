@@ -309,13 +309,14 @@
                 app:expandedTitleMarginBottom="12dp"
                 app:expandedTitleTextAppearance="@style/expanded_toolbar"
                 app:layout_scrollFlags="exitUntilCollapsed|scroll"
-                app:title="CURIOSITY REPORTING">
+                app:title="Curiosity Reporting">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/global_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:elevation="16dp"
+
                     app:layout_collapseMode="parallax"
                     app:title="Curiosity Reporting" />
 

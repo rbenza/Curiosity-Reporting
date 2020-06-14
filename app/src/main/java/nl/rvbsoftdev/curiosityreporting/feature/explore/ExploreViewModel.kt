@@ -14,28 +14,30 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
     private val photoRepository = getRepository(app)
 
     val connectionStatus: LiveData<NasaApiConnectionStatus> = photoRepository.connectionStatus
-    var photosFromNasaApi: MutableLiveData<List<Photo>> = photoRepository.photosFromNasaApi
-    val photosFromNasaApiBeforeFiltering = photoRepository.photosFromNasaApi
+    val photosFromNasaApi: MutableLiveData<List<Photo>> = photoRepository.photosFromNasaApi
     val mostRecentSolPhotoDate: LiveData<Int> = photoRepository.mostRecentSolPhotoDate
     val mostRecentEarthPhotoDate: LiveData<String> = photoRepository.mostRecentEarthPhotoDate
 
-    fun refreshPhotos(earthDate: String? = null, sol: Int? = null, camera: String? = null) {
+    fun getPhotos(earthDate: String? = null, sol: Int? = null, camera: String? = null) {
         viewModelScope.launch {
             photoRepository.getPhotos(earthDate, sol, camera)
         }
     }
 
     fun setCameraFilter(cameraFilter: String?) {
-       photosFromNasaApi.value = photosFromNasaApi.value?.filter { photo ->
-           photo.camera.name == cameraFilter
+        val originalList: List<Photo> = photoRepository.photosFromNasaApi.value ?: emptyList()
+
+        if (originalList.size > photosFromNasaApi.value!!.size) {
+            photosFromNasaApi.value = originalList
+        }
+        photosFromNasaApi.value = photosFromNasaApi.value?.filter { photo ->
+            photo.camera.name == cameraFilter
         }
     }
 
     val iconConnectionStatus: LiveData<Drawable> = connectionStatus.map {
         when (it) {
             NasaApiConnectionStatus.NODATA -> app.resources.getDrawable(R.drawable.icon_database_no_data, null)
-            NasaApiConnectionStatus.ERROR -> app.resources.getDrawable(R.drawable.icon_connection_error, null)
-            NasaApiConnectionStatus.LOADING -> app.resources.getDrawable(R.drawable.icon_connection_error, null)
             else -> app.resources.getDrawable(R.drawable.icon_connection_error, null)
         }
     }

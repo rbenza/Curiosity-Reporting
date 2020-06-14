@@ -54,7 +54,7 @@ class NavigationActivity : AppCompatActivity() {
         setAndReturnUserTheme()
         super.onCreate(savedInstanceState)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        viewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_navigation)
         setSupportActionBar(binding.globalToolbar)
         val navController = findNavController(R.id.nav_host_fragment)

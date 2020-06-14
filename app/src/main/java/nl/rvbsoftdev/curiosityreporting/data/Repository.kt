@@ -7,13 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.FavoritePhotosDatabase
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.getDatabase
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.toFavoriteDatabasePhoto
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.toListOfPhoto
-import nl.rvbsoftdev.curiosityreporting.network.NetworkService
 import retrofit2.HttpException
 import java.util.*
 
@@ -41,18 +41,23 @@ class PhotoRepository(private val app: Application) {
     private val favoritePhotosDatabase: FavoritePhotosDatabase = getDatabase(app)
 
     private val _connectionStatus = MutableLiveData<NasaApiConnectionStatus>()
-    val connectionStatus: LiveData<NasaApiConnectionStatus> = _connectionStatus
+    val connectionStatus: LiveData<NasaApiConnectionStatus>
+        get() = _connectionStatus
 
     private val _photosFromNasaApi = MutableLiveData<List<Photo>>()
-    val photosFromNasaApi: MutableLiveData<List<Photo>> = _photosFromNasaApi
+    val photosFromNasaApi: MutableLiveData<List<Photo>>
+        get() = _photosFromNasaApi
 
-    var favoritePhotos: LiveData<List<Photo>> = favoritePhotosDatabase.favoritePhotoDao.getAllPhotos().map { it.toListOfPhoto() }
+    val favoritePhotos: Flow<List<Photo>>
+        get() = favoritePhotosDatabase.favoritePhotoDao.getAllPhotos().map { it.toListOfPhoto() }
 
     private val _mostRecentEarthPhotoDate = MutableLiveData<String>()
-    val mostRecentEarthPhotoDate: LiveData<String> = _mostRecentEarthPhotoDate
+    val mostRecentEarthPhotoDate: LiveData<String>
+        get() = _mostRecentEarthPhotoDate
 
     private val _mostRecentSolPhotoDate = MutableLiveData<Int>()
-    val mostRecentSolPhotoDate: LiveData<Int> = _mostRecentSolPhotoDate
+    val mostRecentSolPhotoDate: LiveData<Int>
+        get() = _mostRecentSolPhotoDate
 
     /** if present apply personal NASA API key **/
     private val apiKey = when (PreferenceManager.getDefaultSharedPreferences(app).getString("nasa_key", null).isNullOrEmpty()) {
@@ -64,16 +69,20 @@ class PhotoRepository(private val app: Application) {
     suspend fun getPhotos(earthDate: String? = null, sol: Int? = null, camera: String? = null) {
         withContext(IO) {
             _connectionStatus.postValue(NasaApiConnectionStatus.LOADING)
-
             try {
                 // Get the list of NetworkPhoto's from the NASA API and convert it to a list of Photo's
                 val result: List<Photo> = NetworkService.NETWORK_SERVICE.getNasaJsonResponse(earthDate, sol, camera, apiKey = apiKey).toListOfPhoto()
-                // Get a list of favorite photo id's
-                val favoritePhotosIds: List<Int> = favoritePhotosDatabase.favoritePhotoDao.getAllPhotos().value?.toListOfPhoto()?.map { it.id } ?: emptyList()
-                // Mark every Photo that matches an id in favoritePhotosIds as a favorite
-                result.forEach {
-                    if (favoritePhotosIds.contains(it.id)) it.isFavorite = true
-                }
+
+//                // Get a list of id's of the favorite photos
+//                val favoritePhotosIds: List<Int> = favoritePhotos.toList().flatMap {
+//                    it.map { photo ->
+//                        photo.id
+//                    }
+//                }
+//                // Mark every Photo that matches an id in favoritePhotosIds as a favorite
+//                result.forEach { photo ->
+//                    if (favoritePhotosIds.contains(photo.id)) photo.isFavorite = true
+//                }
                 _photosFromNasaApi.postValue(result)
                 when {
                     result.isEmpty() -> _connectionStatus.postValue(NasaApiConnectionStatus.NODATA)
@@ -87,36 +96,27 @@ class PhotoRepository(private val app: Application) {
     }
 
     suspend fun getMostRecentDates() {
-        withContext(IO) {
+        try {
+            val getMostRecentDates = NetworkService.NETWORK_SERVICE.getNasaJsonResponse("2019-05-01", null, null, apiKey = apiKey).toListOfPhoto()
+            _mostRecentEarthPhotoDate.postValue(getMostRecentDates[0].rover.max_date)
+            _mostRecentSolPhotoDate.postValue(getMostRecentDates[0].rover.max_sol)
+        } catch (e: Exception) {
 
-            try {
-                val getMostRecentDates = NetworkService.NETWORK_SERVICE.getNasaJsonResponse("2019-05-01", null, null, apiKey = apiKey).toListOfPhoto()
-                _mostRecentEarthPhotoDate.postValue(getMostRecentDates[0].rover.max_date)
-                _mostRecentSolPhotoDate.postValue(getMostRecentDates[0].rover.max_sol)
-            } catch (e: Exception) {
+            val calender = Calendar.getInstance()
+            val currentYear = calender.get(Calendar.YEAR)
+            val currentMonth = calender.get(Calendar.MONTH)
+            val currentDay = calender.get(Calendar.DAY_OF_MONTH)
 
-                val calender = Calendar.getInstance()
-                val currentYear = calender.get(Calendar.YEAR)
-                val currentMonth = calender.get(Calendar.MONTH)
-                val currentDay = calender.get(Calendar.DAY_OF_MONTH)
-
-                val monthConverted = currentMonth + 1
-                val currentDate = "${currentYear}-${monthConverted}-${currentDay}"
-                _mostRecentEarthPhotoDate.postValue(currentDate)
-            }
+            val monthConverted = currentMonth + 1
+            val currentDate = "${currentYear}-${monthConverted}-${currentDay}"
+            _mostRecentEarthPhotoDate.postValue(currentDate)
         }
     }
 
-    suspend fun getAllPhotosFromDatabase() {
-        withContext(IO) {
-            favoritePhotos = favoritePhotosDatabase.favoritePhotoDao.getAllPhotos().map { it.toListOfPhoto() }
-        }
-    }
+    suspend fun addPhotoToDatabase(photo: Photo) = favoritePhotosDatabase.favoritePhotoDao.insert(photo.toFavoriteDatabasePhoto())
 
-    suspend fun addPhotoToDatabase(photo: Photo) = withContext(IO) { favoritePhotosDatabase.favoritePhotoDao.insert(photo.toFavoriteDatabasePhoto()) }
+    suspend fun removePhotoFromDatabase(photo: Photo) = favoritePhotosDatabase.favoritePhotoDao.delete(photo.toFavoriteDatabasePhoto())
 
-    suspend fun removePhotoFromDatabase(photo: Photo) = withContext(IO) { favoritePhotosDatabase.favoritePhotoDao.delete(photo.toFavoriteDatabasePhoto()) }
-
-    suspend fun deleteAllPhotosFromDatabase() = withContext(IO) { favoritePhotosDatabase.favoritePhotoDao.deleteAllPhotos() }
+    suspend fun deleteAllPhotosFromDatabase() = favoritePhotosDatabase.favoritePhotoDao.deleteAllPhotos()
 }
 
