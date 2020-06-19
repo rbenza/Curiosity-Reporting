@@ -15,5 +15,8 @@
     <color name="Blue">#5BA3EF</color>
     <color name="LightBlue">#76AEEC</color>
     <color name="Red">#971421</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="colorAccent">#EDC97832</color>
 
 </resources>

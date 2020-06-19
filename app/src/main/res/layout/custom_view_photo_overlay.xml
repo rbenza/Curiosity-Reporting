@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="exploreViewModel"
+            type="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel" />
+    </data>
+
+    <merge
+        android:layout_width="match_parent"
+        android:background="@android:color/transparent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fillColor="?attr/icon_color_preferences"
+            android:foreground="?attr/actionBarItemBackground"
+            android:padding="16dp"
+            android:src="@drawable/icon_back_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/share_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fillColor="?attr/icon_color_preferences"
+            android:foreground="?attr/actionBarItemBackground"
+            android:padding="16dp"
+            android:src="@drawable/icon_share"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/favorite_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fillColor="?attr/icon_color_preferences"
+            android:foreground="?attr/actionBarItemBackground"
+            android:padding="16dp"
+            tools:src="@drawable/icon_star_selected"
+            android:src="@{exploreViewModel.isFavorite ? @drawable/icon_star_selected : @drawable/icon_star}"
+            app:layout_constraintEnd_toStartOf="@id/share_button"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/photo_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:padding="16dp"
+            android:shadowColor="?attr/text_shadow_color"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="@{@string/explore_detail_photo_taken_on(exploreViewModel.selectedPhoto.camera.full_name, exploreViewModel.selectedPhoto.earth_date, exploreViewModel.selectedPhoto.sol)}"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Placeholder Text" />
+
+    </merge>
+
+</layout>

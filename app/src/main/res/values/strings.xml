@@ -90,5 +90,6 @@
     <string name="nasa_api_key">HViCqNaudnl7iRBSheUO7kJLzq2Ja0tewak9xiY5</string>
     <string name="no_app_to_share_photo">No app installed to share this photo!</string>
     <string name="storage_access_required">Access to storage is required to share this photo</string>
+    <string name="most_recent_photo_date">Curiosity\'s most recent photos are taken on %s</string>
 
 </resources>

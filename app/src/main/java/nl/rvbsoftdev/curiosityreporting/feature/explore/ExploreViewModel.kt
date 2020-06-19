@@ -17,6 +17,8 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
     val photosFromNasaApi: MutableLiveData<List<Photo>> = photoRepository.photosFromNasaApi
     val mostRecentSolPhotoDate: LiveData<Int> = photoRepository.mostRecentSolPhotoDate
     val mostRecentEarthPhotoDate: LiveData<String> = photoRepository.mostRecentEarthPhotoDate
+    val selectedPhoto = MutableLiveData<Photo>()
+    val isFavorite = MutableLiveData<Boolean>()
 
     fun getPhotos(earthDate: String? = null, sol: Int? = null, camera: String? = null) {
         viewModelScope.launch {
@@ -48,6 +50,18 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
             NasaApiConnectionStatus.NODATA -> app.getString(R.string.no_photos_in_nasa_db)
             NasaApiConnectionStatus.ERROR -> app.getString(R.string.no_conn_nasa_db)
             else -> ""
+        }
+    }
+
+    fun toggleFavorite(photo: Photo) {
+        isFavorite.value = selectedPhoto.value?.isFavorite
+        viewModelScope.launch {
+            if (selectedPhoto.value?.isFavorite == false) {
+                photoRepository.addPhotoToDatabase(photo)
+            } else {
+                photoRepository.removePhotoFromDatabase(photo)
+
+            }
         }
     }
 }

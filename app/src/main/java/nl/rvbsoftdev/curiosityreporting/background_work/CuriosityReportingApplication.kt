@@ -3,6 +3,7 @@ package nl.rvbsoftdev.curiosityreporting.background_work
 import android.app.Application
 import android.os.Build
 import androidx.work.*
+import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,6 +14,12 @@ import java.util.concurrent.TimeUnit
 class CuriosityReportingApplication : Application() {
 
     private val applicationScope = CoroutineScope(Dispatchers.Default)
+
+    override fun onCreate() {
+        super.onCreate()
+        delayedInit()
+        AndroidThreeTen.init(this)
+    }
 
     private fun delayedInit() {
         applicationScope.launch {
@@ -40,10 +47,5 @@ class CuriosityReportingApplication : Application() {
                 RefreshPhotos.WORK_NAME,
                 ExistingPeriodicWorkPolicy.KEEP,
                 repeatingRequest)
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        delayedInit()
     }
 }

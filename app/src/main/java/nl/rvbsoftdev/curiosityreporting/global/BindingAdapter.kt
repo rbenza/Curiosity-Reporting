@@ -51,12 +51,13 @@ fun ImageView.loadImageUrl(imgUrl: String?) {
 }
 
 @BindingAdapter("setImageResource")
-fun ImageView.setImageResource(resource: Int) = setImageResource(resource)
+fun ImageView.setResource(resource: Int) = setImageResource(resource)
 
 @BindingAdapter("isVisible")
 fun View.setVisibility(value: Boolean) {
     isVisible = value
 }
+
 
 @BindingAdapter("imageConnectionStatus")
 fun ImageView.imageConnectionStatus(connectionStatus: NasaApiConnectionStatus?) {

@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppThemeDark" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppThemeDark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorControlNormal">@color/DeepOrange</item>
         <item name="android:textColor">@color/YellowSand</item>
 
@@ -28,7 +28,7 @@
 
     </style>
 
-    <style name="AppThemeLight" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppThemeLight" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorControlNormal">@color/DarkBrown</item>
         <item name="android:textColor">@color/DarkBrown</item>
         <item name="android:statusBarColor">@color/YellowDarkSand</item>
@@ -120,6 +120,67 @@
         <item name="stGravity">center</item>
         <item name="stStrokeColor">@color/DarkBrown</item>
         <item name="stRadius">25dp</item>
+    </style>
+
+    <!--Date Picker theme-->
+    <style name="CR.DatePicker" parent="Widget.MaterialComponents.MaterialCalendar">
+        <!-- see: https://stackoverflow.com/a/57808145/11310951 for the colors and background attributes-->
+        <item name="daySelectedStyle">@style/CR.DatePicker.DaySelected</item>
+        <item name="yearSelectedStyle">@style/CR.DatePicker.YearSelected</item>
+        <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day</item>
+        <item name="materialCalendarHeaderConfirmButton">@style/CR.DatePicker.HeaderConfirmButton</item>
+        <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen</item>
+        <item name="materialCalendarHeaderSelection">@style/CR.DatePicker.HeaderSelection</item>
+        <item name="materialCalendarHeaderTitle">@style/CR.DatePicker.HeaderTitle</item>
+        <item name="materialCalendarHeaderLayout">@style/CR.DatePicker.HeaderLayout</item>
+        <item name="materialCalendarHeaderDivider">@style/CR.DatePicker.HeaderLayout</item>
+        <item name="materialCalendarHeaderToggleButton">@style/CR.DatePicker.HeaderLayout</item>
+        <item name="materialCalendarDay">@style/CR.DatePicker.Day</item>
+        <item name="colorOnPrimary">@color/Orange</item>
+        <item name="android:backgroundDimEnabled">true</item>
+
+    </style>
+
+    <style name="CR.DatePicker.HeaderSelection" parent="Widget.MaterialComponents.MaterialCalendar.HeaderSelection">
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="colorOnPrimary">@color/black</item>
+    </style>
+
+    <style name="CR.DatePicker.Day" parent="Widget.MaterialComponents.MaterialCalendar.DayTextView">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="CR.DatePicker.HeaderLayout" parent="Widget.MaterialComponents.MaterialCalendar.HeaderLayout">
+        <item name="android:textAppearance">@color/white</item>
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:tint">@color/white</item>
+    </style>
+
+    <style name="CR.DatePicker.HeaderTitle" parent="Widget.MaterialComponents.MaterialCalendar.HeaderTitle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="autoSizeMaxTextSize">16sp</item>
+    </style>
+
+    <style name="CR.DatePicker.DaySelected" parent="Widget.MaterialComponents.MaterialCalendar.Day.Selected">
+        <item name="itemFillColor">@color/colorAccent</item>
+        <item name="itemTextColor">@color/white</item>
+        <item name="itemStrokeWidth">0dp</item>
+    </style>
+
+    <style name="CR.DatePicker.YearSelected" parent="Widget.MaterialComponents.MaterialCalendar.Year">
+        <item name="itemFillColor">@color/colorAccent</item>
+        <item name="itemTextColor">@color/white</item>
+        <item name="itemStrokeWidth">0dp</item>
+    </style>
+
+    <style name="CR.DatePicker.HeaderConfirmButton" parent="Widget.MaterialComponents.MaterialCalendar.HeaderConfirmButton">
+        <item name="android:textColor">@color/black</item>
+        <item name="rippleColor">@color/colorAccent</item>
     </style>
 
 </resources>

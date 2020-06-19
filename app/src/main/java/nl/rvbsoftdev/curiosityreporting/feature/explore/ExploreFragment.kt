@@ -1,48 +1,58 @@
 package nl.rvbsoftdev.curiosityreporting.feature.explore
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.MenuCompat
-import androidx.core.view.forEach
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.google.android.material.datepicker.*
+import com.stfalcon.imageviewer.StfalconImageViewer
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import nl.rvbsoftdev.curiosityreporting.R
+import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreBinding
-import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
-import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
-import nl.rvbsoftdev.curiosityreporting.global.formatDate
-import nl.rvbsoftdev.curiosityreporting.global.provideCalender
+import nl.rvbsoftdev.curiosityreporting.global.*
+import org.threeten.bp.*
+import org.threeten.bp.format.DateTimeFormatter.*
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 /** Explore Fragment where the user can view the photos from the NASA database through a random Sol generator or DatePicker dialog **/
 
-class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog.OnDateSetListener {
+class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
 
     override val layout = R.layout.fragment_explore
     override val firebaseTag = "Explore Fragment"
     private val viewModel: ExploreViewModel by viewModels()
     private val navigationActivity by lazy { activity as NavigationActivity }
+    private lateinit var builder: StfalconImageViewer<Photo>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.exploreViewModel = viewModel
 
+        val explorePhotoAdapter = ExplorePhotoAdapter(viewLifecycleOwner) { photo, position ->
+            viewModel.selectedPhoto.value = photo
+            val photoOverlay = PhotoOverlay(requireContext()).apply { setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, { viewModel.toggleFavorite(photo) }) }
+            viewModel.photosFromNasaApi.value?.let { setupSwipeImageViewer(it, position, photoOverlay) }
+        }
+
         /** Set up observer for the photo's loaded from the NASA API **/
         viewModel.photosFromNasaApi.observe(viewLifecycleOwner, Observer { list ->
-            binding.recyclerviewPhotosExplore.adapter = ExplorePhotoAdapter(viewLifecycleOwner, { photo ->
-                findNavController().navigate(ExploreFragmentDirections.actionExploreFragmentToExploreDetailFragment(photo))
-            }).apply {
-                stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
-                submitList(list)
-            }
+            binding.recyclerviewPhotosExplore.adapter = explorePhotoAdapter.apply { submitList(list) }
         })
 
         /** Lets the user select a list or grid as preference **/
@@ -78,6 +88,19 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    private fun setupSwipeImageViewer(list: List<Photo>, position: Int, photoOverlay: PhotoOverlay? = null) {
+        builder = StfalconImageViewer.Builder(requireContext(), list) { view, img ->
+            Glide.with(requireContext()).load(img.img_src).into(view)
+        }
+                .withImageChangeListener {
+                    viewModel.selectedPhoto.value = viewModel.photosFromNasaApi.value?.get(it)
+                }
+                .withStartPosition(position)
+                .withOverlayView(photoOverlay)
+                .show()
+    }
+
+
     /** Camera filter options menu **/
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -89,7 +112,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
             R.id.MAHLI -> setCameraFilter("MAHLI", "the Mars Hand Lens Imager", item)
             R.id.MARDI -> setCameraFilter("MARDI", "the Mars Descent Imager", item)
             R.id.NAVCAM -> setCameraFilter("NAVCAM", "the Navigation Camera", item)
-            R.id.launch_date_picker_dialog -> showDatePickerDialog()
+            R.id.launch_date_picker_dialog -> launchDateRangePicker()
 
             R.id.select_random_date -> {
                 val mostRecentSol = viewModel.mostRecentSolPhotoDate.value
@@ -114,50 +137,79 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(), DatePickerDialog
         menuItem.isChecked = true
     }
 
-    /** Custom Datepicker fragment where user can select a photo date.
-     * Tries to fetch te most recent date from the NASA API. When unsuccessful uses date of today **/
-
-    private fun showDatePickerDialog() {
-
+    private fun sharePhoto() {
         try {
-            val mostRecentPhotoDate = viewModel.mostRecentEarthPhotoDate.value
-            val mostRecentYear = Integer.valueOf(mostRecentPhotoDate!!.slice(0..3))
-            val mostRecentMonth = (Integer.valueOf(mostRecentPhotoDate.slice(5..6))) - 1
-            val mostRecentDay = Integer.valueOf(mostRecentPhotoDate.slice(8..9))
+            if (!viewModel.selectedPhoto.value?.img_src.isNullOrEmpty()) {
+                Glide.with(requireContext())
+                        .asBitmap()
+                        .load(viewModel.selectedPhoto.value?.img_src)
+                        .into(object : CustomTarget<Bitmap>() {
+                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                try {
+                                    val imagePath = MediaStore.Images.Media.insertImage(navigationActivity.contentResolver,
+                                            resource, "Curiosity Mars Image " + viewModel.selectedPhoto.value?.earth_date, null)
+                                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                        type = "image/*"
+                                        putExtra(Intent.EXTRA_TEXT, "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
+                                        putExtra(Intent.EXTRA_STREAM, Uri.parse(imagePath))
+                                    }
 
-            val dpd = DatePickerDialog.newInstance(this, mostRecentYear, mostRecentMonth, mostRecentDay)
-            dpd.setTitle("Curiosity most recent Photos are taken on " +
-                    formatDate(mostRecentPhotoDate))
-            if (navigationActivity.setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
-            dpd.showYearPickerFirst(true)
-            dpd.setCancelText("Dismiss")
-            dpd.minDate = provideCalender("2012-08-07")
-            dpd.maxDate = provideCalender(mostRecentPhotoDate)
-            dpd.show(activity?.supportFragmentManager!!, "Datepickerdialog")
+                                    if (shareIntent.resolveActivity(navigationActivity.packageManager) != null) {
+                                        startActivity(shareIntent)
+                                    } else {
+                                        navigationActivity.showStyledToastMessage(getString(R.string.no_app_to_share_photo))
+                                    }
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+                            }
 
+                            override fun onLoadCleared(placeholder: Drawable?) {
+                            }
+                        })
+            }
         } catch (e: Exception) {
-            val calender = Calendar.getInstance()
-            val currentYear = calender.get(Calendar.YEAR)
-            val currentMonth = calender.get(Calendar.MONTH)
-            val currentDay = calender.get(Calendar.DAY_OF_MONTH)
-
-            val dpd = DatePickerDialog.newInstance(this, currentYear, currentMonth, currentDay)
-            if (navigationActivity.setAndReturnUserTheme() == "Dark") dpd.isThemeDark = true
-            dpd.setTitle(getString(R.string.most_recent_date_not_available))
-            dpd.showYearPickerFirst(true)
-            dpd.setCancelText("Dismiss")
-            dpd.minDate = provideCalender("2012-08-07")
-            dpd.show(activity?.supportFragmentManager!!, "Datepickerdialog")
+            e.printStackTrace()
         }
     }
 
-    override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        val monthConverted = monthOfYear + 1
-        val userSelectedDate = "${year}-${monthConverted}-${dayOfMonth}"
-        navigationActivity.showStyledSnackbarMessage(requireView(),
-                text = "Date selected: " + formatDate(userSelectedDate),
-                durationMs = 3500,
-                icon = R.drawable.icon_calender)
-        viewModel.getPhotos(userSelectedDate, null, null)
+    /** Custom Datepicker fragment where user can select a photo date.
+     * Tries to fetch te most recent date from the NASA API. When unsuccessful uses date of today **/
+
+    private fun launchDateRangePicker() {
+        val now = ZonedDateTime.now().toEpochSecond() * 1000
+        val curiosityLandingDateOnMars = LocalDateTime.parse("2012-08-07T14:00:00").toEpochSecond(ZoneOffset.UTC) * 1000
+
+        //
+        val selectionRange = ArrayList<CalendarConstraints.DateValidator>().apply {
+            add(DateValidatorPointForward.from(curiosityLandingDateOnMars))
+            add(DateValidatorPointBackward.before(now))
+        }
+
+        val calendarConstraints = CalendarConstraints.Builder()
+                .setValidator(CompositeDateValidator.allOf(selectionRange))
+                .setStart(curiosityLandingDateOnMars) // day Curiosity landed on Mars
+                .setOpenAt(now)
+                .setEnd(now)
+                .build()
+
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText(getString(R.string.most_recent_photo_date, viewModel.mostRecentEarthPhotoDate.value ?: ""))
+                .setCalendarConstraints(calendarConstraints)
+                .setSelection(now)
+                .setTheme(R.style.CR_DatePicker)
+                .build()
+
+        datePicker.addOnPositiveButtonClickListener { dateSelected: Long ->
+            val formattedDate = ZonedDateTime.ofInstant(Instant.ofEpochMilli(dateSelected), ZoneId.systemDefault()).format(ofPattern(("yyyy-MM-dd")))
+            navigationActivity.showStyledSnackbarMessage(
+                    requireView(),
+                    text = "Date selected: $formattedDate",
+                    durationMs = 3500,
+                    icon = R.drawable.icon_calender)
+            viewModel.getPhotos(formattedDate, null, null)
+        }
+
+        datePicker.show(requireActivity().supportFragmentManager, "cr date picker")
     }
 }
