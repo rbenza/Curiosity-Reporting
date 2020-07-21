@@ -23,15 +23,15 @@ import java.util.*
 
 enum class NasaApiConnectionStatus { LOADING, ERROR, NODATA, DONE }
 
-class PhotoRepository(private val app: Application) {
+class Repository(app: Application) {
 
     companion object {
-        private lateinit var sRepository: PhotoRepository
+        private lateinit var sRepository: Repository
 
-        fun getRepository(app: Application): PhotoRepository {
-            synchronized(PhotoRepository::class.java) {
+        fun getRepository(app: Application): Repository {
+            synchronized(Repository::class.java) {
                 if (!Companion::sRepository.isInitialized) {
-                    sRepository = PhotoRepository(app)
+                    sRepository = Repository(app)
                 }
             }
             return sRepository
@@ -96,20 +96,10 @@ class PhotoRepository(private val app: Application) {
     }
 
     suspend fun getMostRecentDates() {
-        try {
-            val getMostRecentDates = NetworkService.NETWORK_SERVICE.getNasaJsonResponse("2019-05-01", null, null, apiKey = apiKey).toListOfPhoto()
-            _mostRecentEarthPhotoDate.postValue(getMostRecentDates[0].rover?.max_date)
-            _mostRecentSolPhotoDate.postValue(getMostRecentDates[0].rover?.max_sol)
-        } catch (e: Exception) {
-
-            val calender = Calendar.getInstance()
-            val currentYear = calender.get(Calendar.YEAR)
-            val currentMonth = calender.get(Calendar.MONTH)
-            val currentDay = calender.get(Calendar.DAY_OF_MONTH)
-
-            val monthConverted = currentMonth + 1
-            val currentDate = "${currentYear}-${monthConverted}-${currentDay}"
-            _mostRecentEarthPhotoDate.postValue(currentDate)
+        val getMostRecentDates = NetworkService.NETWORK_SERVICE.getNasaJsonResponse("2019-05-01", null, null, apiKey = apiKey).toListOfPhoto()
+        getMostRecentDates.firstOrNull()?.let {
+            _mostRecentEarthPhotoDate.postValue(it.rover?.max_date)
+            _mostRecentSolPhotoDate.postValue(it.rover?.max_sol)
         }
     }
 

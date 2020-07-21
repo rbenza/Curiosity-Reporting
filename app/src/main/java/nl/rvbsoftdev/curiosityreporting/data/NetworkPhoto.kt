@@ -46,14 +46,8 @@ fun NetworkPhotoContainer.toListOfPhoto(): List<Photo> {
     }
 }
 
-fun NetworkRover.toRover(): Photo.Rover {
-    return let {
-        Photo.Rover(max_date = it.max_date, max_sol = it.max_sol, total_photos = it.total_photos)
-    }
-}
+fun NetworkRover.toRover() = Photo.Rover(max_date = this.max_date, max_sol = this.max_sol, total_photos = this.total_photos)
 
-fun NetworkCamera.toCamera(): Photo.Camera {
-    return let {
-        Photo.Camera(full_name = it.full_name, name = it.name)
-    }
-}
+fun NetworkCamera.toCamera() = Photo.Camera(full_name = this.full_name, name = this.name)
+
+

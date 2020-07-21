@@ -52,7 +52,7 @@
     <string name="no_internet_app2">No internet app found!</string>
 
     <!--about fragment strings-->
-    <string name="version_description">Version 1.1 - August 2019</string>
+    <string name="version_description">Version 1.2 - July 2020</string>
     <string name="developer_description">Developed by Remy Benza</string>
     <string name="email_toast1">No email app found!\nYou can send an e-mail to:\n\nrvbsoftdev@gmail.com</string>
     <string name="about_app_description">"This app is developed for educational purposes and a fascination for Mars. Suggestions or comments can be send to the developer.</string>
@@ -91,6 +91,7 @@
     <string name="no_app_to_share_photo">No app installed to share this photo!</string>
     <string name="storage_access_required">Access to storage is required to share this photo</string>
     <string name="most_recent_photo_date">Curiosity\'s most recent photos are taken on %s</string>
+    <string name="select_a_date">Select a date</string>
     <string name="sharing_photo_message">Check out this amazing photo NASA\'s Mars Rover Curiosity captured on %s</string>
 
 </resources>

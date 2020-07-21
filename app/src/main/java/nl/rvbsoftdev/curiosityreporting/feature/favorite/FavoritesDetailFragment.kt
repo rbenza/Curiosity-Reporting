@@ -68,8 +68,8 @@ class FavoritesDetailFragment : BaseFragment<FragmentFavoritesDetailBinding>() {
 
                                     val shareIntent = Intent(Intent.ACTION_SEND)
                                     shareIntent.type = "image/*"
-                                    //shareIntent.putExtra(Intent.EXTRA_TEXT,
-                                         //   "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT,
+                                            "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${viewModel.selectedPhoto.value?.earth_date}!")
                                     shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
                                     if (shareIntent.resolveActivity(requireActivity().packageManager) != null) {
                                         startActivity(shareIntent)

@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="SharedViewModel"
+            type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
+    </data>
+
     <ScrollView
         android:id="@+id/scroll_blur_test"
         android:layout_width="match_parent"
@@ -66,10 +73,4 @@
 
     </ScrollView>
 
-    <data>
-
-        <variable
-            name="SharedViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
-    </data>
 </layout>

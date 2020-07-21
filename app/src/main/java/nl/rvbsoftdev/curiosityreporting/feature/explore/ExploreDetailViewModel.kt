@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rvbsoftdev.curiosityreporting.data.Photo
-import nl.rvbsoftdev.curiosityreporting.data.PhotoRepository.Companion.getRepository
+import nl.rvbsoftdev.curiosityreporting.data.Repository
 
-class ExploreDetailViewModel(val app: Application) : AndroidViewModel(app) {
+class ExploreDetailViewModel(private val app: Application) : AndroidViewModel(app) {
 
-    private val photoRepository = getRepository(app)
+    private val photoRepository = Repository.getRepository(app)
     val selectedPhoto = MutableLiveData<Photo>()
     val isFavorite = MutableLiveData<Boolean>()
 

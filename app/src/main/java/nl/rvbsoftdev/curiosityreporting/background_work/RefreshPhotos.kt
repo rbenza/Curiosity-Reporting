@@ -5,7 +5,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import nl.rvbsoftdev.curiosityreporting.data.PhotoRepository
+import nl.rvbsoftdev.curiosityreporting.data.Repository
 import retrofit2.HttpException
 import java.util.*
 
@@ -19,7 +19,7 @@ class RefreshPhotos(context: Context, params: WorkerParameters) : CoroutineWorke
 
     override suspend fun doWork(): Result {
         Log.i("do work","fetching photos in background")
-        val photoRepository = PhotoRepository.getRepository(Application())
+        val photoRepository = Repository.getRepository(Application())
 
         return try {
             photoRepository.getMostRecentDates()

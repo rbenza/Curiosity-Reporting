@@ -13,13 +13,10 @@ import android.os.StrictMode
 import android.os.SystemClock
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -148,38 +145,21 @@ class NavigationActivity : AppCompatActivity() {
 
     fun showStyledSnackbarMessage(view: View, text: String, durationMs: Int,
                                   icon: Int, textAction: String = "", action: (() -> Unit)? = null) {
-        when (setAndReturnUserTheme()) {
-            "Dark" -> {
-                ChocoBar.builder()
-                        .setView(view)
-                        .setBackgroundColor(this.getColor(R.color.NearerBlack))
-                        .setTextSize(15F)
-                        .setTextColor(this.getColor(R.color.YellowSand))
-                        .setTextTypefaceStyle(Typeface.BOLD_ITALIC)
-                        .setText(text)
-                        .setMaxLines(8)
-                        .setActionText(textAction)
-                        .setActionTextColor(this.getColor(R.color.DeepOrange))
-                        .setActionTextSize(18F)
-                        .setActionTextTypefaceStyle(Typeface.BOLD)
-                        .setIcon(icon)
-                        .setDuration(durationMs)
-                        .setActionClickListener { action?.invoke() }
-                        .build()
-                        .show()
 
-            }
-            "Light" -> {
+        val backgroundColor = if (setAndReturnUserTheme() == "Dark") getColor(R.color.NearerBlack) else getColor(R.color.YellowLightSand)
+        val textColor = if (setAndReturnUserTheme() == "Dark") getColor(R.color.YellowSand) else getColor(R.color.DarkerGrey)
+        val actionTextColor = if (setAndReturnUserTheme() == "Dark") getColor(R.color.DeepOrange) else getColor(R.color.DarkBrown)
+
                 ChocoBar.builder()
                         .setView(view)
-                        .setBackgroundColor(this.getColor(R.color.YellowLightSand))
+                        .setBackgroundColor(backgroundColor)
                         .setTextSize(15F)
-                        .setTextColor(this.getColor(R.color.DarkerGrey))
+                        .setTextColor(textColor)
                         .setTextTypefaceStyle(Typeface.BOLD_ITALIC)
                         .setText(text)
                         .setMaxLines(8)
                         .setActionText(textAction)
-                        .setActionTextColor(this.getColor(R.color.DarkBrown))
+                        .setActionTextColor(actionTextColor)
                         .setActionTextSize(18F)
                         .setActionTextTypefaceStyle(Typeface.BOLD)
                         .setIcon(icon)
@@ -187,8 +167,6 @@ class NavigationActivity : AppCompatActivity() {
                         .setActionClickListener { action?.invoke() }
                         .build()
                         .show()
-            }
-        }
     }
 
     /** Setup Notification channel for Android 8.0 or higher devices **/

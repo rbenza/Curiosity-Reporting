@@ -42,7 +42,7 @@
                             android:layout_width="60dp"
                             android:layout_height="70dp"
                             android:layout_marginStart="20dp"
-                            android:src="@drawable/ic_icon_journey"
+                            android:src="@drawable/icon_journey"
                             android:tint="@color/Red"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

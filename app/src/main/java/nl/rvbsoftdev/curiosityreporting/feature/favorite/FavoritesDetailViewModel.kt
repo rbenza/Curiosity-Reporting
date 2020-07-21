@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rvbsoftdev.curiosityreporting.data.Photo
-import nl.rvbsoftdev.curiosityreporting.data.PhotoRepository
+import nl.rvbsoftdev.curiosityreporting.data.Repository
 
 class FavoritesDetailViewModel(app: Application) : AndroidViewModel(app) {
 
-    private val photoRepository = PhotoRepository.getRepository(app)
+    private val photoRepository = Repository.getRepository(app)
     val selectedPhoto = MutableLiveData<Photo>()
 
     fun removePhotoFromFavorites(photo: Photo) {

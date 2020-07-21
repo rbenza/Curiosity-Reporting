@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.data.NasaApiConnectionStatus
-import nl.rvbsoftdev.curiosityreporting.data.PhotoRepository.Companion.getRepository
+import nl.rvbsoftdev.curiosityreporting.data.Repository.Companion.getRepository
 import org.threeten.bp.LocalDate
 import java.text.SimpleDateFormat
 import java.util.*

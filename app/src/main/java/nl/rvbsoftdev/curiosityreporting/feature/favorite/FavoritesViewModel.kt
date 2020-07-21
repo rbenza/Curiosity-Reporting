@@ -5,11 +5,11 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import nl.rvbsoftdev.curiosityreporting.data.Photo
-import nl.rvbsoftdev.curiosityreporting.data.PhotoRepository.Companion.getRepository
+import nl.rvbsoftdev.curiosityreporting.data.Repository
 
 class FavoritesViewModel(app: Application) : AndroidViewModel(app) {
 
-    private val photoRepository = getRepository(app)
+    private val photoRepository = Repository.getRepository(app)
 
     /** Get all favorite photos from Room database through repository (uses suspend function)**/
 //    init {

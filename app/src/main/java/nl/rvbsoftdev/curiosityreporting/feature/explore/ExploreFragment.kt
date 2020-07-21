@@ -149,41 +149,41 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
             requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
         } else
 
-        try {
-            if (!viewModel.selectedPhoto.value?.img_src.isNullOrEmpty()) {
-                Glide.with(requireContext())
-                        .asBitmap()
-                        .load(viewModel.selectedPhoto.value?.img_src)
-                        .into(object : CustomTarget<Bitmap>() {
-                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                try {
-                                    val imagePath = MediaStore.Images.Media.insertImage(navigationActivity.contentResolver,
-                                            resource, "Curiosity Mars Image " + viewModel.selectedPhoto.value?.earth_date, null)
-                                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                                        type = "image/*"
-                                        putExtra(Intent.EXTRA_TEXT,
-                                                getString(R.string.sharing_photo_message,
-                                                        DateTimeFormatter.ofPattern("d MMMM yyyy").parse(viewModel.selectedPhoto.value?.earth_date)))
-                                        putExtra(Intent.EXTRA_STREAM, Uri.parse(imagePath))
-                                    }
+            try {
+                if (!viewModel.selectedPhoto.value?.img_src.isNullOrEmpty()) {
+                    Glide.with(requireContext())
+                            .asBitmap()
+                            .load(viewModel.selectedPhoto.value?.img_src)
+                            .into(object : CustomTarget<Bitmap>() {
+                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                    try {
+                                        val imagePath = MediaStore.Images.Media.insertImage(navigationActivity.contentResolver,
+                                                resource, "Curiosity Mars Image ${viewModel.selectedPhoto.value?.earth_date}", null)
+                                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                            type = "image/*"
+                                            putExtra(Intent.EXTRA_TEXT,
+                                                    getString(R.string.sharing_photo_message,
+                                                            DateTimeFormatter.ofPattern("d MMMM yyyy").parse(viewModel.selectedPhoto.value?.earth_date)))
+                                            putExtra(Intent.EXTRA_STREAM, Uri.parse(imagePath))
+                                        }
 
-                                    if (shareIntent.resolveActivity(navigationActivity.packageManager) != null) {
-                                        startActivity(shareIntent)
-                                    } else {
-                                        navigationActivity.showStyledToastMessage(getString(R.string.no_app_to_share_photo))
+                                        if (shareIntent.resolveActivity(navigationActivity.packageManager) != null) {
+                                            startActivity(shareIntent)
+                                        } else {
+                                            navigationActivity.showStyledToastMessage(getString(R.string.no_app_to_share_photo))
+                                        }
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
                                     }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
                                 }
-                            }
 
-                            override fun onLoadCleared(placeholder: Drawable?) {
-                            }
-                        })
+                                override fun onLoadCleared(placeholder: Drawable?) {
+                                }
+                            })
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     /** Material DatePicker where user can select a photo date. **/
@@ -204,8 +204,11 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
                 .setEnd(now)
                 .build()
 
+        val mostRecentPhotoData = viewModel.mostRecentEarthPhotoDate.value
+        val title = if (!mostRecentPhotoData.isNullOrBlank()) getString(R.string.most_recent_photo_date, viewModel.formatDate(mostRecentPhotoData)) else getString(R.string.select_a_date)
+
         val datePicker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText(getString(R.string.most_recent_photo_date, viewModel.formatDate(viewModel.mostRecentEarthPhotoDate.value ?: "")))
+                .setTitleText(title)
                 .setCalendarConstraints(calendarConstraints)
                 .setSelection(now)
                 .setTheme(R.style.CR_DatePicker)

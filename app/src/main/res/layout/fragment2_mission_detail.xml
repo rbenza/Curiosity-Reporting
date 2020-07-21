@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+    <data>
+
+        <variable
+            name="SharedViewModel"
+            type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,9 +39,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="18dp"
+                android:text="@string/mission_curiosity_description2"
                 android:textSize="16sp"
                 android:textStyle="normal"
-                android:text="@string/mission_curiosity_description2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mission_photo"
                 tools:text="@string/mission_curiosity_description1" />
@@ -53,9 +61,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="18dp"
+                android:text="@string/mission_curiosity_description2a"
                 android:textSize="16sp"
                 android:textStyle="normal"
-                android:text="@string/mission_curiosity_description2a"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mission_photo2"
                 tools:text="@string/mission_curiosity_description2" />
@@ -65,10 +73,4 @@
 
     </ScrollView>
 
-    <data>
-
-        <variable
-            name="SharedViewModel"
-            type="nl.rvbsoftdev.curiosityreporting.global.SharedViewModel" />
-    </data>
 </layout>
