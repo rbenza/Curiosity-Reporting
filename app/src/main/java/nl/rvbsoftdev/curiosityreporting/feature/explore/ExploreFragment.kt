@@ -1,6 +1,7 @@
 package nl.rvbsoftdev.curiosityreporting.feature.explore
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -20,14 +21,13 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.datepicker.*
 import com.stfalcon.imageviewer.StfalconImageViewer
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreBinding
 import nl.rvbsoftdev.curiosityreporting.global.*
 import org.threeten.bp.*
+import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.DateTimeFormatter.*
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 /** Explore Fragment where the user can view the photos from the NASA database through a random Sol generator or DatePicker dialog **/
@@ -39,15 +39,16 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
     private val viewModel: ExploreViewModel by viewModels()
     private val navigationActivity by lazy { activity as NavigationActivity }
     private lateinit var builder: StfalconImageViewer<Photo>
+    private lateinit var photoOverlay: PhotoOverlay
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.exploreViewModel = viewModel
 
-        val explorePhotoAdapter = ExplorePhotoAdapter(viewLifecycleOwner) { photo, position ->
+        val explorePhotoAdapter = ExplorePhotoAdapter(viewLifecycleOwner, viewModel) { photo, position ->
             viewModel.selectedPhoto.value = photo
-            val photoOverlay = PhotoOverlay(requireContext()).apply { setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, { viewModel.toggleFavorite(photo) }) }
-            viewModel.photosFromNasaApi.value?.let { setupSwipeImageViewer(it, position, photoOverlay) }
+            photoOverlay = PhotoOverlay(requireContext()).apply { setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, { viewModel.toggleFavorite(photo) }) }
+            viewModel.photosFromNasaApi.value?.let { setupSwipeImageViewer(it, position) }
         }
 
         /** Set up observer for the photo's loaded from the NASA API **/
@@ -88,12 +89,17 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun setupSwipeImageViewer(list: List<Photo>, position: Int, photoOverlay: PhotoOverlay? = null) {
+    private fun setupSwipeImageViewer(list: List<Photo>, position: Int) {
         builder = StfalconImageViewer.Builder(requireContext(), list) { view, img ->
             Glide.with(requireContext()).load(img.img_src).into(view)
         }
                 .withImageChangeListener {
                     viewModel.selectedPhoto.value = viewModel.photosFromNasaApi.value?.get(it)
+                    photoOverlay.setInfoText(getString(
+                            R.string.explore_detail_photo_taken_on,
+                            viewModel.selectedPhoto.value?.camera?.full_name,
+                            viewModel.selectedPhoto.value?.earth_date,
+                            viewModel.selectedPhoto.value?.sol))
                 }
                 .withStartPosition(position)
                 .withOverlayView(photoOverlay)
@@ -112,7 +118,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
             R.id.MAHLI -> setCameraFilter("MAHLI", "the Mars Hand Lens Imager", item)
             R.id.MARDI -> setCameraFilter("MARDI", "the Mars Descent Imager", item)
             R.id.NAVCAM -> setCameraFilter("NAVCAM", "the Navigation Camera", item)
-            R.id.launch_date_picker_dialog -> launchDateRangePicker()
+            R.id.launch_date_picker_dialog -> launchDatePicker()
 
             R.id.select_random_date -> {
                 val mostRecentSol = viewModel.mostRecentSolPhotoDate.value
@@ -137,7 +143,12 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
         menuItem.isChecked = true
     }
 
+    /** Uses Glide to convert the selected photo to a bitmap and share. Invokes requestPermission function to request runtime permission for storage access **/
     private fun sharePhoto() {
+        if (requireContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
+        } else
+
         try {
             if (!viewModel.selectedPhoto.value?.img_src.isNullOrEmpty()) {
                 Glide.with(requireContext())
@@ -150,7 +161,9 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
                                             resource, "Curiosity Mars Image " + viewModel.selectedPhoto.value?.earth_date, null)
                                     val shareIntent = Intent(Intent.ACTION_SEND).apply {
                                         type = "image/*"
-                                        putExtra(Intent.EXTRA_TEXT, "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
+                                        putExtra(Intent.EXTRA_TEXT,
+                                                getString(R.string.sharing_photo_message,
+                                                        DateTimeFormatter.ofPattern("d MMMM yyyy").parse(viewModel.selectedPhoto.value?.earth_date)))
                                         putExtra(Intent.EXTRA_STREAM, Uri.parse(imagePath))
                                     }
 
@@ -173,14 +186,12 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
         }
     }
 
-    /** Custom Datepicker fragment where user can select a photo date.
-     * Tries to fetch te most recent date from the NASA API. When unsuccessful uses date of today **/
+    /** Material DatePicker where user can select a photo date. **/
 
-    private fun launchDateRangePicker() {
+    private fun launchDatePicker() {
         val now = ZonedDateTime.now().toEpochSecond() * 1000
         val curiosityLandingDateOnMars = LocalDateTime.parse("2012-08-07T14:00:00").toEpochSecond(ZoneOffset.UTC) * 1000
 
-        //
         val selectionRange = ArrayList<CalendarConstraints.DateValidator>().apply {
             add(DateValidatorPointForward.from(curiosityLandingDateOnMars))
             add(DateValidatorPointBackward.before(now))
@@ -194,22 +205,34 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
                 .build()
 
         val datePicker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText(getString(R.string.most_recent_photo_date, viewModel.mostRecentEarthPhotoDate.value ?: ""))
+                .setTitleText(getString(R.string.most_recent_photo_date, viewModel.formatDate(viewModel.mostRecentEarthPhotoDate.value ?: "")))
                 .setCalendarConstraints(calendarConstraints)
                 .setSelection(now)
                 .setTheme(R.style.CR_DatePicker)
                 .build()
 
         datePicker.addOnPositiveButtonClickListener { dateSelected: Long ->
-            val formattedDate = ZonedDateTime.ofInstant(Instant.ofEpochMilli(dateSelected), ZoneId.systemDefault()).format(ofPattern(("yyyy-MM-dd")))
+            val apiDate = ZonedDateTime.ofInstant(Instant.ofEpochMilli(dateSelected), ZoneId.systemDefault()).format(ofPattern(("yyyy-MM-dd")))
+            val msgDate = ZonedDateTime.ofInstant(Instant.ofEpochMilli(dateSelected), ZoneId.systemDefault()).format(ofPattern(("d MMMM yyyy")))
             navigationActivity.showStyledSnackbarMessage(
                     requireView(),
-                    text = "Date selected: $formattedDate",
+                    text = "Date selected: $msgDate",
                     durationMs = 3500,
                     icon = R.drawable.icon_calender)
-            viewModel.getPhotos(formattedDate, null, null)
+            viewModel.getPhotos(apiDate, null, null)
         }
-
         datePicker.show(requireActivity().supportFragmentManager, "cr date picker")
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == REQUEST_CODE && (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            sharePhoto()
+        } else {
+            navigationActivity.showStyledToastMessage(getString(R.string.storage_access_required))
+        }
+    }
+
+    companion object {
+        const val REQUEST_CODE = 1
     }
 }

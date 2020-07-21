@@ -8,6 +8,9 @@ import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.data.NasaApiConnectionStatus
 import nl.rvbsoftdev.curiosityreporting.data.PhotoRepository.Companion.getRepository
+import org.threeten.bp.LocalDate
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
 
@@ -33,7 +36,7 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
             photosFromNasaApi.value = originalList
         }
         photosFromNasaApi.value = photosFromNasaApi.value?.filter { photo ->
-            photo.camera.name == cameraFilter
+            photo.camera?.name == cameraFilter
         }
     }
 
@@ -63,6 +66,13 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
 
             }
         }
+    }
+
+    fun formatDate(input: String): String {
+        val nasaApiDate = SimpleDateFormat("yyyy-MM-dd")
+        val newDateFormat = SimpleDateFormat("d MMM yyyy", Locale.getDefault())
+        val formattedDate: Date = nasaApiDate.parse(input)
+        return newDateFormat.format(formattedDate)
     }
 }
 

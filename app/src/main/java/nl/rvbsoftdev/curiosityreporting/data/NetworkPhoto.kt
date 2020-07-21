@@ -10,25 +10,25 @@ data class NetworkPhotoContainer(val photos: List<NetworkPhoto>) : Parcelable
 
 @Parcelize
 data class NetworkPhoto(
-        val camera: NetworkCamera,
-        val earth_date: String,
-        val id: Int,
-        val img_src: String,
-        val rover: NetworkRover,
-        val sol: Int
+        val camera: NetworkCamera? = null,
+        val earth_date: String? = null,
+        val id: Int? = null,
+        val img_src: String? = null,
+        val rover: NetworkRover? = null,
+        val sol: Int? = null
 ) : Parcelable
 
 @Parcelize
 data class NetworkRover(
-        val max_date: String,
-        val max_sol: Int,
-        val total_photos: Int
+        val max_date: String? = null,
+        val max_sol: Int? = null,
+        val total_photos: Int? = null
 ) : Parcelable
 
 @Parcelize
 data class NetworkCamera(
-        val full_name: String,
-        val name: String
+        val full_name: String? = null,
+        val name: String? = null
 ) : Parcelable
 
 /** Kotlin Extension Functions to map 'NetworkPhoto' to 'Photo' **/
@@ -36,11 +36,11 @@ data class NetworkCamera(
 fun NetworkPhotoContainer.toListOfPhoto(): List<Photo> {
     return photos.map {
         Photo(
-                camera = it.camera.toCamera(),
+                camera = it.camera?.toCamera(),
                 earth_date = it.earth_date,
                 id = it.id,
                 img_src = it.img_src,
-                rover = it.rover.toRover(),
+                rover = it.rover?.toRover(),
                 sol = it.sol)
 
     }

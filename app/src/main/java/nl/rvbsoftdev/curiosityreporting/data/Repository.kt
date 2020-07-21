@@ -98,8 +98,8 @@ class PhotoRepository(private val app: Application) {
     suspend fun getMostRecentDates() {
         try {
             val getMostRecentDates = NetworkService.NETWORK_SERVICE.getNasaJsonResponse("2019-05-01", null, null, apiKey = apiKey).toListOfPhoto()
-            _mostRecentEarthPhotoDate.postValue(getMostRecentDates[0].rover.max_date)
-            _mostRecentSolPhotoDate.postValue(getMostRecentDates[0].rover.max_sol)
+            _mostRecentEarthPhotoDate.postValue(getMostRecentDates[0].rover?.max_date)
+            _mostRecentSolPhotoDate.postValue(getMostRecentDates[0].rover?.max_sol)
         } catch (e: Exception) {
 
             val calender = Calendar.getInstance()

@@ -11,18 +11,20 @@ import nl.rvbsoftdev.curiosityreporting.databinding.ListItemFragmentExploreBindi
 
 /** Recyclerview ListAdapter with DiffUtil for photos in the 'Explore' fragment **/
 
-class ExplorePhotoAdapter(private val lifecycleOwner: LifecycleOwner, private val onClickListener: (Photo, Int) -> Unit) : ListAdapter<Photo, ExplorePhotoAdapter.ViewHolder>(DiffCallback) {
+class ExplorePhotoAdapter(private val lifecycleOwner: LifecycleOwner, private val exploreViewModel: ExploreViewModel, private val onClickListener: (Photo, Int) -> Unit)
+    : ListAdapter<Photo, ExplorePhotoAdapter.ViewHolder>(DiffCallback) {
 
-    class ViewHolder(private val binding: ListItemFragmentExploreBinding, private val lifecycleOwner: LifecycleOwner) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: ListItemFragmentExploreBinding, private val lifecycleOwner: LifecycleOwner, private val exploreViewModel: ExploreViewModel) : RecyclerView.ViewHolder(binding.root) {
         fun bind(photo: Photo) {
             binding.photo = photo
             binding.lifecycleOwner = lifecycleOwner
+            binding.exploreViewModel = exploreViewModel
             binding.executePendingBindings()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            ViewHolder(ListItemFragmentExploreBinding.inflate(LayoutInflater.from(parent.context), parent, false), lifecycleOwner)
+            ViewHolder(ListItemFragmentExploreBinding.inflate(LayoutInflater.from(parent.context), parent, false), lifecycleOwner, exploreViewModel)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo: Photo = getItem(position)

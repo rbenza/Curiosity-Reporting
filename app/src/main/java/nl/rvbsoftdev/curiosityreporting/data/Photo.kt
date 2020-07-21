@@ -10,21 +10,21 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Photo(
         var isFavorite: Boolean = false,
-        val camera: Camera,
-        val earth_date: String,
-        val id: Int,
-        val img_src: String,
-        val rover: Rover,
-        val sol: Int) : Parcelable {
+        val camera: Camera? = null,
+        val earth_date: String? = null,
+        val id: Int? = null,
+        val img_src: String? = null,
+        val rover: Rover? = null,
+        val sol: Int? = null) : Parcelable {
 
     @Parcelize
     data class Rover(
-            val max_date: String,
-            val max_sol: Int,
-            val total_photos: Int) : Parcelable
+            val max_date: String? = null,
+            val max_sol: Int? = null,
+            val total_photos: Int? = null) : Parcelable
 
     @Parcelize
     data class Camera(
-            val full_name: String,
-            val name: String) : Parcelable
+            val full_name: String? = null,
+            val name: String? = null) : Parcelable
 }

@@ -19,7 +19,6 @@ import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoritesDetailBinding
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
-import nl.rvbsoftdev.curiosityreporting.global.formatDate
 
 /** Favorites Detail Fragment that lets the user zoom in on the selected photo. The photo can also be shared or removed from favorites**/
 
@@ -69,8 +68,8 @@ class FavoritesDetailFragment : BaseFragment<FragmentFavoritesDetailBinding>() {
 
                                     val shareIntent = Intent(Intent.ACTION_SEND)
                                     shareIntent.type = "image/*"
-                                    shareIntent.putExtra(Intent.EXTRA_TEXT,
-                                            "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
+                                    //shareIntent.putExtra(Intent.EXTRA_TEXT,
+                                         //   "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
                                     shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
                                     if (shareIntent.resolveActivity(requireActivity().packageManager) != null) {
                                         startActivity(shareIntent)

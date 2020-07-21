@@ -21,7 +21,6 @@ import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreDetailBinding
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
-import nl.rvbsoftdev.curiosityreporting.global.formatDate
 
 /** Explore Detail Fragment that lets the user zoom in on the selected photo. The photo can also be shared or added/removed from the Room local database **/
 
@@ -99,7 +98,7 @@ class ExploreDetailFragment : BaseFragment<FragmentExploreDetailBinding>() {
                                             resource, "Curiosity Mars Image " + viewModel.selectedPhoto.value?.earth_date, null)
                                     val shareIntent = Intent(Intent.ACTION_SEND).apply {
                                         type = "image/*"
-                                        putExtra(Intent.EXTRA_TEXT,"Check out this amazing photo NASA's Mars Rover Curiosity captured on ${formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
+                                        //putExtra(Intent.EXTRA_TEXT,"Check out this amazing photo NASA's Mars Rover Curiosity captured on ${formatDate(viewModel.selectedPhoto.value?.earth_date)}!")
                                         putExtra(Intent.EXTRA_STREAM, Uri.parse(imagePath)) }
 
                                     if (shareIntent.resolveActivity(navigationActivity.packageManager) != null) {
