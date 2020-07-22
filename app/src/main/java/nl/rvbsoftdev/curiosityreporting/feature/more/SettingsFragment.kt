@@ -40,11 +40,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         when (key) {
-            "theme" -> when (sharedPreferences.getString("theme", "Dark")) {
-                "Dark" -> applySelectedTheme(R.style.AppThemeDark, getString(R.string.dark_theme_applied))
-                "Light" -> applySelectedTheme(R.style.AppThemeLight, getString(R.string.light_theme_applied))
-            }
-
             "notifications" -> when (sharedPreferences.getBoolean("notifications", true)) {
                 true -> navigationActivity.showStyledSnackbarMessage(requireView(), text = getString(R.string.noti_on),
                         durationMs = 4000, icon = R.drawable.icon_notifications)
@@ -100,12 +95,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                 }
             }
         }
-    }
-
-    private fun applySelectedTheme(theme: Int, toastMsg: String) {
-        navigationActivity.setTheme(theme)
-        navigationActivity.updateUI()
-        navigationActivity.showStyledToastMessage(toastMsg)
     }
 
     private fun getNasaKeyAtWebsite() {

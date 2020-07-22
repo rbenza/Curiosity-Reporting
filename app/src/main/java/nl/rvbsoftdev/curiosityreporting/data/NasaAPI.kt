@@ -15,10 +15,14 @@ interface NasaAPI {
 
     /** no CallBacks since using Kotlin Coroutines **/
     @GET("mars-photos/api/v1/rovers/curiosity/photos")
-    suspend fun getNasaJsonResponse(@Query("earth_date") earthDate: String?,
-                            @Query("sol") sol: Int?,
-                            @Query("camera") camera: String?,
-                            @Query("api_key") apiKey: String) : NetworkPhotoContainer
+    suspend fun getPhotosWithSolOrEarthDate(@Query("earth_date") earthDate: String?,
+                                            @Query("sol") sol: Int?,
+                                            @Query("camera") camera: String?,
+                                            @Query("api_key") apiKey: String): NetworkPhotoContainer
+
+
+    @GET("mars-photos/api/v1/rovers/curiosity/latest_photos")
+    suspend fun getLatestPhotos(@Query("api_key") apiKey: String): NetworkPhotoContainer
 
 }
 

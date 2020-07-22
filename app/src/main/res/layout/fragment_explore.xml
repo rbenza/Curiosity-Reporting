@@ -18,6 +18,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/DarkGrey"
         android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,6 +30,7 @@
             android:layout_height="match_parent"
             android:scrollbarSize="8dp"
             android:scrollbars="vertical"
+            android:scrollbarThumbVertical="@drawable/scrollbar_indicator"
             app:isVisible="@{exploreViewModel.connectionStatus != NasaApiConnectionStatus.LOADING}"
             app:layout_constraintBottom_toBottomOf="@id/constraint_layout"
             app:layout_constraintEnd_toEndOf="@id/constraint_layout"

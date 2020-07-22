@@ -44,7 +44,7 @@
             android:foreground="?attr/actionBarItemBackground"
             android:padding="16dp"
             tools:src="@drawable/icon_star_selected"
-            android:src="@{exploreViewModel.isFavorite ? @drawable/icon_star_selected : @drawable/icon_star}"
+            android:src="@{exploreViewModel.selectedPhoto.isFavorite ? @drawable/icon_star_selected : @drawable/icon_star}"
             app:layout_constraintEnd_toStartOf="@id/share_button"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,7 +58,7 @@
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="1"
-            android:text="@{@string/explore_detail_photo_taken_on(exploreViewModel.selectedPhoto.camera.full_name, exploreViewModel.selectedPhoto.earth_date, exploreViewModel.selectedPhoto.sol)}"
+            android:text="@{@string/explore_detail_photo_taken_on(exploreViewModel.selectedPhoto.camera.full_name, exploreViewModel.formatStringDate(exploreViewModel.selectedPhoto.earth_date), exploreViewModel.selectedPhoto.sol)}"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

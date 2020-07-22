@@ -1,22 +1,20 @@
 <resources>
 
-    <color name="White">#ffffff</color>
     <color name="YellowSand">#B6AB8E</color>
     <color name="YellowLightSand">#CEC3AA</color>
     <color name="YellowDarkSand">#807B65</color>
     <color name="LightGrey">#606060</color>
-    <color name="DarkerGrey">#2D2D2D</color>
-    <color name="DarkGrey">#393939</color>
-    <color name="NearerBlack">#E31D1D1D</color>
-    <color name="Black">#000000</color>
+    <color name="DarkGrey">#2D2D2D</color>
+    <color name="Grey">#393939</color>
+    <color name="NearBlack">#E31D1D1D</color>
     <color name="DeepOrange">#EDC97832</color>
+    <color name="DeepOrange_a60">#99C97832</color>
     <color name="Orange">#EDD98436</color>
     <color name="DarkBrown">#F8442603</color>
     <color name="Blue">#5BA3EF</color>
     <color name="LightBlue">#76AEEC</color>
     <color name="Red">#971421</color>
-    <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
-    <color name="colorAccent">#EDC97832</color>
+    <color name="White">#FFFFFF</color>
+    <color name="Black">#000000</color>
 
 </resources>

@@ -4,7 +4,6 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.*
@@ -15,13 +14,12 @@ import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.getDatabase
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.toFavoriteDatabasePhoto
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.toListOfPhoto
 import retrofit2.HttpException
-import java.util.*
 
 /** The PhotoRepository is the single data source for the app.
  * All the data the ViewModels provide the views (inside the Fragments destinations) comes from the repository.
  * ViewModels do not interact with the network or database directly (MVVM unidirectional design). **/
 
-enum class NasaApiConnectionStatus { LOADING, ERROR, NODATA, DONE }
+enum class NasaApiConnectionStatus { LOADING, ERROR, NO_DATA, DONE }
 
 class Repository(app: Application) {
 
@@ -51,8 +49,8 @@ class Repository(app: Application) {
     val favoritePhotos: Flow<List<Photo>>
         get() = favoritePhotosDatabase.favoritePhotoDao.getAllPhotos().map { it.toListOfPhoto() }
 
-    private val _mostRecentEarthPhotoDate = MutableLiveData<String>()
-    val mostRecentEarthPhotoDate: LiveData<String>
+    private val _mostRecentEarthPhotoDate = MutableLiveData<String?>()
+    val mostRecentEarthPhotoDate: LiveData<String?>
         get() = _mostRecentEarthPhotoDate
 
     private val _mostRecentSolPhotoDate = MutableLiveData<Int>()
@@ -66,12 +64,12 @@ class Repository(app: Application) {
     }
 
     /** All network and database operations run on the Kotlin Coroutine Dispatcher IO to prevent blocking the UI/Main Thread **/
-    suspend fun getPhotos(earthDate: String? = null, sol: Int? = null, camera: String? = null) {
+    suspend fun getPhotosWithSolOrEathDate(earthDate: String? = null, sol: Int? = null, camera: String? = null) {
         withContext(IO) {
             _connectionStatus.postValue(NasaApiConnectionStatus.LOADING)
             try {
                 // Get the list of NetworkPhoto's from the NASA API and convert it to a list of Photo's
-                val result: List<Photo> = NetworkService.NETWORK_SERVICE.getNasaJsonResponse(earthDate, sol, camera, apiKey = apiKey).toListOfPhoto()
+                val result: List<Photo>? = NetworkService.NETWORK_SERVICE.getPhotosWithSolOrEarthDate(earthDate, sol, camera, apiKey = apiKey).toListOfPhoto()
 
 //                // Get a list of id's of the favorite photos
 //                val favoritePhotosIds: List<Int> = favoritePhotos.toList().flatMap {
@@ -85,7 +83,7 @@ class Repository(app: Application) {
 //                }
                 _photosFromNasaApi.postValue(result)
                 when {
-                    result.isEmpty() -> _connectionStatus.postValue(NasaApiConnectionStatus.NODATA)
+                    result?.isEmpty()!! -> _connectionStatus.postValue(NasaApiConnectionStatus.NO_DATA)
                     else -> _connectionStatus.postValue(NasaApiConnectionStatus.DONE)
                 }
             } catch (e: HttpException) {
@@ -95,11 +93,42 @@ class Repository(app: Application) {
         }
     }
 
+    suspend fun getLatestPhotos() {
+        withContext(IO) {
+            _connectionStatus.postValue(NasaApiConnectionStatus.LOADING)
+            try {
+                // Get the list of NetworkPhoto's from the NASA API and convert it to a list of Photo's
+                val result: List<Photo>? = NetworkService.NETWORK_SERVICE.getLatestPhotos(apiKey).toListOfPhoto()
+
+//                // Get a list of id's of the favorite photos
+//                val favoritePhotosIds: List<Int> = favoritePhotos.toList().flatMap {
+//                    it.map { photo ->
+//                        photo.id
+//                    }
+//                }
+//                // Mark every Photo that matches an id in favoritePhotosIds as a favorite
+//                result.forEach { photo ->
+//                    if (favoritePhotosIds.contains(photo.id)) photo.isFavorite = true
+//                }
+                _photosFromNasaApi.postValue(result)
+                when {
+                    result?.isEmpty()!! -> _connectionStatus.postValue(NasaApiConnectionStatus.NO_DATA)
+                    else -> _connectionStatus.postValue(NasaApiConnectionStatus.DONE)
+                }
+            } catch (e: HttpException) {
+                _connectionStatus.postValue(NasaApiConnectionStatus.ERROR)
+                Log.e("nasa api error", e.toString())
+            }
+        }
+    }
+
+
+
     suspend fun getMostRecentDates() {
-        val getMostRecentDates = NetworkService.NETWORK_SERVICE.getNasaJsonResponse("2019-05-01", null, null, apiKey = apiKey).toListOfPhoto()
-        getMostRecentDates.firstOrNull()?.let {
-            _mostRecentEarthPhotoDate.postValue(it.rover?.max_date)
-            _mostRecentSolPhotoDate.postValue(it.rover?.max_sol)
+        val getMostRecentDates = NetworkService.NETWORK_SERVICE.getLatestPhotos(apiKey).toListOfPhoto()
+        getMostRecentDates?.firstOrNull()?.let {
+            _mostRecentEarthPhotoDate.postValue(it.earth_date)
+            _mostRecentSolPhotoDate.postValue(it.sol)
         }
     }
 

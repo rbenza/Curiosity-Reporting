@@ -19,15 +19,15 @@ class RefreshPhotos(context: Context, params: WorkerParameters) : CoroutineWorke
 
     override suspend fun doWork(): Result {
         Log.i("do work","fetching photos in background")
-        val photoRepository = Repository.getRepository(Application())
+        val photoRepository = Repository.getRepository(applicationContext as Application)
 
         return try {
             photoRepository.getMostRecentDates()
             if (!photoRepository.mostRecentEarthPhotoDate.value.isNullOrEmpty()) {
-                photoRepository.getPhotos(photoRepository.mostRecentEarthPhotoDate.value)
+                photoRepository.getPhotosWithSolOrEathDate(photoRepository.mostRecentEarthPhotoDate.value)
                 Result.success()
             } else {
-                photoRepository.getPhotos(null, Random().nextInt(2491))
+                photoRepository.getPhotosWithSolOrEathDate(null, Random().nextInt(2491))
                 Result.success()
             }
         } catch (e: HttpException) {

@@ -48,7 +48,7 @@ class NavigationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNavigationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setAndReturnUserTheme()
+        setTheme(R.style.AppThemeDark) // Sets the normal theme, after the 'splashscreen theme' was set at startup
         super.onCreate(savedInstanceState)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         viewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
@@ -127,44 +127,25 @@ class NavigationActivity : AppCompatActivity() {
             NavigationUI.navigateUp(Navigation.findNavController(this, R.id.nav_host_fragment),
                     setTopLevelDestinations) || super.onSupportNavigateUp()
 
-
-    fun setAndReturnUserTheme(): String? {
-        val userTheme = PreferenceManager.getDefaultSharedPreferences(this).getString("theme", "Dark")
-        if (userTheme == "Dark") setTheme(R.style.AppThemeDark) else setTheme(R.style.AppThemeLight)
-
-        return userTheme
-    }
-
-    fun showStyledToastMessage(toastMessage: String) {
-        if (setAndReturnUserTheme() == "Dark") {
-            StyleableToast.makeText(this, toastMessage, Toast.LENGTH_LONG, R.style.ToastStyleDark).show()
-        } else {
-            StyleableToast.makeText(this, toastMessage, Toast.LENGTH_LONG, R.style.ToastStyleLight).show()
-        }
-    }
+    fun showStyledToastMessage(toastMessage: String) = StyleableToast.makeText(this, toastMessage, Toast.LENGTH_LONG, R.style.ToastStyleDark).show()
 
     fun showStyledSnackbarMessage(view: View, text: String, durationMs: Int,
                                   icon: Int, textAction: String = "", action: (() -> Unit)? = null) {
-
-        val backgroundColor = if (setAndReturnUserTheme() == "Dark") getColor(R.color.NearerBlack) else getColor(R.color.YellowLightSand)
-        val textColor = if (setAndReturnUserTheme() == "Dark") getColor(R.color.YellowSand) else getColor(R.color.DarkerGrey)
-        val actionTextColor = if (setAndReturnUserTheme() == "Dark") getColor(R.color.DeepOrange) else getColor(R.color.DarkBrown)
-
                 ChocoBar.builder()
                         .setView(view)
-                        .setBackgroundColor(backgroundColor)
+                        .setBackgroundColor(getColor(R.color.NearBlack))
                         .setTextSize(15F)
-                        .setTextColor(textColor)
+                        .setTextColor(getColor(R.color.YellowSand))
                         .setTextTypefaceStyle(Typeface.BOLD_ITALIC)
                         .setText(text)
                         .setMaxLines(8)
                         .setActionText(textAction)
-                        .setActionTextColor(actionTextColor)
+                        .setActionTextColor(getColor(R.color.DeepOrange))
                         .setActionTextSize(18F)
                         .setActionTextTypefaceStyle(Typeface.BOLD)
                         .setIcon(icon)
                         .setDuration(durationMs)
-                        .setActionClickListener { action?.invoke() }
+                        .setActionClickListener { action?.invoke()  }
                         .build()
                         .show()
     }
@@ -189,9 +170,5 @@ class NavigationActivity : AppCompatActivity() {
                     AlarmManager.INTERVAL_DAY * 7,
                     pendingIntent)
         }
-    }
-
-    fun updateUI() {
-        this.recreate()
     }
 }

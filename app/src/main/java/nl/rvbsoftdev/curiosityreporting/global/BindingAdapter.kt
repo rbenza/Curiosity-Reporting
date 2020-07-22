@@ -67,7 +67,7 @@ fun ImageView.imageConnectionStatus(connectionStatus: NasaApiConnectionStatus?) 
             setVisible()
             setImageResource(R.drawable.icon_connection_error)
         }
-        NasaApiConnectionStatus.NODATA -> {
+        NasaApiConnectionStatus.NO_DATA -> {
             setVisible()
             setImageResource(R.drawable.icon_database_no_data)
         }
@@ -85,7 +85,7 @@ fun TextView.textConnectionStatus(connectionStatus: NasaApiConnectionStatus?) {
             setVisible()
             text = context.getText(R.string.no_conn_nasa_db)
         }
-        NasaApiConnectionStatus.NODATA -> {
+        NasaApiConnectionStatus.NO_DATA -> {
             setVisible()
             text = context.getText(R.string.no_photos_in_nasa_db)
         }

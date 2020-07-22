@@ -1,20 +1,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:scrollbarThumbVertical="@drawable/scrollbar_indicator"
     android:key="settings_screen">
 
     <PreferenceCategory
         android:fillColor="?attr/icon_color_preferences"
         app:icon="@drawable/icon_appearance"
-        app:title="Appearance">
-
-        <ListPreference
-            app:defaultValue="Dark"
-            app:entries="@array/theme_entries"
-            app:entryValues="@array/theme_setting"
-            app:key="theme"
-            app:persistent="true"
-            app:title="@string/theme_preference"
-            app:useSimpleSummaryProvider="true" />
+        app:title="Photo layout">
 
         <ListPreference
             app:defaultValue="Grid"

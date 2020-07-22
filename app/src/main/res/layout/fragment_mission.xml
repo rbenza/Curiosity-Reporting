@@ -11,6 +11,7 @@
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scrollbarThumbVertical="@drawable/scrollbar_indicator"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -308,15 +309,13 @@
                 app:expandedTitleGravity="center|bottom"
                 app:expandedTitleMarginBottom="12dp"
                 app:expandedTitleTextAppearance="@style/expanded_toolbar"
-                app:layout_scrollFlags="exitUntilCollapsed|scroll"
-                app:title="Curiosity Reporting">
+                app:layout_scrollFlags="exitUntilCollapsed|scroll"                >
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/global_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:elevation="16dp"
-
                     app:layout_collapseMode="parallax"
                     app:title="Curiosity Reporting" />
 

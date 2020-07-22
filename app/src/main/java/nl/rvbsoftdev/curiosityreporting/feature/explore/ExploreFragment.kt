@@ -12,8 +12,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.MenuCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -37,6 +39,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
     override val layout = R.layout.fragment_explore
     override val firebaseTag = "Explore Fragment"
     private val viewModel: ExploreViewModel by viewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private val navigationActivity by lazy { activity as NavigationActivity }
     private lateinit var builder: StfalconImageViewer<Photo>
     private lateinit var photoOverlay: PhotoOverlay
@@ -47,8 +50,17 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
 
         val explorePhotoAdapter = ExplorePhotoAdapter(viewLifecycleOwner, viewModel) { photo, position ->
             viewModel.selectedPhoto.value = photo
-            photoOverlay = PhotoOverlay(requireContext()).apply { setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, { viewModel.toggleFavorite(photo) }) }
+            photoOverlay = PhotoOverlay(requireContext()).apply { setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, {
+                viewModel.toggleFavorite(photo)
+            }) }
             viewModel.photosFromNasaApi.value?.let { setupSwipeImageViewer(it, position) }
+        }
+
+        sharedViewModel.deletedAllFavorites.observe(viewLifecycleOwner){ deletedAll ->
+            if (deletedAll) viewModel.photosFromNasaApi.value?.forEach { photo ->
+                photo.isFavorite = false
+                sharedViewModel.deletedAllFavorites.value = false
+            }
         }
 
         /** Set up observer for the photo's loaded from the NASA API **/
@@ -98,7 +110,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
                     photoOverlay.setInfoText(getString(
                             R.string.explore_detail_photo_taken_on,
                             viewModel.selectedPhoto.value?.camera?.full_name,
-                            viewModel.selectedPhoto.value?.earth_date,
+                            viewModel.formatStringDate(viewModel.selectedPhoto.value?.earth_date ?: ""),
                             viewModel.selectedPhoto.value?.sol))
                 }
                 .withStartPosition(position)
@@ -189,28 +201,33 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
     /** Material DatePicker where user can select a photo date. **/
 
     private fun launchDatePicker() {
-        val now = ZonedDateTime.now().toEpochSecond() * 1000
+        val mostRecentPhotoDateAsString = viewModel.mostRecentEarthPhotoDate.value
+        val mostRecentPhotoDateAsLocalDate = if (mostRecentPhotoDateAsString != null) {
+            LocalDateTime.parse(mostRecentPhotoDateAsString.plus("-14:00"), ofPattern("yyyy-MM-dd-HH:mm")).toEpochSecond(ZoneOffset.UTC) * 1000
+        } else {
+            ZonedDateTime.now().toEpochSecond() * 1000 // use today as limit if most recent photo date not available from NASA API
+        }
         val curiosityLandingDateOnMars = LocalDateTime.parse("2012-08-07T14:00:00").toEpochSecond(ZoneOffset.UTC) * 1000
 
         val selectionRange = ArrayList<CalendarConstraints.DateValidator>().apply {
             add(DateValidatorPointForward.from(curiosityLandingDateOnMars))
-            add(DateValidatorPointBackward.before(now))
+            add(DateValidatorPointBackward.before(mostRecentPhotoDateAsLocalDate))
         }
 
         val calendarConstraints = CalendarConstraints.Builder()
                 .setValidator(CompositeDateValidator.allOf(selectionRange))
                 .setStart(curiosityLandingDateOnMars) // day Curiosity landed on Mars
-                .setOpenAt(now)
-                .setEnd(now)
+                .setOpenAt(mostRecentPhotoDateAsLocalDate)
+                .setEnd(mostRecentPhotoDateAsLocalDate)
                 .build()
 
-        val mostRecentPhotoData = viewModel.mostRecentEarthPhotoDate.value
-        val title = if (!mostRecentPhotoData.isNullOrBlank()) getString(R.string.most_recent_photo_date, viewModel.formatDate(mostRecentPhotoData)) else getString(R.string.select_a_date)
+
+        val title = if (!mostRecentPhotoDateAsString.isNullOrBlank()) getString(R.string.most_recent_photo_date, viewModel.formatStringDate(mostRecentPhotoDateAsString)) else getString(R.string.select_a_date)
 
         val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(title)
                 .setCalendarConstraints(calendarConstraints)
-                .setSelection(now)
+                .setSelection(mostRecentPhotoDateAsLocalDate)
                 .setTheme(R.style.CR_DatePicker)
                 .build()
 

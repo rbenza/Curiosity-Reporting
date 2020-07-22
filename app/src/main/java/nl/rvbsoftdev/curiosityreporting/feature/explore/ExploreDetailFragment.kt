@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
@@ -36,23 +37,6 @@ class ExploreDetailFragment : BaseFragment<FragmentExploreDetailBinding>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.selectedPhoto.value = safeArgs.selectedPhoto
         binding.apply {
-
-//            val gestureDetector = GestureDetector(requireContext(), object : GestureDetector.SimpleOnGestureListener() {
-//                override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
-//                    when {
-//                        e1.x - e2.x > 50 -> Toast.makeText(requireContext(), "left", Toast.LENGTH_SHORT).show()
-//                        e2.x - e1.x > 50 -> Toast.makeText(requireContext(), "right", Toast.LENGTH_SHORT).show()
-//                    }
-//                    return true
-//                }
-//            } )
-//
-//            selectedPhoto.isClickable = true
-//            selectedPhoto.setOnTouchListener { v, event ->
-//                gestureDetector.onTouchEvent(event)
-//            }
-
-            
 
             exploreDetailViewModel = viewModel
             backButton.setOnClickListener { findNavController().navigateUp() }
@@ -115,7 +99,7 @@ class ExploreDetailFragment : BaseFragment<FragmentExploreDetailBinding>() {
                         })
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e("sharing error", e.toString())
         }
     }
 

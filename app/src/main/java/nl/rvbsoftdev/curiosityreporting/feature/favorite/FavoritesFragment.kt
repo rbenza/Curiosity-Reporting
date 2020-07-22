@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -16,6 +17,7 @@ import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoritesBinding
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
+import nl.rvbsoftdev.curiosityreporting.global.SharedViewModel
 
 /** Favorites Fragment that provides a unique List of Photos sorted by most recent earth date contained in the local room database **/
 
@@ -24,15 +26,16 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
     override val layout = R.layout.fragment_favorites
     override val firebaseTag = "Favorite Fragment"
     private val viewModel: FavoritesViewModel by viewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.favoritesViewModel = viewModel
 
         viewModel.favoritePhotos.observe(viewLifecycleOwner, Observer { listOfPhotos ->
-            binding.recyclerviewPhotoFavorites.adapter = FavoritePhotoAdapter(viewLifecycleOwner, { photo ->
+            binding.recyclerviewPhotoFavorites.adapter = FavoritePhotoAdapter(viewLifecycleOwner) { photo ->
                 findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToFavoritesDetailFragment(photo))
-            }).apply { submitList(listOfPhotos) }
+            }.apply { submitList(listOfPhotos) }
              setHasOptionsMenu(!listOfPhotos.isNullOrEmpty())
         })
 
@@ -60,6 +63,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
                         setTitle("Delete all photos from favorites?")
                         setPositiveButton("OK") { _, _ ->
                             viewModel.removeAllPhotoFromFavorites()
+                            sharedViewModel.deletedAllFavorites.value = true
                             (it as NavigationActivity).showStyledSnackbarMessage(requireView(),
                                     text = "Favorite photo(s) deleted!",
                                     durationMs = 3000,

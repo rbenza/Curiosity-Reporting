@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:background="@color/Black"
+        android:scrollbarThumbVertical="@drawable/scrollbar_indicator"
         tools:context=".feature.more.PrivacyPolicyFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -17,7 +17,14 @@
 
     </data>
 
+    <androidx.cardview.widget.CardView
+        android:background="@color/DarkGrey"
+        android:layout_width="match_parent"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        android:layout_height="wrap_content">
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/DarkGrey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -52,7 +59,7 @@
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="1"
-            android:text="@{exploreViewModel.formatDate(photo.earth_date)}"
+            android:text="@{exploreViewModel.formatStringDate(photo.earth_date)}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?attr/color_camera_menu_icon"
             android:textSize="11sp"
@@ -80,4 +87,5 @@
             tools:text="NAVCAM" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

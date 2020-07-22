@@ -9,7 +9,7 @@ import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.data.NasaApiConnectionStatus
 import nl.rvbsoftdev.curiosityreporting.data.Repository.Companion.getRepository
 import org.threeten.bp.LocalDate
-import java.text.SimpleDateFormat
+import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 
 class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
@@ -19,13 +19,12 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
     val connectionStatus: LiveData<NasaApiConnectionStatus> = photoRepository.connectionStatus
     val photosFromNasaApi: MutableLiveData<List<Photo>> = photoRepository.photosFromNasaApi
     val mostRecentSolPhotoDate: LiveData<Int> = photoRepository.mostRecentSolPhotoDate
-    val mostRecentEarthPhotoDate: LiveData<String> = photoRepository.mostRecentEarthPhotoDate
+    val mostRecentEarthPhotoDate: LiveData<String?> = photoRepository.mostRecentEarthPhotoDate
     val selectedPhoto = MutableLiveData<Photo>()
-    val isFavorite = MutableLiveData<Boolean>()
 
     fun getPhotos(earthDate: String? = null, sol: Int? = null, camera: String? = null) {
         viewModelScope.launch {
-            photoRepository.getPhotos(earthDate, sol, camera)
+            photoRepository.getPhotosWithSolOrEathDate(earthDate, sol, camera)
         }
     }
 
@@ -42,7 +41,7 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
 
     val iconConnectionStatus: LiveData<Drawable> = connectionStatus.map {
         when (it) {
-            NasaApiConnectionStatus.NODATA -> app.resources.getDrawable(R.drawable.icon_database_no_data, null)
+            NasaApiConnectionStatus.NO_DATA -> app.resources.getDrawable(R.drawable.icon_database_no_data, null)
             else -> app.resources.getDrawable(R.drawable.icon_connection_error, null)
         }
     }
@@ -50,29 +49,27 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
     val textConnectionStatus: LiveData<String> = connectionStatus.map {
         when (it) {
             NasaApiConnectionStatus.LOADING -> app.getString(R.string.connecting_nasa_db)
-            NasaApiConnectionStatus.NODATA -> app.getString(R.string.no_photos_in_nasa_db)
+            NasaApiConnectionStatus.NO_DATA -> app.getString(R.string.no_photos_in_nasa_db)
             NasaApiConnectionStatus.ERROR -> app.getString(R.string.no_conn_nasa_db)
             else -> ""
         }
     }
 
     fun toggleFavorite(photo: Photo) {
-        isFavorite.value = selectedPhoto.value?.isFavorite
         viewModelScope.launch {
             if (selectedPhoto.value?.isFavorite == false) {
                 photoRepository.addPhotoToDatabase(photo)
+                selectedPhoto.value?.isFavorite = true
             } else {
                 photoRepository.removePhotoFromDatabase(photo)
-
+                selectedPhoto.value?.isFavorite = false
             }
         }
     }
 
-    fun formatDate(input: String): String {
-        val nasaApiDate = SimpleDateFormat("yyyy-MM-dd")
-        val newDateFormat = SimpleDateFormat("d MMM yyyy", Locale.getDefault())
-        val formattedDate: Date = nasaApiDate.parse(input)
-        return newDateFormat.format(formattedDate)
+    fun formatStringDate(input: String): String {
+        val toLocalDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault()))
+        return DateTimeFormatter.ofPattern("d MMM yyyy").format(toLocalDate)
     }
 }
 
