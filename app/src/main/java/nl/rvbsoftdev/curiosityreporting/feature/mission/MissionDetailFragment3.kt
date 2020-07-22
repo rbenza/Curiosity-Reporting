@@ -4,8 +4,6 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.Fragment3MissionDetailBinding
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment

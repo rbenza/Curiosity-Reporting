@@ -48,7 +48,7 @@ class NavigationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNavigationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppThemeDark) // Sets the normal theme, after the 'splashscreen theme' was set at startup
+        setTheme(R.style.AppTheme) // Sets the normal theme, after the 'splashscreen theme' was set at startup
         super.onCreate(savedInstanceState)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         viewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
@@ -98,7 +98,6 @@ class NavigationActivity : AppCompatActivity() {
                 R.id.settings_fragment,
                 R.id.fragment_privacy_policy -> binding.bottomNav?.setGone()
 
-                R.id.explore_detail_fragment,
                 R.id.favorites_detail_fragment -> {
                     binding.bottomNav?.setGone()
                     binding.globalToolbar.setGone()

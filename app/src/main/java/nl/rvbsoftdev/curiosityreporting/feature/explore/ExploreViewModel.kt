@@ -67,7 +67,8 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun formatStringDate(input: String): String {
+    fun formatStringDate(input: String?): String {
+        if (input == null) return ""
         val toLocalDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault()))
         return DateTimeFormatter.ofPattern("d MMM yyyy").format(toLocalDate)
     }

@@ -1,6 +1,13 @@
 package nl.rvbsoftdev.curiosityreporting.feature.favorite
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -13,10 +20,17 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.stfalcon.imageviewer.StfalconImageViewer
 import nl.rvbsoftdev.curiosityreporting.R
+import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoritesBinding
+import nl.rvbsoftdev.curiosityreporting.feature.explore.ExplorePhotoAdapter
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
+import nl.rvbsoftdev.curiosityreporting.global.PhotoOverlay
 import nl.rvbsoftdev.curiosityreporting.global.SharedViewModel
 
 /** Favorites Fragment that provides a unique List of Photos sorted by most recent earth date contained in the local room database **/
@@ -24,19 +38,29 @@ import nl.rvbsoftdev.curiosityreporting.global.SharedViewModel
 class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
 
     override val layout = R.layout.fragment_favorites
+    private val REQUEST_CODE: Int = 1
     override val firebaseTag = "Favorite Fragment"
+    private val navigationActivity by lazy { activity as NavigationActivity }
     private val viewModel: FavoritesViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
+    private lateinit var builder: StfalconImageViewer<Photo>
+    private lateinit var photoOverlay: PhotoOverlay
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.favoritesViewModel = viewModel
 
+        val favoritePhotoAdapter = FavoritePhotoAdapter(viewLifecycleOwner, viewModel) { photo, position ->
+            viewModel.selectedFavoritePhoto.value = photo
+            photoOverlay = PhotoOverlay(requireContext()).apply {
+                setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, { viewModel.removePhotoFromFavorites(photo) ; binding.root.postDelayed({ builder.close() }, 3000) })
+            }
+            viewModel.favoritePhotos.value?.let { setupSwipeImageViewer(it, position) }
+        }
+
         viewModel.favoritePhotos.observe(viewLifecycleOwner) { listOfPhotos ->
-            binding.recyclerviewPhotoFavorites.adapter = FavoritePhotoAdapter(viewLifecycleOwner) { photo ->
-                findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToFavoritesDetailFragment(photo))
-            }.apply { submitList(listOfPhotos) }
-             setHasOptionsMenu(!listOfPhotos.isNullOrEmpty())
+            binding.recyclerviewPhotoFavorites.adapter = favoritePhotoAdapter.apply { submitList(listOfPhotos) }
+            setHasOptionsMenu(!listOfPhotos.isNullOrEmpty())
         }
 
         /** Lets the user select a list or grid as preference **/
@@ -75,6 +99,68 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
             }
         }
         return true
+    }
+
+    private fun setupSwipeImageViewer(list: List<Photo>, position: Int) {
+        builder = StfalconImageViewer.Builder(requireContext(), list) { view, img ->
+            Glide.with(requireContext()).load(img.img_src).into(view)
+        }
+                .withImageChangeListener {
+                    viewModel.selectedFavoritePhoto.value = viewModel.favoritePhotos.value?.get(it)
+                    photoOverlay.setInfoText(getString(
+                            R.string.explore_detail_photo_taken_on,
+                            viewModel.selectedFavoritePhoto.value?.camera?.full_name,
+                            viewModel.formatStringDate(viewModel.selectedFavoritePhoto.value?.earth_date ?: ""),
+                            viewModel.selectedFavoritePhoto.value?.sol))
+                }
+                .withStartPosition(position)
+                .withOverlayView(photoOverlay)
+                .show()
+    }
+
+    /** Uses Glide to convert the selected photo to a bitmap and share.
+     * Invokes requestPermission function to request runtime permission for storage access **/
+
+    private fun sharePhoto() {
+        try {
+            if (!viewModel.selectedFavoritePhoto.value?.img_src.isNullOrEmpty()) {
+                Glide.with(requireContext())
+                        .asBitmap()
+                        .load(viewModel.selectedFavoritePhoto.value?.img_src)
+                        .into(object : CustomTarget<Bitmap>() {
+                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                val imagePath = MediaStore.Images.Media.insertImage(
+                                        requireActivity().contentResolver, resource, "Curiosity Mars Image " + viewModel.selectedFavoritePhoto.value?.earth_date, null)
+                                val uri = Uri.parse(imagePath)
+                                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                    type = "image/*"
+                                    putExtra(Intent.EXTRA_TEXT,
+                                            "Check out this amazing photo NASA's Mars Rover Curiosity captured on ${viewModel.selectedFavoritePhoto.value?.earth_date}!")
+                                    putExtra(Intent.EXTRA_STREAM, uri)
+                                }
+                                if (shareIntent.resolveActivity(requireActivity().packageManager) != null) {
+                                    startActivity(shareIntent)
+                                } else {
+                                    navigationActivity.showStyledToastMessage("No app installed to share this photo!")
+                                }
+                            }
+
+                            override fun onLoadCleared(placeholder: Drawable?) {}
+                        })
+            }
+        } catch (e: Exception) {
+            Log.e("sharing error", e.toString())
+        }
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_CODE -> if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                sharePhoto()
+            }
+            else -> navigationActivity.showStyledToastMessage(getString(R.string.disk_access_required))
+        }
     }
 }
 

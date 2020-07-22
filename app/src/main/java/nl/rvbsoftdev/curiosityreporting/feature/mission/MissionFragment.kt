@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentMissionBinding
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
-import nl.rvbsoftdev.curiosityreporting.global.SharedViewModel
 
 /** 'MissionFragment' first screen the user sees. Provides navigation to MissionDetailFragments 1, 2 and 3 and a Twitter WebView. **/
 

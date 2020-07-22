@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -50,13 +51,16 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
 
         val explorePhotoAdapter = ExplorePhotoAdapter(viewLifecycleOwner, viewModel) { photo, position ->
             viewModel.selectedPhoto.value = photo
-            photoOverlay = PhotoOverlay(requireContext()).apply { setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, {
-                viewModel.toggleFavorite(photo)
-            }) }
+            photoOverlay = PhotoOverlay(requireContext()).apply {
+                setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, {
+                    viewModel.toggleFavorite(photo)
+                })
+            }
             viewModel.photosFromNasaApi.value?.let { setupSwipeImageViewer(it, position) }
         }
 
-        sharedViewModel.deletedAllFavorites.observe(viewLifecycleOwner){ deletedAll ->
+
+        sharedViewModel.deletedAllFavorites.observe(viewLifecycleOwner) { deletedAll ->
             if (deletedAll) viewModel.photosFromNasaApi.value?.forEach { photo ->
                 photo.isFavorite = false
                 sharedViewModel.deletedAllFavorites.value = false
@@ -64,9 +68,10 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
         }
 
         /** Set up observer for the photo's loaded from the NASA API **/
-        viewModel.photosFromNasaApi.observe(viewLifecycleOwner, Observer { list ->
-            binding.recyclerviewPhotosExplore.adapter = explorePhotoAdapter.apply { submitList(list) }
-        })
+        viewModel.photosFromNasaApi.observe(viewLifecycleOwner) { list ->
+            binding.recyclerviewPhotosExplore.adapter = explorePhotoAdapter.apply {
+                submitList(list) }
+        }
 
         /** Lets the user select a list or grid as preference **/
         var gridOrList = 4
@@ -159,8 +164,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
     private fun sharePhoto() {
         if (requireContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
-        } else
-
+        } else {
             try {
                 if (!viewModel.selectedPhoto.value?.img_src.isNullOrEmpty()) {
                     Glide.with(requireContext())
@@ -168,24 +172,18 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
                             .load(viewModel.selectedPhoto.value?.img_src)
                             .into(object : CustomTarget<Bitmap>() {
                                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                    try {
-                                        val imagePath = MediaStore.Images.Media.insertImage(navigationActivity.contentResolver,
-                                                resource, "Curiosity Mars Image ${viewModel.selectedPhoto.value?.earth_date}", null)
-                                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                                            type = "image/*"
-                                            putExtra(Intent.EXTRA_TEXT,
-                                                    getString(R.string.sharing_photo_message,
-                                                            DateTimeFormatter.ofPattern("d MMMM yyyy").parse(viewModel.selectedPhoto.value?.earth_date)))
-                                            putExtra(Intent.EXTRA_STREAM, Uri.parse(imagePath))
-                                        }
+                                    val imagePath = MediaStore.Images.Media.insertImage(navigationActivity.contentResolver,
+                                            resource, "Curiosity Mars Image ${viewModel.selectedPhoto.value?.earth_date}", null)
+                                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                        type = "image/*"
+                                        putExtra(Intent.EXTRA_TEXT, getString(R.string.sharing_photo_message, viewModel.formatStringDate(viewModel.selectedPhoto.value?.earth_date)))
+                                        putExtra(Intent.EXTRA_STREAM, Uri.parse(imagePath))
+                                    }
 
-                                        if (shareIntent.resolveActivity(navigationActivity.packageManager) != null) {
-                                            startActivity(shareIntent)
-                                        } else {
-                                            navigationActivity.showStyledToastMessage(getString(R.string.no_app_to_share_photo))
-                                        }
-                                    } catch (e: Exception) {
-                                        e.printStackTrace()
+                                    if (shareIntent.resolveActivity(navigationActivity.packageManager) != null) {
+                                        startActivity(shareIntent)
+                                    } else {
+                                        navigationActivity.showStyledToastMessage(getString(R.string.no_app_to_share_photo))
                                     }
                                 }
 
@@ -194,8 +192,9 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
                             })
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e("sharing error", e.toString())
             }
+        }
     }
 
     /** Material DatePicker where user can select a photo date. **/
@@ -220,7 +219,6 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
                 .setOpenAt(mostRecentPhotoDateAsLocalDate)
                 .setEnd(mostRecentPhotoDateAsLocalDate)
                 .build()
-
 
         val title = if (!mostRecentPhotoDateAsString.isNullOrBlank()) getString(R.string.most_recent_photo_date, viewModel.formatStringDate(mostRecentPhotoDateAsString)) else getString(R.string.select_a_date)
 

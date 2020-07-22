@@ -10,32 +10,8 @@
         android:id="@+id/explore_fragment"
         android:name="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreFragment"
         android:label="Curiosity at Mars"
-        tools:layout="@layout/fragment_explore">
-        <action
-            android:id="@+id/action_explore_fragment_to_explore_detail_fragment"
-            app:destination="@+id/explore_detail_fragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
+        tools:layout="@layout/fragment_explore"/>
 
-    <fragment
-        android:id="@+id/explore_detail_fragment"
-        android:name="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreDetailFragment"
-        android:label="Photo details"
-        tools:layout="@layout/fragment_explore_detail">
-        <action
-            android:id="@+id/action_explore_detail_fragment_to_explore_fragment"
-            app:destination="@id/explore_fragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <argument
-            android:name="selectedPhoto"
-            app:argType="nl.rvbsoftdev.curiosityreporting.data.Photo" />
-    </fragment>
     <fragment
         android:id="@+id/mission_fragment"
         android:name="nl.rvbsoftdev.curiosityreporting.feature.mission.MissionFragment"
@@ -43,7 +19,7 @@
         tools:layout="@layout/fragment_mission">
         <action
             android:id="@+id/action_mission_fragment_to_mission_detail_fragment1"
-            app:destination="@+id/mission_detail_fragment1"
+            app:destination="@id/mission_detail_fragment1"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"

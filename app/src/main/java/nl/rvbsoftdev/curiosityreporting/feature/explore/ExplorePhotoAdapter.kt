@@ -18,7 +18,7 @@ class ExplorePhotoAdapter(private val lifecycleOwner: LifecycleOwner, private va
         fun bind(photo: Photo) {
             binding.photo = photo
             binding.lifecycleOwner = lifecycleOwner
-            binding.exploreViewModel = exploreViewModel
+            binding.viewModel = exploreViewModel
             binding.executePendingBindings()
         }
     }
@@ -29,7 +29,10 @@ class ExplorePhotoAdapter(private val lifecycleOwner: LifecycleOwner, private va
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo: Photo = getItem(position)
         holder.apply {
-            itemView.setOnClickListener { onClickListener(photo, position) }
+            itemView.setOnClickListener {
+                notifyItemChanged(position)
+                onClickListener(photo, position)
+            }
             bind(photo)
         }
     }

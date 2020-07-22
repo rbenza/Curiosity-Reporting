@@ -11,7 +11,7 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/icon_app"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeDark.Launcher"
+        android:theme="@style/AppTheme.Launcher"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".global.NavigationActivity">
