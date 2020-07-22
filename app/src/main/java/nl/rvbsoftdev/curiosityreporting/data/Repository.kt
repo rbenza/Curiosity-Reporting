@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.*
@@ -46,8 +47,9 @@ class Repository(app: Application) {
     val photosFromNasaApi: MutableLiveData<List<Photo>>
         get() = _photosFromNasaApi
 
-    val favoritePhotos: Flow<List<Photo>>
-        get() = favoritePhotosDatabase.favoritePhotoDao.getAllPhotos().map { it.toListOfPhoto() }
+    private val _favoritePhotos = MutableLiveData<List<Photo>>()
+    val favoritePhotos: LiveData<List<Photo>>
+        get() = _favoritePhotos
 
     private val _mostRecentEarthPhotoDate = MutableLiveData<String?>()
     val mostRecentEarthPhotoDate: LiveData<String?>
@@ -71,16 +73,14 @@ class Repository(app: Application) {
                 // Get the list of NetworkPhoto's from the NASA API and convert it to a list of Photo's
                 val result: List<Photo>? = NetworkService.NETWORK_SERVICE.getPhotosWithSolOrEarthDate(earthDate, sol, camera, apiKey = apiKey).toListOfPhoto()
 
-//                // Get a list of id's of the favorite photos
-//                val favoritePhotosIds: List<Int> = favoritePhotos.toList().flatMap {
-//                    it.map { photo ->
-//                        photo.id
-//                    }
-//                }
-//                // Mark every Photo that matches an id in favoritePhotosIds as a favorite
-//                result.forEach { photo ->
-//                    if (favoritePhotosIds.contains(photo.id)) photo.isFavorite = true
-//                }
+                // Get a list of id's of the favorite photos
+                getAllFavoritePhots()
+                val favoritePhotosIds: List<Int?> = favoritePhotos.value?.map { it.id } ?: emptyList()
+
+                // Mark every Photo that matches an id in favoritePhotosIds as a favorite
+                result?.forEach { photo ->
+                    if (favoritePhotosIds.contains(photo.id)) photo.isFavorite = true
+                }
                 _photosFromNasaApi.postValue(result)
                 when {
                     result?.isEmpty()!! -> _connectionStatus.postValue(NasaApiConnectionStatus.NO_DATA)
@@ -123,13 +123,16 @@ class Repository(app: Application) {
     }
 
 
-
     suspend fun getMostRecentDates() {
         val getMostRecentDates = NetworkService.NETWORK_SERVICE.getLatestPhotos(apiKey).toListOfPhoto()
         getMostRecentDates?.firstOrNull()?.let {
             _mostRecentEarthPhotoDate.postValue(it.earth_date)
             _mostRecentSolPhotoDate.postValue(it.sol)
         }
+    }
+
+    suspend fun getAllFavoritePhots() {
+        _favoritePhotos.postValue(favoritePhotosDatabase.favoritePhotoDao.getAllPhotos().toListOfPhoto())
     }
 
     suspend fun addPhotoToDatabase(photo: Photo) = favoritePhotosDatabase.favoritePhotoDao.insert(photo.toFavoriteDatabasePhoto())

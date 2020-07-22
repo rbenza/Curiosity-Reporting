@@ -12,13 +12,13 @@ class FavoritesViewModel(app: Application) : AndroidViewModel(app) {
     private val photoRepository = Repository.getRepository(app)
 
     /** Get all favorite photos from Room database through repository (uses suspend function)**/
-//    init {
-//        viewModelScope.launch {
-//            photoRepository.getAllPhotosFromDatabase()
-//        }
-//    }
+    init {
+        viewModelScope.launch {
+            photoRepository.getAllFavoritePhots()
+        }
+    }
 
-    val favoritePhotos: LiveData<List<Photo>> = photoRepository.favoritePhotos.asLiveData()
+    val favoritePhotos: LiveData<List<Photo>> = photoRepository.favoritePhotos
 
     private val _selectedFavoritePhoto = MutableLiveData<Photo>()
 

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -32,12 +32,12 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.favoritesViewModel = viewModel
 
-        viewModel.favoritePhotos.observe(viewLifecycleOwner, Observer { listOfPhotos ->
+        viewModel.favoritePhotos.observe(viewLifecycleOwner) { listOfPhotos ->
             binding.recyclerviewPhotoFavorites.adapter = FavoritePhotoAdapter(viewLifecycleOwner) { photo ->
                 findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToFavoritesDetailFragment(photo))
             }.apply { submitList(listOfPhotos) }
              setHasOptionsMenu(!listOfPhotos.isNullOrEmpty())
-        })
+        }
 
         /** Lets the user select a list or grid as preference **/
         var listOrGrid = 1
@@ -45,7 +45,6 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
             listOrGrid = 3
         }
         binding.recyclerviewPhotoFavorites.layoutManager = GridLayoutManager(requireContext(), listOrGrid)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

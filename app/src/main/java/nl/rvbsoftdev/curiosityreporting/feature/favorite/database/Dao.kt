@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface Dao {
 
     @Query("SELECT * FROM favoritedatabasephoto ORDER BY earth_date DESC")
-    fun getAllPhotos(): Flow<List<FavoriteDatabasePhoto>>
+    suspend fun getAllPhotos(): List<FavoriteDatabasePhoto>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(favoriteDatabasePhoto: FavoriteDatabasePhoto)
