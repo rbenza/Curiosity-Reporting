@@ -30,7 +30,6 @@ class ExplorePhotoAdapter(private val lifecycleOwner: LifecycleOwner, private va
         val photo: Photo = getItem(position)
         holder.apply {
             itemView.setOnClickListener {
-                notifyItemChanged(position)
                 onClickListener(photo, position)
             }
             bind(photo)

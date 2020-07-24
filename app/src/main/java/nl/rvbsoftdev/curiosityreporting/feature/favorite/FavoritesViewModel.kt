@@ -1,8 +1,10 @@
 package nl.rvbsoftdev.curiosityreporting.feature.favorite
 
 import android.app.Application
-import androidx.lifecycle.*
-import kotlinx.coroutines.flow.Flow
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.data.Repository
@@ -15,11 +17,6 @@ class FavoritesViewModel(app: Application) : AndroidViewModel(app) {
     private val photoRepository = Repository.getRepository(app)
 
     /** Get all favorite photos from Room database through repository (uses suspend function)**/
-    init {
-        viewModelScope.launch {
-            photoRepository.getAllFavoritePhots()
-        }
-    }
 
     val favoritePhotos: LiveData<List<Photo>> = photoRepository.favoritePhotos
 

@@ -2,11 +2,15 @@ package nl.rvbsoftdev.curiosityreporting.feature.explore
 
 import android.app.Application
 import android.graphics.drawable.Drawable
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rvbsoftdev.curiosityreporting.R
-import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.data.NasaApiConnectionStatus
+import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.data.Repository.Companion.getRepository
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
@@ -17,10 +21,11 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
     private val photoRepository = getRepository(app)
 
     val connectionStatus: LiveData<NasaApiConnectionStatus> = photoRepository.connectionStatus
-    val photosFromNasaApi: MutableLiveData<List<Photo>> = photoRepository.photosFromNasaApi
+    val photosFromNasaApi: LiveData<List<Photo>> = photoRepository.photosFromNasaApi
     val mostRecentSolPhotoDate: LiveData<Int> = photoRepository.mostRecentSolPhotoDate
     val mostRecentEarthPhotoDate: LiveData<String?> = photoRepository.mostRecentEarthPhotoDate
     val selectedPhoto = MutableLiveData<Photo>()
+    val filteredPhotosFromNasaApi = MutableLiveData<List<Photo>>()
 
     fun getPhotos(earthDate: String? = null, sol: Int? = null, camera: String? = null) {
         viewModelScope.launch {
@@ -29,12 +34,8 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
     }
 
     fun setCameraFilter(cameraFilter: String?) {
-        val originalList: List<Photo> = photoRepository.photosFromNasaApi.value ?: emptyList()
-
-        if (originalList.size > photosFromNasaApi.value!!.size) {
-            photosFromNasaApi.value = originalList
-        }
-        photosFromNasaApi.value = photosFromNasaApi.value?.filter { photo ->
+        filteredPhotosFromNasaApi.value = photosFromNasaApi.value
+        filteredPhotosFromNasaApi.value = filteredPhotosFromNasaApi.value?.filter { photo ->
             photo.camera?.name == cameraFilter
         }
     }

@@ -97,24 +97,7 @@
         android:id="@+id/favorites_fragment"
         android:name="nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesFragment"
         android:label="Your favorite photos"
-        tools:layout="@layout/fragment_favorites" >
-        <action
-            android:id="@+id/action_favorites_fragment_to_favoritesDetailFragment"
-            app:destination="@+id/favorites_detail_fragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
-    <fragment
-        android:id="@+id/favorites_detail_fragment"
-        android:name="nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesDetailFragment"
-        android:label="Favorite photo details"
-        tools:layout="@layout/fragment_favorites_detail">
-        <argument
-            android:name="selectedPhoto"
-            app:argType="nl.rvbsoftdev.curiosityreporting.data.Photo" />
-    </fragment>
+        tools:layout="@layout/fragment_favorites" />
     <fragment
         android:id="@+id/fragment_privacy_policy"
         android:name="nl.rvbsoftdev.curiosityreporting.feature.more.PrivacyPolicyFragment"

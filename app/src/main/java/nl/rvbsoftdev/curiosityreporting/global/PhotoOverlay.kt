@@ -14,9 +14,6 @@ import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.databinding.CustomViewPhotoOverlayBinding
 import nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesViewModel
-import org.threeten.bp.LocalDate
-import org.threeten.bp.format.DateTimeFormatter
-import java.util.*
 
 class PhotoOverlay @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
         ConstraintLayout(context, attrs, defStyleAttr) {
@@ -29,10 +26,13 @@ class PhotoOverlay @JvmOverloads constructor(context: Context, attrs: AttributeS
         setBackgroundColor(Color.TRANSPARENT)
     }
 
-    fun setupClickListenersAndVm(viewModel: ViewModel, clickBack: (() -> Unit)? = null, clickShare: (() -> Unit)? = null, clickFavorite: (() -> Unit)? = null) {
+    fun setupClickListenersAndVm(viewModel: ViewModel, clickBack: (() -> Unit)? = null, clickShare: (() -> Unit)? = null, clickFavorite: (() -> Unit)? = null, clickDelete: (() -> Unit)? = null) {
         with(binding) {
+
             if (viewModel is ExploreViewModel) {
                 exploreViewModel = viewModel
+                photoInfoExplore.isVisible = true
+                photoInfoFavorite.isGone = true
                 setupFavorite(viewModel.selectedPhoto.value)
                 favoriteButton.setOnClickListener {
                     isVisible = true
@@ -44,14 +44,18 @@ class PhotoOverlay @JvmOverloads constructor(context: Context, attrs: AttributeS
                     (root.context as NavigationActivity).showStyledSnackbarMessage(this@PhotoOverlay, msg, 3000, icon)
                 }
             } else {
-                deleteButton.apply {
+                if (viewModel is FavoritesViewModel) {
+                    favoritesViewModel = viewModel
                     favoriteButton.isGone = true
-                    isVisible = true
-                    setImageResource(R.drawable.icon_delete)
-                    setOnClickListener {
-                        clickFavorite?.invoke()
-                        (root.context as NavigationActivity).showStyledSnackbarMessage(this@PhotoOverlay, "Deleted this photo!", 3000, R.drawable.icon_delete)
-                        root.postDelayed({ root.isVisible = false }, 3000)
+                    photoInfoExplore.isGone = true
+                    photoInfoFavorite.isVisible = true
+                    deleteButton.apply {
+                        isVisible = true
+                        setImageResource(R.drawable.icon_delete)
+                        setOnClickListener {
+                            clickDelete?.invoke()
+                            (root.context as NavigationActivity).showStyledSnackbarMessage(this@PhotoOverlay, "Deleted photo, overlay will close in 3 seconds", 3000, R.drawable.icon_delete)
+                        }
                     }
                 }
             }
@@ -61,7 +65,8 @@ class PhotoOverlay @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     fun setInfoText(input: String? = "") {
-        binding.photoInfo.text = input
+        binding.photoInfoExplore.text = input
+        binding.photoInfoFavorite.text = input
     }
 
     fun setupFavorite(photo: Photo?) {

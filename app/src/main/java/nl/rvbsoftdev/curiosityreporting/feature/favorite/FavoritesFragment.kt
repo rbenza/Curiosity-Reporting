@@ -17,7 +17,6 @@ import androidx.core.view.MenuCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -27,7 +26,6 @@ import com.stfalcon.imageviewer.StfalconImageViewer
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoritesBinding
-import nl.rvbsoftdev.curiosityreporting.feature.explore.ExplorePhotoAdapter
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
 import nl.rvbsoftdev.curiosityreporting.global.PhotoOverlay
@@ -53,7 +51,9 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
         val favoritePhotoAdapter = FavoritePhotoAdapter(viewLifecycleOwner, viewModel) { photo, position ->
             viewModel.selectedFavoritePhoto.value = photo
             photoOverlay = PhotoOverlay(requireContext()).apply {
-                setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, { viewModel.removePhotoFromFavorites(photo) ; binding.root.postDelayed({ builder.close() }, 3000) })
+                setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, clickDelete = {
+                    viewModel.removePhotoFromFavorites(photo)
+                    binding.root.postDelayed({ builder.close() }, 3000) })
             }
             viewModel.favoritePhotos.value?.let { setupSwipeImageViewer(it, position) }
         }
@@ -61,6 +61,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
         viewModel.favoritePhotos.observe(viewLifecycleOwner) { listOfPhotos ->
             binding.recyclerviewPhotoFavorites.adapter = favoritePhotoAdapter.apply { submitList(listOfPhotos) }
             setHasOptionsMenu(!listOfPhotos.isNullOrEmpty())
+            if (listOfPhotos.isNullOrEmpty()) sharedViewModel.deletedAllFavorites.value = true
         }
 
         /** Lets the user select a list or grid as preference **/

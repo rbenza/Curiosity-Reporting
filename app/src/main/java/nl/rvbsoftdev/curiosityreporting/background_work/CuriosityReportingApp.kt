@@ -2,7 +2,11 @@ package nl.rvbsoftdev.curiosityreporting.background_work
 
 import android.app.Application
 import android.os.Build
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

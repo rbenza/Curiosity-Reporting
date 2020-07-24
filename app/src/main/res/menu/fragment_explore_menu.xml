@@ -6,7 +6,7 @@
     <group android:id="@+id/title">
         <item
             android:id="@+id/camera_filter_title"
-            android:title="SELECT CAMERA FILTER :"
+            android:title="Select camera filter :"
             app:showAsAction="never"
             android:gravity="center"/>
     </group>
@@ -28,7 +28,6 @@
             app:showAsAction="never" />
         <item
             android:id="@+id/MAST"
-
             android:title="Mast Camera"
             app:showAsAction="never" />
         <item
@@ -61,7 +60,6 @@
             android:title="Select capture date"
             android:visible="true"
             app:showAsAction="ifRoom" />
-
 
     </group>
 </menu>

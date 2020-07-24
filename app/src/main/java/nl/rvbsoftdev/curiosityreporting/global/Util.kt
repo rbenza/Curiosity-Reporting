@@ -2,8 +2,6 @@ package nl.rvbsoftdev.curiosityreporting.global
 
 import android.view.View
 import android.view.ViewGroup
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 /** Some convenient extension functions on the View class **/

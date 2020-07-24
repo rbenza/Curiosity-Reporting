@@ -1,6 +1,10 @@
 package nl.rvbsoftdev.curiosityreporting.feature.favorite.database
 
-import androidx.room.*
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
+import androidx.room.RoomWarnings
 import nl.rvbsoftdev.curiosityreporting.data.Photo
 
 /** Room database table with only unique items (id property is unique) and ordered by earth_date **/
@@ -37,6 +41,7 @@ fun List<FavoriteDatabasePhoto>.toListOfPhoto(): List<Photo> {
     return map { favoriteDatabasePhoto ->
         Photo(
                 id = favoriteDatabasePhoto.id,
+                isFavorite = true,
                 camera = favoriteDatabasePhoto.camera?.toCamera(),
                 earth_date = favoriteDatabasePhoto.earth_date,
                 img_src = favoriteDatabasePhoto.img_src,
@@ -62,6 +67,7 @@ fun FavoriteDatabasePhoto.toPhoto(): Photo {
     return let {
         Photo(
                 id = it.id,
+                isFavorite = true,
                 camera = it.camera?.toCamera(),
                 earth_date = it.earth_date,
                 img_src = it.img_src,

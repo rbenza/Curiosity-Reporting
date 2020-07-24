@@ -98,10 +98,6 @@ class NavigationActivity : AppCompatActivity() {
                 R.id.settings_fragment,
                 R.id.fragment_privacy_policy -> binding.bottomNav?.setGone()
 
-                R.id.favorites_detail_fragment -> {
-                    binding.bottomNav?.setGone()
-                    binding.globalToolbar.setGone()
-                }
                 else -> {
                     binding.bottomNav?.setVisible()
                     binding.globalToolbar.setVisible()

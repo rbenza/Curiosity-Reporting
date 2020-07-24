@@ -5,7 +5,10 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import junit.framework.Assert.assertEquals
-import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.*
+import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.DatabaseCamera
+import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.DatabaseRover
+import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.FavoriteDatabasePhoto
+import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.FavoritePhotosDatabase
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

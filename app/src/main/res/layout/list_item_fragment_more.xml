@@ -14,25 +14,26 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parent_layout"
         android:layout_width="match_parent"
-        android:padding="32dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        android:padding="32dp">
 
         <ImageView
             android:id="@+id/icon_more_item"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            app:setImageResource="@{moreItem.icon}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:setImageResource="@{moreItem.icon}"
             tools:srcCompat="@drawable/icon_mission" />
 
         <LinearLayout
             android:id="@+id/title_more_item"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="32dp"
+            android:layout_marginEnd="16dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="@+id/icon_more_item"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,8 +43,8 @@
             <TextView
                 android:id="@+id/text_header_more_list"
                 android:layout_width="wrap_content"
-                android:text="@{moreItem.textTitle}"
                 android:layout_height="wrap_content"
+                android:text="@{moreItem.textTitle}"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="@string/title_activity_settings" />
@@ -52,8 +53,8 @@
                 android:id="@+id/text_detail_more_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
                 android:text="@{moreItem.textSubTitle}"
+                android:textSize="14sp"
                 tools:text="Adjust settings" />
         </LinearLayout>
 

@@ -18,74 +18,75 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        android:background="@color/DarkGrey"
         android:layout_width="match_parent"
-        app:cardCornerRadius="@dimen/card_corner_radius"
-        android:layout_height="wrap_content">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
         android:background="@color/DarkGrey"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/card_corner_radius">
 
-        <ImageView
-            android:id="@+id/photo_curiosity"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="125dp"
-            android:adjustViewBounds="true"
-            android:padding="1dp"
-            android:scaleType="centerCrop"
-            app:imageUrl="@{photo.img_src}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/image_mars_hill" />
-
-        <ImageView
-            android:id="@+id/favorite_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:padding="2dp"
-            android:src="@drawable/icon_star_selected"
-            app:isVisible="@{photo.isFavorite}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/photo_curiosity_date_captured"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:shadowColor="@color/Black"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="1"
-            android:text="@{viewModel.formatStringDate(photo.earth_date)}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="?attr/color_camera_menu_icon"
-            android:textSize="11sp"
-            android:textStyle="italic|bold"
-            app:layout_constraintBottom_toBottomOf="@id/photo_curiosity"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="4 Jul 2016" />
+            android:background="@color/DarkGrey">
 
-        <TextView
-            android:id="@+id/photo_curiosity_camera_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:shadowColor="@color/Black"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="1"
-            android:text="@{photo.camera.name}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="?attr/color_camera_menu_icon"
-            android:textSize="11sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="NAVCAM" />
+            <ImageView
+                android:id="@+id/photo_curiosity"
+                android:layout_width="match_parent"
+                android:layout_height="125dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{photo.img_src}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/image_mars_hill" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/favorite_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="2dp"
+                android:src="@drawable/icon_star_selected"
+                app:isVisible="@{photo.isFavorite}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/photo_curiosity_date_captured"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:shadowColor="@color/Black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
+                android:text="@{viewModel.formatStringDate(photo.earth_date)}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="?attr/color_camera_menu_icon"
+                android:textSize="11sp"
+                android:textStyle="italic|bold"
+                app:layout_constraintBottom_toBottomOf="@id/photo_curiosity"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="4 Jul 2016" />
+
+            <TextView
+                android:id="@+id/photo_curiosity_camera_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:shadowColor="@color/Black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
+                android:text="@{photo.camera.name}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="?attr/color_camera_menu_icon"
+                android:textSize="11sp"
+                android:textStyle="normal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="NAVCAM" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>
