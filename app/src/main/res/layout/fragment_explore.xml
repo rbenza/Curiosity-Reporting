@@ -18,23 +18,27 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/DarkGrey"
         android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:background="@color/DarkGrey"
         tools:context="nl.rvbsoftdev.curiosityreporting.global.NavigationActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_photos_explore"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbarSize="8dp"
-            android:scrollbars="vertical"
+            android:layout_marginTop="8dp"
+            android:clipToPadding="false"
             android:scrollbarThumbVertical="@drawable/scrollbar_indicator"
             app:isVisible="@{exploreViewModel.connectionStatus != NasaApiConnectionStatus.LOADING}"
-            app:layout_constraintBottom_toBottomOf="@id/constraint_layout"
-            app:layout_constraintEnd_toEndOf="@id/constraint_layout"
-            app:layout_constraintStart_toStartOf="@id/constraint_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="40"
             tools:listitem="@layout/list_item_fragment_explore" />
 
@@ -51,7 +55,7 @@
             tools:src="@drawable/icon_connection_error" />
 
         <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/loading_Sspinner"
+            android:id="@+id/loading_spinner"
             style="@style/Widget.AppCompat.ProgressBar"
             android:layout_width="60dp"
             android:layout_height="60dp"

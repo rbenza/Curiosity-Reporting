@@ -4,6 +4,7 @@
         <item name="colorControlNormal">@color/DeepOrange</item>
         <item name="android:textColor">@color/YellowSand</item>
         <item name="colorOnPrimary">@color/DarkGrey</item>
+        <item name="colorControlHighlight">@color/Orange</item>
         <item name="android:statusBarColor">@color/NearBlack</item>
         <item name="android:navigationBarColor">@color/Black</item>
         <item name="android:actionMenuTextColor">@color/Orange</item>
@@ -92,10 +93,14 @@
         <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen</item>
         <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day</item>
         <item name="android:backgroundDimEnabled">true</item>
-        <item name="colorPrimary">@color/NearBlack</item>
+        <item name="colorPrimary">@color/Grey</item>
+        <item name="colorPrimaryDark">@color/Grey</item>
+        <item name="colorSurface">@color/Grey</item>
+        <item name="colorPrimarySurface">@color/Grey</item>
         <item name="colorAccent">@color/Orange</item>
         <item name="colorOnPrimary">@color/YellowLightSand</item>
         <item name="colorOnSurface">@color/YellowLightSand</item>
+        <item name="colorControlHighlight">@color/Orange</item>
     </style>
 
     <style name="CR.DatePicker.DaySelected" parent="Widget.MaterialComponents.MaterialCalendar.Day.Selected">
@@ -122,8 +127,8 @@
     </style>
 
     <style name="CR.DatePicker.HeaderTitle" parent="Widget.MaterialComponents.MaterialCalendar.HeaderTitle">
-        <item name="android:textSize">15sp</item>
-        <item name="android:maxLines">2</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:maxLines">3</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/White</item>
         <item name="autoSizeMaxTextSize">15sp</item>
@@ -135,8 +140,8 @@
         <item name="android:background">@color/Orange</item>
     </style>
 
-    <style name="CR.DatePicker.ToggleButton" parent="">
-        <item name="android:background">@color/DeepOrange</item>
+    <style name="CR.DatePicker.ToggleButton" parent="Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton">
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:tint">@color/White</item>
     </style>
 
