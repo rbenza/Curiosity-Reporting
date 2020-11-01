@@ -64,5 +64,13 @@ class UITests {
         onView(withId(R.id.mars_cardview)).check(matches(isCompletelyDisplayed())).perform(click())
         Espresso.pressBack()
     }
+
+    @Test
+    fun goToSettingsFragment() {
+        onView(withId(R.id.mars_cardview)).check(matches(isCompletelyDisplayed())).perform(click())
+        Espresso.pressBack()
+    }
+
+
 }
 

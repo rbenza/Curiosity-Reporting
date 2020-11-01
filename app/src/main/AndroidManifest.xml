@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="nl.rvbsoftdev.curiosityreporting">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
         android:name=".background_work.CuriosityReportingApp"
         android:allowBackup="true"
