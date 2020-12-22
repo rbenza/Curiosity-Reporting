@@ -2,6 +2,7 @@ package nl.rvbsoftdev.curiosityreporting.feature.explore
 
 import android.app.Application
 import android.graphics.drawable.Drawable
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -40,10 +41,10 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
         }
     }
 
-    val iconConnectionStatus: LiveData<Drawable> = connectionStatus.map {
+    val iconConnectionStatus: LiveData<Drawable?> = connectionStatus.map {
         when (it) {
-            NasaApiConnectionStatus.NO_DATA -> app.resources.getDrawable(R.drawable.icon_database_no_data, null)
-            else -> app.resources.getDrawable(R.drawable.icon_connection_error, null)
+            NasaApiConnectionStatus.NO_DATA -> ResourcesCompat.getDrawable(app.resources, R.drawable.icon_database_no_data, null)
+            else -> ResourcesCompat.getDrawable(app.resources, R.drawable.icon_connection_error, null)
         }
     }
 

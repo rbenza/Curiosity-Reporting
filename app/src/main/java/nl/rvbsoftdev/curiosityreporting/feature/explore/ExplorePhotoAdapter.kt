@@ -28,12 +28,8 @@ class ExplorePhotoAdapter(private val lifecycleOwner: LifecycleOwner, private va
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo: Photo = getItem(position)
-        holder.apply {
-            itemView.setOnClickListener {
-                onClickListener(photo, position)
-            }
-            bind(photo)
-        }
+        holder.itemView.setOnClickListener { onClickListener(photo, position) }
+        holder.bind(photo)
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<Photo>() {

@@ -126,23 +126,23 @@ class NavigationActivity : AppCompatActivity() {
 
     fun showStyledSnackbarMessage(view: View, text: String, durationMs: Int,
                                   icon: Int, textAction: String = "", action: (() -> Unit)? = null) {
-                ChocoBar.builder()
-                        .setView(view)
-                        .setBackgroundColor(getColor(R.color.NearBlack))
-                        .setTextSize(15F)
-                        .setTextColor(getColor(R.color.YellowSand))
-                        .setTextTypefaceStyle(Typeface.BOLD_ITALIC)
-                        .setText(text)
-                        .setMaxLines(8)
-                        .setActionText(textAction)
-                        .setActionTextColor(getColor(R.color.DeepOrange))
-                        .setActionTextSize(18F)
-                        .setActionTextTypefaceStyle(Typeface.BOLD)
-                        .setIcon(icon)
-                        .setDuration(durationMs)
-                        .setActionClickListener { action?.invoke()  }
-                        .build()
-                        .show()
+        ChocoBar.builder()
+                .setView(view)
+                .setBackgroundColor(getColor(R.color.NearBlack))
+                .setTextSize(15F)
+                .setTextColor(getColor(R.color.YellowSand))
+                .setTextTypefaceStyle(Typeface.BOLD_ITALIC)
+                .setText(text)
+                .setMaxLines(8)
+                .setActionText(textAction)
+                .setActionTextColor(getColor(R.color.DeepOrange))
+                .setActionTextSize(18F)
+                .setActionTextTypefaceStyle(Typeface.BOLD)
+                .setIcon(icon)
+                .setDuration(durationMs)
+                .setActionClickListener { action?.invoke() }
+                .build()
+                .show()
     }
 
     /** Setup Notification channel for Android 8.0 or higher devices **/

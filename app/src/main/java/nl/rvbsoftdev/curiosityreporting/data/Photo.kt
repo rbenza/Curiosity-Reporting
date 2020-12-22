@@ -1,13 +1,12 @@
 package nl.rvbsoftdev.curiosityreporting.data
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.serialization.Serializable
 
 /** Data model for the app, the app does not interact with 'NetworkPhoto' or 'FavoriteDataBasePhoto',
  * these types are abstracted away by the repository API (MVVM architecture, separation of concerns).
  * Makes adjusting, adding or removing data sources in the future easy. **/
 
-@Parcelize
+@Serializable
 data class Photo(
         var isFavorite: Boolean = false,
         val camera: Camera? = null,
@@ -15,16 +14,16 @@ data class Photo(
         val id: Int? = null,
         val img_src: String? = null,
         val rover: Rover? = null,
-        val sol: Int? = null) : Parcelable {
+        val sol: Int? = null)  {
 
-    @Parcelize
+    @Serializable
     data class Rover(
             val max_date: String? = null,
             val max_sol: Int? = null,
-            val total_photos: Int? = null) : Parcelable
+            val total_photos: Int? = null)
 
-    @Parcelize
+    @Serializable
     data class Camera(
             val full_name: String? = null,
-            val name: String? = null) : Parcelable
+            val name: String? = null)
 }

@@ -1,14 +1,13 @@
 package nl.rvbsoftdev.curiosityreporting.data
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.serialization.Serializable
 
 /** Data model for the Retrofit network requests. '@Parcelize' instructs the Kotlin compiler to generate parcelable methods automatically.**/
 
-@Parcelize
-data class NetworkPhotoContainer(val photos: List<NetworkPhoto>? = emptyList(), val latest_photos: List<NetworkPhoto>? = emptyList()) : Parcelable
+@Serializable
+data class NetworkPhotoContainer(val photos: List<NetworkPhoto>? = emptyList(), val latest_photos: List<NetworkPhoto>? = emptyList())
 
-@Parcelize
+@Serializable
 data class NetworkPhoto(
         val id: Int? = null,
         val sol: Int? = null,
@@ -16,20 +15,20 @@ data class NetworkPhoto(
         val earth_date: String? = null,
         val camera: NetworkCamera? = null,
         val rover: NetworkRover? = null
-) : Parcelable
+)
 
-@Parcelize
+@Serializable
 data class NetworkRover(
         val max_date: String? = null,
         val max_sol: Int? = null,
         val total_photos: Int? = null
-) : Parcelable
+)
 
-@Parcelize
+@Serializable
 data class NetworkCamera(
         val full_name: String? = null,
         val name: String? = null
-) : Parcelable
+)
 
 /** Kotlin Extension Functions to map 'NetworkPhoto' to 'Photo' **/
 
