@@ -2,7 +2,7 @@ package nl.rvbsoftdev.curiosityreporting.data
 
 import kotlinx.serialization.Serializable
 
-/** Data model for the Retrofit network requests. '@Parcelize' instructs the Kotlin compiler to generate parcelable methods automatically.**/
+/** Data model for the Retrofit network requests. **/
 
 @Serializable
 data class NetworkPhotoContainer(val photos: List<NetworkPhoto>? = emptyList(), val latest_photos: List<NetworkPhoto>? = emptyList())
