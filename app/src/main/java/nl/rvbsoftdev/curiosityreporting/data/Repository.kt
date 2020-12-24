@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import nl.rvbsoftdev.curiosityreporting.R
-import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.FavoriteDatabasePhoto
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.FavoritePhotosDatabase
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.getDatabase
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.toFavoriteDatabasePhoto
@@ -43,11 +42,11 @@ class Repository(app: Application) {
     private val _connectionStatus = MutableStateFlow(NasaApiConnectionStatus.IDLE)
     val connectionStatus: StateFlow<NasaApiConnectionStatus> get() = _connectionStatus
 
-    private val _mostRecentEarthPhotoDate = MutableStateFlow<String?>(null)
-    val mostRecentEarthPhotoDate: StateFlow<String?> get() = _mostRecentEarthPhotoDate
+    private var _mostRecentEarthPhotoDate: String? = null
+    val mostRecentEarthPhotoDate get() = _mostRecentEarthPhotoDate
 
-    private val _mostRecentSolPhotoDate = MutableStateFlow<Int?>(null)
-    val mostRecentSolPhotoDate: StateFlow<Int?> get() = _mostRecentSolPhotoDate
+    private var _mostRecentSolPhotoDate: Int? = null
+    val mostRecentSolPhotoDate get() = _mostRecentSolPhotoDate
 
     /** if present apply personal NASA API key **/
     private val apiKey = when (PreferenceManager.getDefaultSharedPreferences(app).getString("nasa_key", null).isNullOrEmpty()) {
@@ -72,7 +71,7 @@ class Repository(app: Application) {
                 if (favoritePhotosIds.contains(photo.id)) photo.isFavorite = true
             }
 
-            _connectionStatus.value = if (result?.isEmpty()!!) NasaApiConnectionStatus.NO_DATA else NasaApiConnectionStatus.IDLE
+            _connectionStatus.value = if (result?.isEmpty() == true) NasaApiConnectionStatus.NO_DATA else NasaApiConnectionStatus.IDLE
 
             result
 
@@ -98,7 +97,7 @@ class Repository(app: Application) {
             result?.forEach { photo ->
                 if (favoritePhotosIds.contains(photo.id)) photo.isFavorite = true
             }
-            _connectionStatus.value = if (result?.isEmpty()!!) NasaApiConnectionStatus.NO_DATA else NasaApiConnectionStatus.IDLE
+            _connectionStatus.value = if (result?.isEmpty() == true) NasaApiConnectionStatus.NO_DATA else NasaApiConnectionStatus.IDLE
 
             result
         } catch (e: HttpException) {
@@ -111,8 +110,8 @@ class Repository(app: Application) {
     suspend fun getMostRecentDates() {
         val getMostRecentDates = NetworkService.RETRO_FIT.getLatestPhotos(apiKey)?.toListOfPhoto()
         getMostRecentDates?.firstOrNull()?.let {
-            _mostRecentEarthPhotoDate.value = it.earth_date
-            _mostRecentSolPhotoDate.value = it.sol ?: -1
+            _mostRecentEarthPhotoDate = it.earth_date
+            _mostRecentSolPhotoDate = it.sol ?: 2979
         }
     }
 

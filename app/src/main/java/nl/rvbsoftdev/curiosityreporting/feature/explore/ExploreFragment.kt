@@ -63,17 +63,17 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
             photoOverlay = PhotoOverlay(requireContext()).apply {
                 setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, clickFavorite = { viewModel.toggleFavorite(photo) })
             }
-            if (viewModel.filteredPhotosFromNasaApi.value != null) {
-                setupSwipeImageViewer(viewModel.filteredPhotosFromNasaApi.value!!, position)
+            if (viewModel.filteredPhotos.value != null) {
+                setupSwipeImageViewer(viewModel.filteredPhotos.value!!, position)
             } else {
-                viewModel.photosFromNasaApi.value?.let {
+                viewModel.photos.value?.let {
                     setupSwipeImageViewer(it, position)
                 }
             }
         }
 
         /** Set up observer for the photo's loaded from the NASA API **/
-        viewModel.photosFromNasaApi.observe(viewLifecycleOwner) { list ->
+        viewModel.photos.observe(viewLifecycleOwner) { list ->
             binding.recyclerviewPhotosExplore.adapter = explorePhotoAdapter.apply {
                 submitList(list)
             }
@@ -103,7 +103,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
         val menuItemsToAlwaysShow = listOf(R.id.select_random_date, R.id.launch_date_picker_dialog, R.id.camera_filter_title, R.id.all_cameras)
 
         /** Dynamically hide the camera filters for photos not in the list **/
-        viewModel.photosFromNasaApi.observe(viewLifecycleOwner) { list ->
+        viewModel.photos.observe(viewLifecycleOwner) { list ->
             menu.forEach { menuItem ->
                 menuItem.isVisible = list?.any { it.camera?.full_name == menuItem.title } == true || menuItemsToAlwaysShow.contains(menuItem.itemId)
             }
@@ -118,7 +118,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
             Glide.with(requireContext()).load(img.img_src).into(view)
         }
                 .withImageChangeListener {
-                    viewModel.setSelectedPhoto(viewModel.photosFromNasaApi.value?.get(it))
+                    viewModel.setSelectedPhoto(viewModel.photos.value?.get(it))
                     photoOverlay.setInfoText(getString(
                             R.string.explore_detail_photo_taken_on,
                             viewModel.selectedPhoto.value?.camera?.full_name,
@@ -135,7 +135,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
         when (item.itemId) {
             R.id.all_cameras -> {
                 setCameraFilter(null, null, item)
-                explorePhotoAdapter.apply { submitList(viewModel.photosFromNasaApi.value) }
+                explorePhotoAdapter.apply { submitList(viewModel.photos.value) }
                 viewModel.resetPhotoFilter()
             }
             R.id.FHAZ -> setCameraFilter("FHAZ", "the Front Hazard Avoidance Camera", item)
@@ -148,8 +148,8 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
             R.id.launch_date_picker_dialog -> launchDatePicker()
 
             R.id.select_random_date -> {
-                val mostRecentSol = viewModel.mostRecentSolPhotoDate.value
-                var randomBound = 2829
+                val mostRecentSol = viewModel.mostRecentSolPhotoDate
+                var randomBound = 2979
                 if (mostRecentSol != null) {
                     randomBound = mostRecentSol
                 }
@@ -166,8 +166,8 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
 
     private fun setCameraFilter(cameraFilter: String?, cameraSnackbar: String?, menuItem: MenuItem) {
         viewModel.setCameraFilter(cameraFilter)
-        explorePhotoAdapter.apply { submitList(viewModel.filteredPhotosFromNasaApi.value) }
-        val msg = if (cameraFilter == null) "Showing all ${viewModel.photosFromNasaApi.value?.size} photos" else "Filtered ${viewModel.filteredPhotosFromNasaApi.value?.size} photos from the $cameraSnackbar"
+        explorePhotoAdapter.apply { submitList(viewModel.filteredPhotos.value) }
+        val msg = if (cameraFilter == null) "Showing all ${viewModel.photos.value?.size} photos" else "Filtered ${viewModel.filteredPhotos.value?.size} photos from the $cameraSnackbar"
         navigationActivity.showStyledSnackbarMessage(requireView(), msg, 2500, R.drawable.icon_camera)
         menuItem.isChecked = true
     }
@@ -211,7 +211,8 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
 
     /** Material DatePicker where user can select a photo date. **/
     private fun launchDatePicker() {
-        val mostRecentPhotoDateAsString = viewModel.mostRecentEarthPhotoDate.value
+        viewModel.getMostRecentDates()
+        val mostRecentPhotoDateAsString = viewModel.mostRecentEarthPhotoDate
         val mostRecentPhotoDateAsLocalDate = if (mostRecentPhotoDateAsString != null) {
             LocalDateTime.parse(mostRecentPhotoDateAsString.plus("-14:00"), ofPattern("yyyy-MM-dd-HH:mm")).toEpochSecond(ZoneOffset.UTC) * 1000
         } else {

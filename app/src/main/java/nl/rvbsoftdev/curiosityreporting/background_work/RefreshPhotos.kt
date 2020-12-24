@@ -24,8 +24,8 @@ class RefreshPhotos(context: Context, params: WorkerParameters) : CoroutineWorke
 
         return try {
             photoRepository.getMostRecentDates()
-            if (!photoRepository.mostRecentEarthPhotoDate.value.isNullOrEmpty()) {
-                photoRepository.getPhotosWithSolOrEathDate(photoRepository.mostRecentEarthPhotoDate.value)
+            if (!photoRepository.mostRecentEarthPhotoDate.isNullOrEmpty()) {
+                photoRepository.getPhotosWithSolOrEathDate(photoRepository.mostRecentEarthPhotoDate)
                 Result.success()
             } else {
                 photoRepository.getPhotosWithSolOrEathDate(null, Random().nextInt(2491))

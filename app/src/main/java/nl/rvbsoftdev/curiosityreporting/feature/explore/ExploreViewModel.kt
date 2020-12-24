@@ -24,45 +24,53 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
 
     val connectionStatus: LiveData<NasaApiConnectionStatus> = photoRepository.connectionStatus.asLiveData()
 
-    private val _photosFromNasaApi = MutableLiveData<List<Photo>>()
-    val photosFromNasaApi: LiveData<List<Photo>> = _photosFromNasaApi
+    private val _photos = MutableLiveData<List<Photo>>()
+    val photos: LiveData<List<Photo>> = _photos
 
-    val mostRecentSolPhotoDate: LiveData<Int?> = photoRepository.mostRecentSolPhotoDate.asLiveData()
-    val mostRecentEarthPhotoDate: LiveData<String?> = photoRepository.mostRecentEarthPhotoDate.asLiveData()
+    val mostRecentSolPhotoDate: Int? get() = photoRepository.mostRecentSolPhotoDate
+    val mostRecentEarthPhotoDate: String? get() =  photoRepository.mostRecentEarthPhotoDate
+
     private val _selectedPhoto = MutableLiveData<Photo?>(null)
     val selectedPhoto: LiveData<Photo?> = _selectedPhoto
 
-
-    private val _filteredPhotosFromNasaApi = MutableLiveData<List<Photo>?>()
-    val filteredPhotosFromNasaApi: LiveData<List<Photo>?> = _filteredPhotosFromNasaApi
+    private val _filteredPhotos = MutableLiveData<List<Photo>?>()
+    val filteredPhotos: LiveData<List<Photo>?> = _filteredPhotos
 
     init {
         viewModelScope.launch {
-            if (_photosFromNasaApi.value.isNullOrEmpty()) {
-                _photosFromNasaApi.value = photoRepository.getLatestPhotos()
+            photoRepository.getMostRecentDates()
+
+            if (_photos.value.isNullOrEmpty()) {
+                _photos.value = photoRepository.getLatestPhotos()
             }
+        }
+    }
+
+    fun getMostRecentDates() {
+        viewModelScope.launch {
+            photoRepository.getMostRecentDates()
         }
     }
 
     fun getPhotos(earthDate: String? = null, sol: Int? = null, camera: String? = null) {
         viewModelScope.launch {
-            _photosFromNasaApi.value = photoRepository.getPhotosWithSolOrEathDate(earthDate, sol, camera)
+            _photos.value = photoRepository.getPhotosWithSolOrEathDate(earthDate, sol, camera)
         }
     }
 
     fun setCameraFilter(cameraFilter: String?) {
-        _filteredPhotosFromNasaApi.value = photosFromNasaApi.value
-        _filteredPhotosFromNasaApi.value = _filteredPhotosFromNasaApi.value?.filter { photo ->
+        _filteredPhotos.value = photos.value
+        _filteredPhotos.value = _filteredPhotos.value?.filter { photo ->
             photo.camera?.name == cameraFilter
         }
     }
 
     fun resetPhotoFilter() {
-        _filteredPhotosFromNasaApi.value = null
+        _filteredPhotos.value = null
     }
 
     fun deleteAllFavorites() {
-        _photosFromNasaApi.value = _photosFromNasaApi.value?.onEach { it.isFavorite = false }
+        _photos.value = _photos.value?.onEach { it.isFavorite = false }
     }
 
     fun setSelectedPhoto(photo: Photo?) {
@@ -71,7 +79,7 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
 
     // called when user removes a photo in FavoriteFragment, communication through the shared viewmodel
     fun removedPhotoFromFavorites(photo: Photo) {
-        _photosFromNasaApi.value = _photosFromNasaApi.value?.onEach { if (it.id == photo.id) it.isFavorite = false }
+        _photos.value = _photos.value?.onEach { if (it.id == photo.id) it.isFavorite = false }
     }
 
     val iconConnectionStatus: LiveData<Drawable?> = connectionStatus.map {
@@ -95,11 +103,11 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
             if (selectedPhoto.value?.isFavorite == false) {
                 photoRepository.addPhotoToDatabase(photo)
                 selectedPhoto.value?.isFavorite = true
-                _photosFromNasaApi.value = _photosFromNasaApi.value?.onEach { if (it.id == photo.id) it.isFavorite = true }
+                _photos.value = _photos.value?.onEach { if (it.id == photo.id) it.isFavorite = true }
             } else {
                 photoRepository.removePhotoFromDatabase(photo)
                 selectedPhoto.value?.isFavorite = false
-                _photosFromNasaApi.value = _photosFromNasaApi.value?.onEach { if (it.id == photo.id) it.isFavorite = false }
+                _photos.value = _photos.value?.onEach { if (it.id == photo.id) it.isFavorite = false }
             }
         }
     }
