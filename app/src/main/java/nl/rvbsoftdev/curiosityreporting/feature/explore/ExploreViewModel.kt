@@ -62,13 +62,16 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
     }
 
     fun deleteAllFavorites() {
-        _photosFromNasaApi.value = _photosFromNasaApi.value?.map {
-            it.copy(isFavorite = false)
-        }
+        _photosFromNasaApi.value = _photosFromNasaApi.value?.onEach { it.isFavorite = false }
     }
 
-    fun setSelectedPhoto(photo: Photo?){
+    fun setSelectedPhoto(photo: Photo?) {
         _selectedPhoto.value = photo
+    }
+
+    // called when user removes a photo in FavoriteFragment, communication through the shared viewmodel
+    fun removedPhotoFromFavorites(photo: Photo) {
+        _photosFromNasaApi.value = _photosFromNasaApi.value?.onEach { if (it.id == photo.id) it.isFavorite = false }
     }
 
     val iconConnectionStatus: LiveData<Drawable?> = connectionStatus.map {
@@ -92,9 +95,11 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
             if (selectedPhoto.value?.isFavorite == false) {
                 photoRepository.addPhotoToDatabase(photo)
                 selectedPhoto.value?.isFavorite = true
+                _photosFromNasaApi.value = _photosFromNasaApi.value?.onEach { if (it.id == photo.id) it.isFavorite = true }
             } else {
                 photoRepository.removePhotoFromDatabase(photo)
                 selectedPhoto.value?.isFavorite = false
+                _photosFromNasaApi.value = _photosFromNasaApi.value?.onEach { if (it.id == photo.id) it.isFavorite = false }
             }
         }
     }

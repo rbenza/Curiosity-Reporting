@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.background_work
+package nl.rvbsoftdev.curiosityreporting.global
 
 import android.app.Application
 import android.os.Build
@@ -11,6 +11,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import nl.rvbsoftdev.curiosityreporting.background_work.RefreshPhotos
 import java.util.concurrent.TimeUnit
 
 /** Fetches new photos for user once a day if constraints are met. Better UX when browsing for new photos. Uses JetPack WorkManager API **/

@@ -14,7 +14,6 @@ import android.view.View
 import androidx.core.view.MenuCompat
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -79,25 +78,24 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
                 submitList(list)
             }
         }
-        /** Used a shared viewmodel tied to NavigationActivity lifecycle for FavoriteFragment to communicate with ExploreFragment **/
+        /** Uses a shared viewmodel tied to NavigationActivity lifecycle for FavoriteFragment to communicate with ExploreFragment **/
         sharedViewModel.deletedAllFavorites.observe(viewLifecycleOwner) { deletedAll ->
             if (deletedAll) {
                 viewModel.deleteAllFavorites()
                 sharedViewModel.deletedAllFavorites.value = false
             }
         }
+        sharedViewModel.deletedFavoritePhoto.observe(viewLifecycleOwner) { viewModel.removedPhotoFromFavorites(it) }
+        viewModel.iconConnectionStatus.observe(viewLifecycleOwner) { binding.statusImage.setImageDrawable(it) }
 
         /** Lets the user select a list or grid as preference **/
         val gridOrList = when (PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("explore_photo_layout", "Grid")) {
             "Grid" -> 4
             else -> 1
         }
+
         binding.recyclerviewPhotosExplore.layoutManager = GridLayoutManager(requireContext(), gridOrList)
         setHasOptionsMenu(true)
-
-        viewModel.iconConnectionStatus.observe(viewLifecycleOwner) {
-            binding.statusImage.setImageDrawable(it)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -131,7 +129,6 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
                 .withOverlayView(photoOverlay)
                 .show()
     }
-
 
     /** Camera filter options menu **/
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

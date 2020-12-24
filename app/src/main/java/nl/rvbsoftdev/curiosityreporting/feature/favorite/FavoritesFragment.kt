@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -53,6 +52,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
             photoOverlay = PhotoOverlay(requireContext()).apply {
                 setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, clickDelete = {
                     viewModel.removePhotoFromFavorites(photo)
+                    sharedViewModel.deletedFavoritePhoto.value = photo
                     binding.root.postDelayed({ builder.close() }, 3000) })
             }
             viewModel.favoritePhotos.value?.let { setupSwipeImageViewer(it, position) }
@@ -61,7 +61,9 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
         viewModel.favoritePhotos.observe(viewLifecycleOwner) { listOfPhotos ->
             binding.recyclerviewPhotoFavorites.adapter = favoritePhotoAdapter.apply { submitList(listOfPhotos) }
             setHasOptionsMenu(!listOfPhotos.isNullOrEmpty())
-            if (listOfPhotos.isNullOrEmpty()) sharedViewModel.deletedAllFavorites.value = true
+            if (listOfPhotos.isNullOrEmpty()) {
+                sharedViewModel.deletedAllFavorites.value = true
+            }
         }
 
         /** Lets the user select a list or grid as preference **/
