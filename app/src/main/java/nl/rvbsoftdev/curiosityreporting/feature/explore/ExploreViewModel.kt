@@ -6,6 +6,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -21,24 +22,53 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
 
     private val photoRepository = getRepository(app)
 
-    val connectionStatus: LiveData<NasaApiConnectionStatus> = photoRepository.connectionStatus
-    val photosFromNasaApi: LiveData<List<Photo>> = photoRepository.photosFromNasaApi
-    val mostRecentSolPhotoDate: LiveData<Int> = photoRepository.mostRecentSolPhotoDate
-    val mostRecentEarthPhotoDate: LiveData<String?> = photoRepository.mostRecentEarthPhotoDate
-    val selectedPhoto = MutableLiveData<Photo>()
-    val filteredPhotosFromNasaApi = MutableLiveData<List<Photo>>()
+    val connectionStatus: LiveData<NasaApiConnectionStatus> = photoRepository.connectionStatus.asLiveData()
+
+    private val _photosFromNasaApi = MutableLiveData<List<Photo>>()
+    val photosFromNasaApi: LiveData<List<Photo>> = _photosFromNasaApi
+
+    val mostRecentSolPhotoDate: LiveData<Int?> = photoRepository.mostRecentSolPhotoDate.asLiveData()
+    val mostRecentEarthPhotoDate: LiveData<String?> = photoRepository.mostRecentEarthPhotoDate.asLiveData()
+    private val _selectedPhoto = MutableLiveData<Photo?>(null)
+    val selectedPhoto: LiveData<Photo?> = _selectedPhoto
+
+
+    private val _filteredPhotosFromNasaApi = MutableLiveData<List<Photo>?>()
+    val filteredPhotosFromNasaApi: LiveData<List<Photo>?> = _filteredPhotosFromNasaApi
+
+    init {
+        viewModelScope.launch {
+            if (_photosFromNasaApi.value.isNullOrEmpty()) {
+                _photosFromNasaApi.value = photoRepository.getLatestPhotos()
+            }
+        }
+    }
 
     fun getPhotos(earthDate: String? = null, sol: Int? = null, camera: String? = null) {
         viewModelScope.launch {
-            photoRepository.getPhotosWithSolOrEathDate(earthDate, sol, camera)
+            _photosFromNasaApi.value = photoRepository.getPhotosWithSolOrEathDate(earthDate, sol, camera)
         }
     }
 
     fun setCameraFilter(cameraFilter: String?) {
-        filteredPhotosFromNasaApi.value = photosFromNasaApi.value
-        filteredPhotosFromNasaApi.value = filteredPhotosFromNasaApi.value?.filter { photo ->
+        _filteredPhotosFromNasaApi.value = photosFromNasaApi.value
+        _filteredPhotosFromNasaApi.value = _filteredPhotosFromNasaApi.value?.filter { photo ->
             photo.camera?.name == cameraFilter
         }
+    }
+
+    fun resetPhotoFilter() {
+        _filteredPhotosFromNasaApi.value = null
+    }
+
+    fun deleteAllFavorites() {
+        _photosFromNasaApi.value = _photosFromNasaApi.value?.map {
+            it.copy(isFavorite = false)
+        }
+    }
+
+    fun setSelectedPhoto(photo: Photo?){
+        _selectedPhoto.value = photo
     }
 
     val iconConnectionStatus: LiveData<Drawable?> = connectionStatus.map {

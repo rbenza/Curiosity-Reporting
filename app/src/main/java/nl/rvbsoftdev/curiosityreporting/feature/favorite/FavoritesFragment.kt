@@ -16,7 +16,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -30,6 +29,7 @@ import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
 import nl.rvbsoftdev.curiosityreporting.global.PhotoOverlay
 import nl.rvbsoftdev.curiosityreporting.global.SharedViewModel
+import timber.log.Timber
 
 /** Favorites Fragment that provides a unique List of Photos sorted by most recent earth date contained in the local room database **/
 
@@ -150,7 +150,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
                         })
             }
         } catch (e: Exception) {
-            Log.e("sharing error", e.toString())
+            Timber.e(e)
         }
     }
 

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rvbsoftdev.curiosityreporting.data.Photo
@@ -16,9 +17,9 @@ class FavoritesViewModel(app: Application) : AndroidViewModel(app) {
 
     private val photoRepository = Repository.getRepository(app)
 
-    /** Get all favorite photos from Room database through repository (uses suspend function)**/
+    /** Get all favorite photos from Room database through repository (observable Kotlin Flow, converted to LiveData for UI layer) **/
 
-    val favoritePhotos: LiveData<List<Photo>> = photoRepository.favoritePhotos
+    val favoritePhotos: LiveData<List<Photo>> = photoRepository.favoritePhotos.asLiveData()
 
     val selectedFavoritePhoto = MutableLiveData<Photo>()
 

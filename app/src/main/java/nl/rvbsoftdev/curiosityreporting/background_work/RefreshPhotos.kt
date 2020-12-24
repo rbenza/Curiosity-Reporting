@@ -7,6 +7,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import nl.rvbsoftdev.curiosityreporting.data.Repository
 import retrofit2.HttpException
+import timber.log.Timber
 import java.util.*
 
 /** Worker class to perform work when app is not running. Uses CoroutineWorker to run suspend function **/
@@ -18,7 +19,7 @@ class RefreshPhotos(context: Context, params: WorkerParameters) : CoroutineWorke
     }
 
     override suspend fun doWork(): Result {
-        Log.i("do work","fetching photos in background")
+        Timber.tag("do work").i("fetching photos in background")
         val photoRepository = Repository.getRepository(applicationContext as Application)
 
         return try {

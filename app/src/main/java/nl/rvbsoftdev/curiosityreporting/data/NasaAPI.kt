@@ -20,16 +20,15 @@ interface NasaAPI {
     suspend fun getPhotosWithSolOrEarthDate(@Query("earth_date") earthDate: String?,
                                             @Query("sol") sol: Int?,
                                             @Query("camera") camera: String?,
-                                            @Query("api_key") apiKey: String): NetworkPhotoContainer
+                                            @Query("api_key") apiKey: String): NetworkPhotoContainer?
 
 
     @GET("mars-photos/api/v1/rovers/curiosity/latest_photos")
-    suspend fun getLatestPhotos(@Query("api_key") apiKey: String): NetworkPhotoContainer
+    suspend fun getLatestPhotos(@Query("api_key") apiKey: String): NetworkPhotoContainer?
 
 }
 
 
-@ExperimentalSerializationApi
 private val retrofit = Retrofit.Builder()
         .addConverterFactory(Json{
             isLenient = true
@@ -39,6 +38,5 @@ private val retrofit = Retrofit.Builder()
         .build()
 
 object NetworkService {
-    @ExperimentalSerializationApi
-    val NETWORK_SERVICE: NasaAPI by lazy { retrofit.create(NasaAPI::class.java) }
+    val RETRO_FIT: NasaAPI by lazy { retrofit.create(NasaAPI::class.java) }
 }

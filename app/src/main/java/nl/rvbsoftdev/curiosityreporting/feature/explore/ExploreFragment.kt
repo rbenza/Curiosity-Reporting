@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -16,8 +15,6 @@ import androidx.core.view.MenuCompat
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -42,15 +39,16 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter.ofPattern
+import timber.log.Timber
 import java.util.*
 
-/** Explore Fragment where the user can view the photos from the NASA database through a random Sol generator or DatePicker dialog **/
+/** Explore Fragment where the user can view the photos from the NASA database through a random Sol generator or MaterialDatePicker dialog **/
 
 class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
 
     override val layout = R.layout.fragment_explore
     override val firebaseTag = "Explore Fragment"
-    private val viewModel: ExploreViewModel by viewModels()
+    private val viewModel: ExploreViewModel by activityViewModels() // used for caching, normally tied to Fragment lifecycle
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val navigationActivity by lazy { activity as NavigationActivity }
     private lateinit var builder: StfalconImageViewer<Photo>
@@ -62,7 +60,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
         binding.exploreViewModel = viewModel
 
         explorePhotoAdapter = ExplorePhotoAdapter(viewLifecycleOwner, viewModel) { photo, position ->
-            viewModel.selectedPhoto.value = photo
+            viewModel.setSelectedPhoto(photo)
             photoOverlay = PhotoOverlay(requireContext()).apply {
                 setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, clickFavorite = { viewModel.toggleFavorite(photo) })
             }
@@ -75,17 +73,17 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
             }
         }
 
-        sharedViewModel.deletedAllFavorites.observe(viewLifecycleOwner) { deletedAll ->
-            if (deletedAll) viewModel.photosFromNasaApi.value?.forEach { photo ->
-                photo.isFavorite = false
-                sharedViewModel.deletedAllFavorites.value = false
-            }
-        }
-
         /** Set up observer for the photo's loaded from the NASA API **/
         viewModel.photosFromNasaApi.observe(viewLifecycleOwner) { list ->
             binding.recyclerviewPhotosExplore.adapter = explorePhotoAdapter.apply {
                 submitList(list)
+            }
+        }
+        /** Used a shared viewmodel tied to NavigationActivity lifecycle for FavoriteFragment to communicate with ExploreFragment **/
+        sharedViewModel.deletedAllFavorites.observe(viewLifecycleOwner) { deletedAll ->
+            if (deletedAll) {
+                viewModel.deleteAllFavorites()
+                sharedViewModel.deletedAllFavorites.value = false
             }
         }
 
@@ -97,10 +95,9 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
         binding.recyclerviewPhotosExplore.layoutManager = GridLayoutManager(requireContext(), gridOrList)
         setHasOptionsMenu(true)
 
-        viewModel.iconConnectionStatus.observe(viewLifecycleOwner, Observer {
+        viewModel.iconConnectionStatus.observe(viewLifecycleOwner) {
             binding.statusImage.setImageDrawable(it)
-        })
-
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -109,10 +106,10 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
 
         /** Dynamically hide the camera filters for photos not in the list **/
         viewModel.photosFromNasaApi.observe(viewLifecycleOwner) { list ->
-                menu.forEach { menuItem ->
-                    menuItem.isVisible = list.any { it.camera?.full_name == menuItem.title } || menuItemsToAlwaysShow.contains(menuItem.itemId)
-                }
+            menu.forEach { menuItem ->
+                menuItem.isVisible = list?.any { it.camera?.full_name == menuItem.title } == true || menuItemsToAlwaysShow.contains(menuItem.itemId)
             }
+        }
 
         MenuCompat.setGroupDividerEnabled(menu, true)
         super.onCreateOptionsMenu(menu, inflater)
@@ -123,7 +120,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
             Glide.with(requireContext()).load(img.img_src).into(view)
         }
                 .withImageChangeListener {
-                    viewModel.selectedPhoto.value = viewModel.photosFromNasaApi.value?.get(it)
+                    viewModel.setSelectedPhoto(viewModel.photosFromNasaApi.value?.get(it))
                     photoOverlay.setInfoText(getString(
                             R.string.explore_detail_photo_taken_on,
                             viewModel.selectedPhoto.value?.camera?.full_name,
@@ -142,7 +139,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
             R.id.all_cameras -> {
                 setCameraFilter(null, null, item)
                 explorePhotoAdapter.apply { submitList(viewModel.photosFromNasaApi.value) }
-                viewModel.filteredPhotosFromNasaApi.value = null
+                viewModel.resetPhotoFilter()
             }
             R.id.FHAZ -> setCameraFilter("FHAZ", "the Front Hazard Avoidance Camera", item)
             R.id.RHAZ -> setCameraFilter("RHAZ", "the Rear Hazard Avoidance Camera", item)
@@ -210,7 +207,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
                             })
                 }
             } catch (e: Exception) {
-                Log.e("sharing error", e.toString())
+                Timber.e(e)
             }
         }
     }
