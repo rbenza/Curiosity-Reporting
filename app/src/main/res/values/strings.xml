@@ -71,13 +71,13 @@
 
     <!--explore & favorites fragment strings-->
     <string name="connecting_nasa_db">Connecting to the NASA database…</string>
-    <string name="no_conn_nasa_db">Could not connect to the NASA database. Check your internet connection or applied personal key in the settings menu.</string>
+    <string name="no_conn_nasa_db">Could not connect to the NASA database. Check your applied personal key in the settings menu or retry.</string>
+    <string name="offline">Your device seems offline. Check your internet connection.</string>
     <string name="no_photos_added_to_favorites">No photos added to favorites</string>
     <string name="no_photos_in_nasa_db">No photos in the database available to display. Try selecting a different date or roll the dice!</string>
     <string name="photo_add_to_fav">Photo added to favorites!</string>
     <string name="photo_removed_from_fav">Photo removed from favorites</string>
     <string name="disk_access_required">Access to storage is required to share this photo</string>
-    <string name="most_recent_date_not_available">Curiosity most recent photo date not available. Select a date manually.</string>
     <string name="explore_detail_photo_taken_on">Curiosity captured this image with it\'s %1$s on %2$s (Mars solar day %3$d since Curiosity landed on Mars).</string>
     <string name="fragment_mission_equipment">Equipment</string>
     <string name="fragment_mission_discover_the_amazing_equipment_curiosity_brought_to_mars">Discover the amazing equipment Curiosity brought to Mars</string>

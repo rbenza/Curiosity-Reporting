@@ -18,7 +18,7 @@ import timber.log.Timber
  * All the data the ViewModels provide the views (inside the Fragments destinations) comes from the repository.
  * ViewModels do not interact with the network or database directly (MVVM unidirectional design). **/
 
-enum class NasaApiConnectionStatus { IDLE, LOADING, ERROR, NO_DATA }
+enum class NetworkRequestState { IDLE, LOADING, NO_DATA, CONNECTION_ERROR }
 
 class Repository(app: Application) {
 
@@ -39,8 +39,8 @@ class Repository(app: Application) {
 
     val favoritePhotos: Flow<List<Photo>> = favoritePhotosDatabase.favoritePhotoDao.observePhotos().map { it.toListOfPhoto() }
 
-    private val _connectionStatus = MutableStateFlow(NasaApiConnectionStatus.IDLE)
-    val connectionStatus: StateFlow<NasaApiConnectionStatus> get() = _connectionStatus
+    private val _networkRequestState = MutableStateFlow(NetworkRequestState.IDLE)
+    val networkRequestState: StateFlow<NetworkRequestState> get() = _networkRequestState
 
     private var _mostRecentEarthPhotoDate: String? = null
     val mostRecentEarthPhotoDate get() = _mostRecentEarthPhotoDate
@@ -58,7 +58,7 @@ class Repository(app: Application) {
     suspend fun getPhotosWithSolOrEathDate(earthDate: String? = null, sol: Int? = null, camera: String? = null): List<Photo>? {
         return try {
             // Set connectionStatus to loading
-            _connectionStatus.value = NasaApiConnectionStatus.LOADING
+            _networkRequestState.value = NetworkRequestState.LOADING
 
             // Get the list of NetworkPhoto's from the NASA API and convert it to a list of Photo's
             val result = NetworkService.RETRO_FIT.getPhotosWithSolOrEarthDate(earthDate, sol, camera, apiKey = apiKey)?.toListOfPhoto()
@@ -71,12 +71,12 @@ class Repository(app: Application) {
                 if (favoritePhotosIds.contains(photo.id)) photo.isFavorite = true
             }
 
-            _connectionStatus.value = if (result?.isEmpty() == true) NasaApiConnectionStatus.NO_DATA else NasaApiConnectionStatus.IDLE
+            _networkRequestState.value = if (result?.isEmpty() == true) NetworkRequestState.NO_DATA else NetworkRequestState.IDLE
 
             result
 
         } catch (e: HttpException) {
-            _connectionStatus.value = NasaApiConnectionStatus.ERROR
+            _networkRequestState.value = NetworkRequestState.CONNECTION_ERROR
             Timber.e(e)
             null
         }
@@ -85,7 +85,7 @@ class Repository(app: Application) {
     suspend fun getLatestPhotos(): List<Photo>? {
         return try {
             // Set connectionStatus to loading
-            _connectionStatus.value = NasaApiConnectionStatus.LOADING
+            _networkRequestState.value = NetworkRequestState.LOADING
 
             // Get the list of the lastest NetworkPhoto's from the NASA API and convert it to a list of Photo's
             val result = NetworkService.RETRO_FIT.getLatestPhotos(apiKey)?.toListOfPhoto()
@@ -97,11 +97,11 @@ class Repository(app: Application) {
             result?.forEach { photo ->
                 if (favoritePhotosIds.contains(photo.id)) photo.isFavorite = true
             }
-            _connectionStatus.value = if (result?.isEmpty() == true) NasaApiConnectionStatus.NO_DATA else NasaApiConnectionStatus.IDLE
+            _networkRequestState.value = if (result?.isEmpty() == true) NetworkRequestState.NO_DATA else NetworkRequestState.IDLE
 
             result
         } catch (e: HttpException) {
-            _connectionStatus.value = NasaApiConnectionStatus.ERROR
+            _networkRequestState.value = NetworkRequestState.CONNECTION_ERROR
             Timber.e(e)
             null
         }

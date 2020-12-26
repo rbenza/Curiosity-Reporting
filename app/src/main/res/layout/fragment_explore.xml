@@ -9,7 +9,7 @@
             name="exploreViewModel"
             type="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel" />
 
-        <import type="nl.rvbsoftdev.curiosityreporting.data.NasaApiConnectionStatus" />
+        <import type="nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel.CombinedConnectionState" />
 
         <import type="androidx.core.content.ContextCompat" />
 
@@ -21,20 +21,19 @@
         android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="8dp"
-        android:clipToPadding="false"
-        android:clipChildren="false"
         android:background="@color/DarkGrey"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"
         tools:context="nl.rvbsoftdev.curiosityreporting.global.NavigationActivity">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_photos_explore"
+            android:id="@+id/explore_photos"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
             android:clipToPadding="false"
             android:scrollbarThumbVertical="@drawable/scrollbar_indicator"
-            app:isVisible="@{exploreViewModel.connectionStatus != NasaApiConnectionStatus.LOADING}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,33 +41,32 @@
             tools:itemCount="40"
             tools:listitem="@layout/list_item_fragment_explore" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/status_image"
+        <ImageView
+            android:id="@+id/connection_state_icon"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            app:isVisible="@{exploreViewModel.connectionStatus != NasaApiConnectionStatus.IDLE}"
-            app:layout_constraintBottom_toTopOf="@id/no_photos_available_text"
+            app:layout_constraintBottom_toTopOf="@id/connection_state_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.943"
-            tools:src="@drawable/icon_connection_error" />
+            app:tint="@color/Orange"
+            tools:src="@drawable/icon_offline" />
 
         <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/loading_spinner"
             style="@style/Widget.AppCompat.ProgressBar"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            app:isVisible="@{exploreViewModel.connectionStatus == NasaApiConnectionStatus.LOADING}"
-            app:layout_constraintBottom_toTopOf="@id/no_photos_available_text"
+            app:layout_constraintBottom_toTopOf="@id/connection_state_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.943"
-            tools:src="@drawable/icon_connection_error" />
+            tools:visibility="invisible" />
 
         <TextView
-            android:id="@+id/no_photos_available_text"
+            android:id="@+id/connection_state_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -76,18 +74,22 @@
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="1"
-            android:text="@{exploreViewModel.textConnectionStatus}"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?attr/text_color_toolbar"
             android:textSize="20sp"
             android:textStyle="bold|italic"
-            app:isVisible="@{exploreViewModel.connectionStatus != NasaApiConnectionStatus.IDLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Connecting to the NASA Database.." />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/connection_state_views"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="connection_state_icon, connection_state_text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.view.MenuCompat
 import androidx.core.view.forEach
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,6 +29,7 @@ import com.stfalcon.imageviewer.StfalconImageViewer
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreBinding
+import nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel.CombinedConnectionState
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
 import nl.rvbsoftdev.curiosityreporting.global.PhotoOverlay
@@ -72,10 +74,23 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
             }
         }
 
+        setupLiveDataObservers()
+
+        /** Lets the user select a list or grid as preference **/
+        val gridOrList = when (PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("explore_photo_layout", "Grid")) {
+            "Grid" -> 4
+            else -> 1
+        }
+
+        binding.explorePhotos.layoutManager = GridLayoutManager(requireContext(), gridOrList)
+        setHasOptionsMenu(true)
+    }
+
+    private fun setupLiveDataObservers() {
         /** Set up observer for the photo's loaded from the NASA API **/
-        viewModel.photos.observe(viewLifecycleOwner) { list ->
-            binding.recyclerviewPhotosExplore.adapter = explorePhotoAdapter.apply {
-                submitList(list)
+        viewModel.photos.observe(viewLifecycleOwner) { list: List<Photo>? ->
+            binding.explorePhotos.adapter = explorePhotoAdapter.apply {
+                list?.let { submitList(it) }
             }
         }
         /** Uses a shared viewmodel tied to NavigationActivity lifecycle for FavoriteFragment to communicate with ExploreFragment **/
@@ -86,16 +101,44 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
             }
         }
         sharedViewModel.deletedFavoritePhoto.observe(viewLifecycleOwner) { viewModel.removedPhotoFromFavorites(it) }
-        viewModel.iconConnectionStatus.observe(viewLifecycleOwner) { binding.statusImage.setImageDrawable(it) }
 
-        /** Lets the user select a list or grid as preference **/
-        val gridOrList = when (PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("explore_photo_layout", "Grid")) {
-            "Grid" -> 4
-            else -> 1
+        /** Observers for dynamic view visibility and icons/text **/
+        viewModel.iconConnectionState.observe(viewLifecycleOwner) { binding.connectionStateIcon.setImageResource(it) }
+
+        viewModel.textConnectionState.observe(viewLifecycleOwner) { binding.connectionStateText.text = it }
+
+        viewModel.combinedConnectionState.observe(viewLifecycleOwner) {
+            with(binding) {
+                when (it) {
+                    CombinedConnectionState.Idle -> {
+                        connectionStateViews.isVisible = false
+                        explorePhotos.isVisible = true
+                        loadingSpinner.isVisible = false
+                    }
+                    CombinedConnectionState.Loading -> {
+                        connectionStateText.isVisible = true
+                        connectionStateIcon.isVisible = false
+                        explorePhotos.isVisible = false
+                        loadingSpinner.isVisible = true
+                    }
+                    CombinedConnectionState.NoData -> {
+                        connectionStateViews.isVisible = true
+                        explorePhotos.isVisible = false
+                        loadingSpinner.isVisible = false
+                    }
+                    CombinedConnectionState.ConnectionError -> {
+                        connectionStateViews.isVisible = true
+                        explorePhotos.isVisible = false
+                        loadingSpinner.isVisible = false
+                    }
+                    CombinedConnectionState.Offline -> {
+                        connectionStateViews.isVisible = true
+                        explorePhotos.isVisible = false
+                        loadingSpinner.isVisible = false
+                    }
+                }
+            }
         }
-
-        binding.recyclerviewPhotosExplore.layoutManager = GridLayoutManager(requireContext(), gridOrList)
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

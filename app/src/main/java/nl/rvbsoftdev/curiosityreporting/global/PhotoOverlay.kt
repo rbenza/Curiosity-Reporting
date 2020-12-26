@@ -69,7 +69,7 @@ class PhotoOverlay @JvmOverloads constructor(context: Context, attrs: AttributeS
         binding.photoInfoFavorite.text = input
     }
 
-    fun setupFavorite(photo: Photo?) {
+    private fun setupFavorite(photo: Photo?) {
         val favoriteIcon = if (photo?.isFavorite == true) R.drawable.icon_star_selected else R.drawable.icon_star
         binding.favoriteButton.setImageResource(favoriteIcon)
     }
