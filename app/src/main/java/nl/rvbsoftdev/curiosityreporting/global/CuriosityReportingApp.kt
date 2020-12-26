@@ -7,11 +7,14 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.google.firebase.crashlytics.BuildConfig
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import nl.rvbsoftdev.curiosityreporting.background_work.RefreshPhotos
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 /** Fetches new photos for user once a day if constraints are met. Better UX when browsing for new photos. Uses JetPack WorkManager API **/
@@ -24,6 +27,9 @@ class CuriosityReportingApp : Application() {
         super.onCreate()
         delayedInit()
         AndroidThreeTen.init(this)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
     private fun delayedInit() {

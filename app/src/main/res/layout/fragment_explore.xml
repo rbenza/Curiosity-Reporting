@@ -53,17 +53,17 @@
             app:tint="@color/Orange"
             tools:src="@drawable/icon_offline" />
 
-        <androidx.core.widget.ContentLoadingProgressBar
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/loading_spinner"
-            style="@style/Widget.AppCompat.ProgressBar"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/Orange"
             app:layout_constraintBottom_toTopOf="@id/connection_state_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.943"
-            tools:visibility="invisible" />
+            app:layout_constraintVertical_bias="0.943" />
 
         <TextView
             android:id="@+id/connection_state_text"
