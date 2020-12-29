@@ -6,57 +6,57 @@
     <group android:id="@+id/title">
         <item
             android:id="@+id/camera_filter_title"
-            android:title="Select camera filter :"
+            android:title="@string/select_camera_filter"
             app:showAsAction="never"
             android:gravity="center"/>
     </group>
     <group android:id="@+id/options"
         android:checkableBehavior="single">
-<!--        dynamic title set in code-->
+<!--      all_cameras has dynamic title set in code-->
         <item
             android:id="@+id/all_cameras"
             android:checked="true"
             app:showAsAction="never" />
         <item
             android:id="@+id/FHAZ"
-            android:title="Front Hazard Avoidance Camera"
+            android:title="@string/front_hazard_avoidance_camera"
             app:showAsAction="never" />
         <item
             android:id="@+id/RHAZ"
-            android:title="Rear Hazard Avoidance Camera"
+            android:title="@string/rear_hazard_avoidance_camera"
             app:showAsAction="never" />
         <item
             android:id="@+id/MAST"
-            android:title="Mast Camera"
+            android:title="@string/mast_camera"
             app:showAsAction="never" />
         <item
             android:id="@+id/CHEMCAM"
-            android:title="Chemistry and Camera Complex"
+            android:title="@string/chemistry_and_camera_complex"
             app:showAsAction="never" />
         <item
             android:id="@+id/MAHLI"
-            android:title="Mars Hand Lens Imager"
+            android:title="@string/mars_hand_lens_imager"
             app:showAsAction="never" />
         <item
             android:id="@+id/MARDI"
-            android:title="Mars Descent Imager"
+            android:title="@string/mars_descent_imager"
             app:showAsAction="never" />
         <item
             android:id="@+id/NAVCAM"
-            android:title="Navigation Camera"
+            android:title="@string/navigation_camera"
             app:showAsAction="never" />
 
         <item
             android:id="@+id/select_random_date"
             android:icon="@drawable/icon_dice"
-            android:title="Select capture date"
+            android:title="@string/select_random_date"
             android:visible="true"
             app:showAsAction="ifRoom" />
 
         <item
             android:id="@+id/launch_date_picker_dialog"
             android:icon="@drawable/icon_calender"
-            android:title="Select capture date"
+            android:title="@string/select_capture_date"
             android:visible="true"
             app:showAsAction="ifRoom" />
 

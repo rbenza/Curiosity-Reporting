@@ -27,23 +27,17 @@
             app:titleTextColor="?attr/text_color_toolbar" />
 
         <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:isScrollContainer="true"
+            app:defaultNavHost="true"
             app:layout_constraintBottom_toTopOf="@id/bottom_nav"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/global_toolbar">
-
-            <fragment
-                android:id="@+id/nav_host_fragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:isScrollContainer="true"
-                app:defaultNavHost="true"
-                app:navGraph="@navigation/navigation_graph" />
-
-        </androidx.fragment.app.FragmentContainerView>
+            app:layout_constraintTop_toBottomOf="@id/global_toolbar"
+            app:navGraph="@navigation/navigation_graph" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav"

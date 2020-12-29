@@ -6,7 +6,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
@@ -20,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -33,7 +33,6 @@ import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.ActivityNavigationBinding
 import nl.rvbsoftdev.curiosityreporting.feature.notification.AppNotifications
 import nl.rvbsoftdev.curiosityreporting.feature.notification.NotificationsBroadcastReceiver
-import timber.log.Timber
 
 /** Single Activity for the whole app, sets up all the UI elements (Toolbar, Bottom Nav, Side Nav,
  * Snackbar/Toast messages, user Theme and Notification Channel).
@@ -56,7 +55,7 @@ class NavigationActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_navigation)
         setSupportActionBar(binding.globalToolbar)
-        val navController = findNavController(R.id.nav_host_fragment)
+        val navController = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
         setupActionBarWithNavController(navController, setTopLevelDestinations)
         setupBottomNavigation(navController)
         setupSideNavigationMenu(navController)
@@ -120,9 +119,9 @@ class NavigationActivity : AppCompatActivity() {
         }
     }
 
-    override fun onSupportNavigateUp() =
-            NavigationUI.navigateUp(Navigation.findNavController(this, R.id.nav_host_fragment),
-                    setTopLevelDestinations) || super.onSupportNavigateUp()
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(findNavController(R.id.nav_host_fragment), setTopLevelDestinations) || super.onSupportNavigateUp()
+    }
 
     fun showStyledToastMessage(toastMessage: String) = StyleableToast.makeText(this, toastMessage, Toast.LENGTH_LONG, R.style.ToastStyleDark).show()
 

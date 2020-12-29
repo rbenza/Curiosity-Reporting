@@ -94,5 +94,15 @@
     <string name="select_a_date">Select a date</string>
     <string name="sharing_photo_message">Check out this amazing photo NASA\'s Mars Rover Curiosity captured on %s</string>
     <string name="total_num_of_photos">Show all (%d photos)</string>
+    <string name="front_hazard_avoidance_camera">Front Hazard Avoidance Camera</string>
+    <string name="rear_hazard_avoidance_camera">Rear Hazard Avoidance Camera</string>
+    <string name="mast_camera">Mast Camera</string>
+    <string name="chemistry_and_camera_complex">Chemistry and Camera Complex</string>
+    <string name="mars_hand_lens_imager">Mars Hand Lens Imager</string>
+    <string name="mars_descent_imager">Mars Descent Imager</string>
+    <string name="navigation_camera">Navigation Camera</string>
+    <string name="select_capture_date">Select capture date</string>
+    <string name="select_random_date">Select random date</string>
+    <string name="select_camera_filter">Select camera filter :</string>
 
 </resources>

@@ -141,6 +141,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(false) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_explore_menu, menu)
         val menuItemsToAlwaysShow = listOf(R.id.select_random_date, R.id.launch_date_picker_dialog, R.id.camera_filter_title, R.id.all_cameras)
 
@@ -149,14 +150,13 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(false) {
             menu.forEach { menuItem ->
                 menuItem.isVisible = list?.any { it.camera?.full_name == menuItem.title } == true || menuItemsToAlwaysShow.contains(menuItem.itemId)
             }
+            // show total number of photos in title
             menu.findItem(R.id.all_cameras).apply {
                 title = getString(R.string.total_num_of_photos, list?.size)
                 isChecked = true
             }
         }
-
         MenuCompat.setGroupDividerEnabled(menu, true)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun setupSwipeImageViewer(list: List<Photo>, position: Int) {
@@ -178,11 +178,12 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(false) {
 
     /** Camera filter options menu **/
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.all_cameras -> {
                 setCameraFilter(null, null, item)
                 explorePhotoAdapter.apply { submitList(viewModel.photos.value) }
                 viewModel.resetPhotoFilter()
+                true
             }
             R.id.FHAZ -> setCameraFilter("FHAZ", "the Front Hazard Avoidance Camera", item)
             R.id.RHAZ -> setCameraFilter("RHAZ", "the Rear Hazard Avoidance Camera", item)
@@ -205,17 +206,22 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(false) {
                         text = "Roll the dice!\nSelected Mars solar day $randomSol!",
                         durationMs = 3000,
                         icon = R.drawable.icon_dice)
+                true
             }
+
+            else -> super.onOptionsItemSelected(item)
+
         }
-        return true
+
     }
 
-    private fun setCameraFilter(cameraFilter: String?, cameraSnackbar: String?, menuItem: MenuItem) {
+    private fun setCameraFilter(cameraFilter: String?, cameraSnackbar: String?, menuItem: MenuItem): Boolean {
         viewModel.setCameraFilter(cameraFilter)
         explorePhotoAdapter.apply { submitList(viewModel.filteredPhotos.value) }
         val msg = if (cameraFilter == null) "Showing all ${viewModel.photos.value?.size} photos" else "Filtered ${viewModel.filteredPhotos.value?.size} photos from the $cameraSnackbar"
         navigationActivity.showStyledSnackbarMessage(requireView(), msg, 2500, R.drawable.icon_camera)
         menuItem.isChecked = true
+        return true // to indicate that the onOptionsItemSelected() click event has been handled
     }
 
     /** Uses Glide to convert the selected photo to a bitmap and share. Invokes requestPermission function to request runtime permission for storage access **/
@@ -256,7 +262,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(false) {
     }
 
     /** Material DatePicker with CalendarConstraints where user can select a photo date. **/
-    private fun launchDatePicker() {
+    private fun launchDatePicker(): Boolean {
         viewModel.getMostRecentDates()
         val mostRecentPhotoDateAsString = viewModel.mostRecentEarthPhotoDate
         val mostRecentPhotoDateAsLocalDate = if (mostRecentPhotoDateAsString != null) {
@@ -298,6 +304,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(false) {
             viewModel.getPhotos(apiDate, null, null)
         }
         datePicker.show(requireActivity().supportFragmentManager, "cr date picker")
+        return true // to indicate that the onOptionsItemSelected() click event has been handled
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

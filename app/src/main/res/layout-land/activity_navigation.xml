@@ -27,7 +27,7 @@
                 app:menu="@menu/side_navigation_menu"
                 app:titleTextColor="?attr/text_color_toolbar" />
 
-            <fragment
+            <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/nav_host_fragment"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"

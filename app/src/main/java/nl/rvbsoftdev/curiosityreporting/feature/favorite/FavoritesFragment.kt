@@ -24,9 +24,9 @@ import com.stfalcon.imageviewer.StfalconImageViewer
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoritesBinding
+import nl.rvbsoftdev.curiosityreporting.feature.explore.PhotoSwiper
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
-import nl.rvbsoftdev.curiosityreporting.feature.explore.PhotoSwiper
 import nl.rvbsoftdev.curiosityreporting.global.SharedViewModel
 import timber.log.Timber
 
@@ -53,7 +53,8 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>(false) {
                 setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, clickDelete = {
                     viewModel.removePhotoFromFavorites(photo)
                     sharedViewModel.deletedFavoritePhoto.value = photo
-                    binding.root.postDelayed({ builder.close() }, 3000) })
+                    binding.root.postDelayed({ builder.close() }, 3000)
+                })
             }
             viewModel.favoritePhotos.value?.let { setupSwipeImageViewer(it, position) }
         }
@@ -75,13 +76,13 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>(false) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_favorites_menu, menu)
         MenuCompat.setGroupDividerEnabled(menu, true)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.delete_all -> {
                 activity?.let {
                     AlertDialog.Builder(it).apply {
@@ -97,11 +98,13 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>(false) {
                         }
                         setNegativeButton("Cancel") { _, _ -> }
                         show()
+
                     }
                 }
+                true
             }
+            else -> super.onOptionsItemSelected(item)
         }
-        return true
     }
 
     private fun setupSwipeImageViewer(list: List<Photo>, position: Int) {
