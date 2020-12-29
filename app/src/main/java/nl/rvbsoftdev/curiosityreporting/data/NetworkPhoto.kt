@@ -33,7 +33,7 @@ data class NetworkCamera(
 /** Kotlin Extension Functions to map 'NetworkPhoto' to 'Photo' **/
 
 fun NetworkPhotoContainer.toListOfPhoto(): List<Photo>? {
-    if (!photos?.isNullOrEmpty()!!) {
+    if (photos?.isNullOrEmpty() == false) {
         return photos.map {
             Photo(
                     camera = it.camera?.toCamera(),

@@ -38,5 +38,4 @@ class FavoritePhotoAdapter(private val lifecycleOwner: LifecycleOwner, private v
         override fun areItemsTheSame(oldItem: Photo, newItem: Photo) = oldItem.id == newItem.id
         override fun areContentsTheSame(oldItem: Photo, newItem: Photo) = oldItem == newItem
     }
-
 }

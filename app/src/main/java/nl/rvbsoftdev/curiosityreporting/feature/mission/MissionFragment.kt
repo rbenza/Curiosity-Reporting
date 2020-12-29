@@ -1,6 +1,5 @@
 package nl.rvbsoftdev.curiosityreporting.feature.mission
 
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebChromeClient

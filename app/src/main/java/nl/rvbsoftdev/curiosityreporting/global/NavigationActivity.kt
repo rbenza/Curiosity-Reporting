@@ -64,7 +64,6 @@ class NavigationActivity : AppCompatActivity() {
         setupNotificationChannel()
         setupWeeklyNotifications()
         enableStrictMode()
-        Timber.tag("~!").d("text: ${applicationContext.packageManager.getInstalledPackages(PackageManager.GET_ACTIVITIES)}")
     }
 
     private val setTopLevelDestinations by lazy {

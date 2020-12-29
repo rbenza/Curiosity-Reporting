@@ -45,7 +45,7 @@
                             android:layout_height="70dp"
                             android:layout_marginStart="20dp"
                             android:src="@drawable/icon_journey"
-                            android:tint="@color/Red"
+                            app:tint="@color/Red"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -87,7 +87,6 @@
 
                 </androidx.cardview.widget.CardView>
 
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/mars_cardview"
                     android:layout_width="match_parent"
@@ -114,7 +113,7 @@
                             android:layout_height="60dp"
                             android:layout_marginStart="20dp"
                             android:src="@drawable/icon_mars"
-                            android:tint="@color/Red"
+                            app:tint="@color/Red"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -156,7 +155,6 @@
 
                 </androidx.cardview.widget.CardView>
 
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/equipment_cardview"
                     android:layout_width="match_parent"
@@ -184,7 +182,7 @@
                             android:layout_height="60dp"
                             android:layout_marginStart="20dp"
                             android:src="@drawable/icon_equipment"
-                            android:tint="@color/Red"
+                            app:tint="@color/Red"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -252,7 +250,7 @@
                             android:layout_height="60dp"
                             android:layout_marginStart="20dp"
                             android:src="@drawable/icon_twitter_bird"
-                            android:tint="@color/Red"
+                            app:tint="@color/Red"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -308,11 +306,11 @@
                 android:layout_height="match_parent"
                 android:background="?attr/image_collapsing_toolbar"
                 android:elevation="16dp"
-                app:collapsedTitleTextAppearance="@style/collapsed_toolbar"
                 app:contentScrim="?attr/background_color_toolbar"
                 app:expandedTitleGravity="center|bottom"
-                app:expandedTitleMarginBottom="12dp"
                 app:expandedTitleTextAppearance="@style/expanded_toolbar"
+                app:collapsedTitleTextAppearance="@style/collapsed_toolbar"
+                app:expandedTitleMarginBottom="12dp"
                 app:layout_scrollFlags="exitUntilCollapsed|scroll"                >
 
                 <androidx.appcompat.widget.Toolbar

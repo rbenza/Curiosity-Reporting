@@ -24,8 +24,6 @@
         <item name="text_shadow_color">@color/Black</item>
         <item name="android:actionOverflowButtonStyle">@style/CameraMenuIcon</item>
         <item name="color_camera_menu_icon">@color/DeepOrange</item>
-        <item name="collapsed_toolbar">@color/DeepOrange</item>
-
     </style>
 
     <style name="AppTheme.Launcher">
@@ -48,21 +46,14 @@
     </style>
 
     <style name="collapsed_toolbar" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textColor">?attr/text_color_toolbar</item>
+        <item name="android:textColor">@color/Orange</item>
         <item name="android:textSize">22sp</item>
-        <item name="android:letterSpacing">1</item>
         <item name="android:textAllCaps">false</item>
-
     </style>
 
     <style name="expanded_toolbar" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textColor">?attr/text_color_toolbar</item>
+        <item name="android:textColor">@color/Orange</item>
         <item name="android:textSize">28sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:shadowColor">@color/Grey</item>
-        <item name="android:shadowDx">-3</item>
-        <item name="android:shadowDy">-3</item>
-        <item name="android:shadowRadius">1</item>
         <item name="android:textAllCaps">false</item>
     </style>
 
@@ -155,6 +146,4 @@
         <item name="android:visibility">gone</item>
         <item name="android:background">@color/Black</item>
     </style>
-
-
 </resources>

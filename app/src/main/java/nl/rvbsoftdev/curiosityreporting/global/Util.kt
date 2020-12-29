@@ -17,12 +17,3 @@ fun View.setInvisible() {
 fun View.setGone() {
     visibility = View.GONE
 }
-
-fun View?.removeSelf() {
-    this ?: return
-    val parentView = parent as? ViewGroup ?: return
-    parentView.removeView(this)
-}
-
-fun View.viewVisibleOrGone(show: Boolean) = if (show) setVisible() else setGone()
-

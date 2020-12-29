@@ -26,7 +26,7 @@ import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoritesBinding
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
-import nl.rvbsoftdev.curiosityreporting.global.PhotoSwiper
+import nl.rvbsoftdev.curiosityreporting.feature.explore.PhotoSwiper
 import nl.rvbsoftdev.curiosityreporting.global.SharedViewModel
 import timber.log.Timber
 

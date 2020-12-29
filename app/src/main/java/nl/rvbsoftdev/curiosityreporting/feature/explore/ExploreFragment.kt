@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -34,7 +33,6 @@ import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreBinding
 import nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel.CombinedConnectionState
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
-import nl.rvbsoftdev.curiosityreporting.global.PhotoSwiper
 import nl.rvbsoftdev.curiosityreporting.global.SharedViewModel
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime

@@ -16,7 +16,7 @@ import timber.log.Timber
 
 /** The PhotoRepository is the single data source for the app.
  * All the data the ViewModels provide the views (inside the Fragments destinations) comes from the repository.
- * ViewModels do not interact with the network or database directly (MVVM unidirectional design). **/
+ * ViewModels do not interact with the network or database directly (MVVM unidirectional design; events flow up, state flows down). **/
 
 enum class NetworkRequestState { IDLE, LOADING, NO_DATA, CONNECTION_ERROR }
 

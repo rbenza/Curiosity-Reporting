@@ -1,4 +1,4 @@
-package nl.rvbsoftdev.curiosityreporting.global
+package nl.rvbsoftdev.curiosityreporting.feature.explore
 
 import android.content.Context
 import android.graphics.Color
@@ -12,8 +12,8 @@ import androidx.lifecycle.ViewModel
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.databinding.CustomViewPhotoSwiperBinding
-import nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesViewModel
+import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
 
 class PhotoSwiper @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
         ConstraintLayout(context, attrs, defStyleAttr) {

@@ -13,7 +13,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 
 /** BaseFragment from which all fragments inherit, set up databinding and lifecycleowner **/
 
-abstract class BaseFragment<B : ViewDataBinding>(val lockPortraitOrientation: Boolean = true) : Fragment() {
+abstract class BaseFragment<B : ViewDataBinding>(private val lockPortraitOrientation: Boolean = true) : Fragment() {
 
     protected lateinit var binding: B
     @get:LayoutRes
@@ -34,7 +34,7 @@ abstract class BaseFragment<B : ViewDataBinding>(val lockPortraitOrientation: Bo
     }
 
 
-    /** Default behavior only allows portrait orientation. Content in About Fragment not suitable for landscape orientation **/
+    /** Default behavior only allows portrait orientation. ExploreFragment and FavoriteFragment override the lockPortraitOrientation boolean in the constructor to allow landscape orientation **/
     override fun onResume() {
         super.onResume()
         if (lockPortraitOrientation) {
@@ -48,5 +48,4 @@ abstract class BaseFragment<B : ViewDataBinding>(val lockPortraitOrientation: Bo
             activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
         }
     }
-
 }
