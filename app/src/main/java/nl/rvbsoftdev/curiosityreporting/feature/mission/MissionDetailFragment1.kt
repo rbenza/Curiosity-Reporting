@@ -36,17 +36,5 @@ class MissionDetailFragment1 : BaseFragment<Fragment1MissionDetailBinding>() {
             e.printStackTrace()
         }
     }
-
-
-    /** Only allow portrait orientation. Content in Mission Detail Fragment 1 not suitable for landscape orientation **/
-    override fun onResume() {
-        super.onResume()
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-    }
-
-    override fun onPause() {
-        super.onPause()
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
-    }
 }
 

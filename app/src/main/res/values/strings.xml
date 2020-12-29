@@ -93,5 +93,6 @@
     <string name="most_recent_photo_date">Curiosity\'s most recent photos are taken on %s</string>
     <string name="select_a_date">Select a date</string>
     <string name="sharing_photo_message">Check out this amazing photo NASA\'s Mars Rover Curiosity captured on %s</string>
+    <string name="total_num_of_photos">Show all (%d photos)</string>
 
 </resources>

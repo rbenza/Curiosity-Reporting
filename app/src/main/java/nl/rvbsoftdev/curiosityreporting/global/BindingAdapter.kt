@@ -36,7 +36,7 @@ fun ImageView.loadImageUrl(imgUrl: String?) {
             .encodeQuality(pictureQualitySetting)
             .apply(RequestOptions()
                     .placeholder(loadingSpinner)
-                    .error(R.drawable.icon_broken_image))
+                    .error(R.drawable.icon_connection_error))
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             /** no Room database needed for NetworkPhotos, very small chance users loads same photos twice (360k photos in NASA db).
              * Glide cache impl works when user selects same date twice with datepicker. Max cache size 250MB **/

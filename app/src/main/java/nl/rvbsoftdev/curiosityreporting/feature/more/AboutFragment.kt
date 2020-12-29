@@ -52,15 +52,4 @@ class AboutFragment : BaseFragment<FragmentAboutBinding>() {
             }
         }
     }
-
-    /** Only allow portrait orientation. Content in About Fragment not suitable for landscape orientation **/
-    override fun onResume() {
-        super.onResume()
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-    }
-
-    override fun onPause() {
-        super.onPause()
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
-    }
 }

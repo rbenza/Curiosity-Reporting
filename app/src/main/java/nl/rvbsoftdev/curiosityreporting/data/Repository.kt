@@ -56,10 +56,9 @@ class Repository(app: Application) {
 
     /** Using suspend functions for one shot asynchronous calls **/
     suspend fun getPhotosWithSolOrEathDate(earthDate: String? = null, sol: Int? = null, camera: String? = null): List<Photo>? {
+        // Set connectionStatus to loading immediately
+        _networkRequestState.value = NetworkRequestState.LOADING
         return try {
-            // Set connectionStatus to loading
-            _networkRequestState.value = NetworkRequestState.LOADING
-
             // Get the list of NetworkPhoto's from the NASA API and convert it to a list of Photo's
             val result = NetworkService.RETRO_FIT.getPhotosWithSolOrEarthDate(earthDate, sol, camera, apiKey = apiKey)?.toListOfPhoto()
 
@@ -70,11 +69,9 @@ class Repository(app: Application) {
             result?.forEach { photo ->
                 if (favoritePhotosIds.contains(photo.id)) photo.isFavorite = true
             }
-
             _networkRequestState.value = if (result?.isEmpty() == true) NetworkRequestState.NO_DATA else NetworkRequestState.IDLE
 
             result
-
         } catch (e: HttpException) {
             _networkRequestState.value = NetworkRequestState.CONNECTION_ERROR
             Timber.e(e)
@@ -83,10 +80,9 @@ class Repository(app: Application) {
     }
 
     suspend fun getLatestPhotos(): List<Photo>? {
+        // Set connectionStatus to loading immediately
+        _networkRequestState.value = NetworkRequestState.LOADING
         return try {
-            // Set connectionStatus to loading
-            _networkRequestState.value = NetworkRequestState.LOADING
-
             // Get the list of the lastest NetworkPhoto's from the NASA API and convert it to a list of Photo's
             val result = NetworkService.RETRO_FIT.getLatestPhotos(apiKey)?.toListOfPhoto()
 

@@ -7,8 +7,6 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.google.firebase.crashlytics.BuildConfig
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,9 +25,7 @@ class CuriosityReportingApp : Application() {
         super.onCreate()
         delayedInit()
         AndroidThreeTen.init(this)
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
+        Timber.plant(Timber.DebugTree())
     }
 
     private fun delayedInit() {
@@ -49,8 +45,7 @@ class CuriosityReportingApp : Application() {
                 }
                 .build()
 
-        val repeatingRequest
-                = PeriodicWorkRequestBuilder<RefreshPhotos>(1, TimeUnit.DAYS)
+        val repeatingRequest = PeriodicWorkRequestBuilder<RefreshPhotos>(1, TimeUnit.DAYS)
                 .setConstraints(constraints)
                 .build()
 

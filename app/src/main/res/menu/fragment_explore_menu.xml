@@ -12,11 +12,10 @@
     </group>
     <group android:id="@+id/options"
         android:checkableBehavior="single">
-
+<!--        dynamic title set in code-->
         <item
             android:id="@+id/all_cameras"
             android:checked="true"
-            android:title="Show all"
             app:showAsAction="never" />
         <item
             android:id="@+id/FHAZ"

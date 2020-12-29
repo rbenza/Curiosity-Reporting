@@ -26,13 +26,13 @@ import nl.rvbsoftdev.curiosityreporting.data.Photo
 import nl.rvbsoftdev.curiosityreporting.databinding.FragmentFavoritesBinding
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
-import nl.rvbsoftdev.curiosityreporting.global.PhotoOverlay
+import nl.rvbsoftdev.curiosityreporting.global.PhotoSwiper
 import nl.rvbsoftdev.curiosityreporting.global.SharedViewModel
 import timber.log.Timber
 
 /** Favorites Fragment that provides a unique List of Photos sorted by most recent earth date contained in the local room database **/
 
-class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
+class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>(false) {
 
     override val layout = R.layout.fragment_favorites
     private val REQUEST_CODE: Int = 1
@@ -41,7 +41,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
     private val viewModel: FavoritesViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var builder: StfalconImageViewer<Photo>
-    private lateinit var photoOverlay: PhotoOverlay
+    private lateinit var photoSwiper: PhotoSwiper
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,7 +49,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
 
         val favoritePhotoAdapter = FavoritePhotoAdapter(viewLifecycleOwner, viewModel) { photo, position ->
             viewModel.selectedFavoritePhoto.value = photo
-            photoOverlay = PhotoOverlay(requireContext()).apply {
+            photoSwiper = PhotoSwiper(requireContext()).apply {
                 setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, clickDelete = {
                     viewModel.removePhotoFromFavorites(photo)
                     sharedViewModel.deletedFavoritePhoto.value = photo
@@ -110,14 +110,14 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>() {
         }
                 .withImageChangeListener {
                     viewModel.selectedFavoritePhoto.value = viewModel.favoritePhotos.value?.get(it)
-                    photoOverlay.setInfoText(getString(
+                    photoSwiper.setInfoText(getString(
                             R.string.explore_detail_photo_taken_on,
                             viewModel.selectedFavoritePhoto.value?.camera?.full_name,
                             viewModel.formatStringDate(viewModel.selectedFavoritePhoto.value?.earth_date ?: ""),
                             viewModel.selectedFavoritePhoto.value?.sol))
                 }
                 .withStartPosition(position)
-                .withOverlayView(photoOverlay)
+                .withOverlayView(photoSwiper)
                 .show()
     }
 

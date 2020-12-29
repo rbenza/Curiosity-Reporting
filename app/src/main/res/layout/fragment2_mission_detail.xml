@@ -33,7 +33,7 @@
                 android:src="@drawable/image_mars_hill"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/image_spacex_to_mars" />
+                tools:src="@drawable/image_mars_hill" />
 
             <TextView
                 android:id="@+id/mission_photo_text1"
@@ -55,7 +55,7 @@
                 android:src="@drawable/image_mars_mountain"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mission_photo_text1"
-                tools:src="@drawable/image_spacex_to_mars" />
+                tools:src="@drawable/image_mars_mountain" />
 
             <TextView
                 android:id="@+id/mission_photo_text2"

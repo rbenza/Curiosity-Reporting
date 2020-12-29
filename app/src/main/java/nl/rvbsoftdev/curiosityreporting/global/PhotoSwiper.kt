@@ -11,18 +11,18 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModel
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.data.Photo
-import nl.rvbsoftdev.curiosityreporting.databinding.CustomViewPhotoOverlayBinding
+import nl.rvbsoftdev.curiosityreporting.databinding.CustomViewPhotoSwiperBinding
 import nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.FavoritesViewModel
 
-class PhotoOverlay @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+class PhotoSwiper @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
         ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private val binding: CustomViewPhotoOverlayBinding
+    private val binding: CustomViewPhotoSwiperBinding
 
     init {
-        View.inflate(context, R.layout.custom_view_photo_overlay, this)
-        binding = CustomViewPhotoOverlayBinding.inflate(context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater, this, true)
+        View.inflate(context, R.layout.custom_view_photo_swiper, this)
+        binding = CustomViewPhotoSwiperBinding.inflate(context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater, this, true)
         setBackgroundColor(Color.TRANSPARENT)
     }
 
@@ -41,7 +41,7 @@ class PhotoOverlay @JvmOverloads constructor(context: Context, attrs: AttributeS
                     val msg = if (viewModel.selectedPhoto.value?.isFavorite == true) "Removed from favorites" else "Added to favorites"
                     val icon = if (viewModel.selectedPhoto.value?.isFavorite == true) R.drawable.icon_star else R.drawable.icon_star_selected
                     binding.favoriteButton.setImageResource(icon)
-                    (root.context as NavigationActivity).showStyledSnackbarMessage(this@PhotoOverlay, msg, 3000, icon)
+                    (root.context as NavigationActivity).showStyledSnackbarMessage(this@PhotoSwiper, msg, 3000, icon)
                 }
             } else {
                 if (viewModel is FavoritesViewModel) {
@@ -54,7 +54,7 @@ class PhotoOverlay @JvmOverloads constructor(context: Context, attrs: AttributeS
                         setImageResource(R.drawable.icon_delete)
                         setOnClickListener {
                             clickDelete?.invoke()
-                            (root.context as NavigationActivity).showStyledSnackbarMessage(this@PhotoOverlay, "Deleted photo, overlay will close in 3 seconds", 3000, R.drawable.icon_delete)
+                            (root.context as NavigationActivity).showStyledSnackbarMessage(this@PhotoSwiper, "Deleted photo, overlay will close in 3 seconds", 3000, R.drawable.icon_delete)
                         }
                     }
                 }

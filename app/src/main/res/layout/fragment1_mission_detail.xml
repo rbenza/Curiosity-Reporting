@@ -14,8 +14,8 @@
         android:id="@+id/scroll_blur_test"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarThumbVertical="@drawable/scrollbar_indicator"
-        android:background="?attr/background_fragments">
+        android:background="?attr/background_fragments"
+        android:scrollbarThumbVertical="@drawable/scrollbar_indicator">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_layout_mission_detail1"
@@ -33,7 +33,7 @@
                 android:src="@drawable/image_curiosity_missile_launch"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/image_spacex_to_mars" />
+                tools:src="@drawable/image_curiosity_missile_launch" />
 
             <TextView
                 android:id="@+id/mission_photo_text1"
@@ -55,7 +55,7 @@
                 android:src="@drawable/image_curiosity_mars_decent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mission_photo_text1"
-                tools:src="@drawable/image_spacex_to_mars" />
+                tools:src="@drawable/image_curiosity_mars_decent" />
 
             <TextView
                 android:id="@+id/mission_photo_text2"

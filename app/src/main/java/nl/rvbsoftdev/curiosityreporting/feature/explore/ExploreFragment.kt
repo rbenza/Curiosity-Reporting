@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -15,6 +16,7 @@ import androidx.core.view.MenuCompat
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.distinctUntilChanged
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -32,7 +34,7 @@ import nl.rvbsoftdev.curiosityreporting.databinding.FragmentExploreBinding
 import nl.rvbsoftdev.curiosityreporting.feature.explore.ExploreViewModel.CombinedConnectionState
 import nl.rvbsoftdev.curiosityreporting.global.BaseFragment
 import nl.rvbsoftdev.curiosityreporting.global.NavigationActivity
-import nl.rvbsoftdev.curiosityreporting.global.PhotoOverlay
+import nl.rvbsoftdev.curiosityreporting.global.PhotoSwiper
 import nl.rvbsoftdev.curiosityreporting.global.SharedViewModel
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
@@ -45,7 +47,7 @@ import java.util.*
 
 /** Explore Fragment where the user can view the photos from the NASA database through a random Sol generator or MaterialDatePicker dialog **/
 
-class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
+class ExploreFragment : BaseFragment<FragmentExploreBinding>(false) {
 
     override val layout = R.layout.fragment_explore
     override val firebaseTag = "Explore Fragment"
@@ -53,7 +55,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val navigationActivity by lazy { activity as NavigationActivity }
     private lateinit var builder: StfalconImageViewer<Photo>
-    private lateinit var photoOverlay: PhotoOverlay
+    private lateinit var photoSwiper: PhotoSwiper
     private lateinit var explorePhotoAdapter: ExplorePhotoAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,7 +64,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
 
         explorePhotoAdapter = ExplorePhotoAdapter(viewLifecycleOwner, viewModel) { photo, position ->
             viewModel.setSelectedPhoto(photo)
-            photoOverlay = PhotoOverlay(requireContext()).apply {
+            photoSwiper = PhotoSwiper(requireContext()).apply {
                 setupClickListenersAndVm(viewModel, { builder.close() }, { sharePhoto() }, clickFavorite = { viewModel.toggleFavorite(photo) })
             }
             if (viewModel.filteredPhotos.value != null) {
@@ -73,7 +75,6 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
                 }
             }
         }
-
         setupLiveDataObservers()
 
         /** Lets the user select a list or grid as preference **/
@@ -81,7 +82,6 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
             "Grid" -> 4
             else -> 1
         }
-
         binding.explorePhotos.layoutManager = GridLayoutManager(requireContext(), gridOrList)
         setHasOptionsMenu(true)
     }
@@ -107,7 +107,8 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
 
         viewModel.textConnectionState.observe(viewLifecycleOwner) { binding.connectionStateText.text = it }
 
-        viewModel.combinedConnectionState.observe(viewLifecycleOwner) {
+        viewModel.combinedConnectionState.distinctUntilChanged().observe(viewLifecycleOwner) {
+            Timber.tag("~!").d("combinedConnectionState: ${it.javaClass.name}")
             with(binding) {
                 when (it) {
                     CombinedConnectionState.Idle -> {
@@ -146,9 +147,13 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
         val menuItemsToAlwaysShow = listOf(R.id.select_random_date, R.id.launch_date_picker_dialog, R.id.camera_filter_title, R.id.all_cameras)
 
         /** Dynamically hide the camera filters for photos not in the list **/
-        viewModel.photos.observe(viewLifecycleOwner) { list ->
+        viewModel.photos.observe(viewLifecycleOwner) { list: List<Photo>? ->
             menu.forEach { menuItem ->
                 menuItem.isVisible = list?.any { it.camera?.full_name == menuItem.title } == true || menuItemsToAlwaysShow.contains(menuItem.itemId)
+            }
+            menu.findItem(R.id.all_cameras).apply {
+                title = getString(R.string.total_num_of_photos, list?.size)
+                isChecked = true
             }
         }
 
@@ -162,14 +167,14 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
         }
                 .withImageChangeListener {
                     viewModel.setSelectedPhoto(viewModel.photos.value?.get(it))
-                    photoOverlay.setInfoText(getString(
+                    photoSwiper.setInfoText(getString(
                             R.string.explore_detail_photo_taken_on,
                             viewModel.selectedPhoto.value?.camera?.full_name,
                             viewModel.formatStringDate(viewModel.selectedPhoto.value?.earth_date ?: ""),
                             viewModel.selectedPhoto.value?.sol))
                 }
                 .withStartPosition(position)
-                .withOverlayView(photoOverlay)
+                .withOverlayView(photoSwiper)
                 .show()
     }
 
@@ -252,7 +257,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>() {
         }
     }
 
-    /** Material DatePicker where user can select a photo date. **/
+    /** Material DatePicker with CalendarConstraints where user can select a photo date. **/
     private fun launchDatePicker() {
         viewModel.getMostRecentDates()
         val mostRecentPhotoDateAsString = viewModel.mostRecentEarthPhotoDate

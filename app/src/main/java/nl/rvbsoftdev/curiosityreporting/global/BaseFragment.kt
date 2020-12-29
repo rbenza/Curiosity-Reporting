@@ -1,5 +1,6 @@
 package nl.rvbsoftdev.curiosityreporting.global
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 
 /** BaseFragment from which all fragments inherit, set up databinding and lifecycleowner **/
 
-abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
+abstract class BaseFragment<B : ViewDataBinding>(val lockPortraitOrientation: Boolean = true) : Fragment() {
 
     protected lateinit var binding: B
     @get:LayoutRes
@@ -31,4 +32,21 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
 
         return binding.root
     }
+
+
+    /** Default behavior only allows portrait orientation. Content in About Fragment not suitable for landscape orientation **/
+    override fun onResume() {
+        super.onResume()
+        if (lockPortraitOrientation) {
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (lockPortraitOrientation) {
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+        }
+    }
+
 }

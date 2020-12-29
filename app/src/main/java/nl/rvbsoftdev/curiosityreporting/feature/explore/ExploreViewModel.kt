@@ -42,10 +42,10 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
     val combinedConnectionState: LiveData<CombinedConnectionState> = networkRequestState.switchMap { connectionStatus ->
         isOnline.map { isOnline ->
             when  {
-                connectionStatus == NetworkRequestState.IDLE && isOnline-> CombinedConnectionState.Idle
                 connectionStatus == NetworkRequestState.LOADING && isOnline -> CombinedConnectionState.Loading
                 connectionStatus == NetworkRequestState.NO_DATA && isOnline -> CombinedConnectionState.NoData
                 connectionStatus == NetworkRequestState.CONNECTION_ERROR && isOnline -> CombinedConnectionState.ConnectionError
+                connectionStatus == NetworkRequestState.IDLE && isOnline-> CombinedConnectionState.Idle
                 connectionStatus == NetworkRequestState.CONNECTION_ERROR && !isOnline -> CombinedConnectionState.Offline
                 else -> CombinedConnectionState.Offline
             }
@@ -88,6 +88,7 @@ class ExploreViewModel(private val app: Application) : AndroidViewModel(app) {
     fun getPhotos(earthDate: String? = null, sol: Int? = null, camera: String? = null) {
         viewModelScope.launch {
             if (isOnline()) {
+                _photos.value = emptyList() // to prevent showing cached list in a flash before api response returns
                 _photos.value = photoRepository.getPhotosWithSolOrEathDate(earthDate, sol, camera)
             }
         }

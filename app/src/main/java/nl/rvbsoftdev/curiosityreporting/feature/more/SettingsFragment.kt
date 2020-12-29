@@ -2,6 +2,7 @@ package nl.rvbsoftdev.curiosityreporting.feature.more
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -110,15 +111,17 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
     }
 
-    /** Prevent memory leak, unregister OnSharedPreferenceChangeListener when fragment looses focus for user **/
+    /** Prevent memory leak, unregister OnSharedPreferenceChangeListener when fragment looses focus for user.
+     * Secondly locks orientaton to portrait (SettingsFragment does not inherit from BaseFragment) **/
     override fun onResume() {
         super.onResume()
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onPause() {
         super.onPause()
         preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
     }
-
 }

@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
@@ -32,6 +33,7 @@ import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.databinding.ActivityNavigationBinding
 import nl.rvbsoftdev.curiosityreporting.feature.notification.AppNotifications
 import nl.rvbsoftdev.curiosityreporting.feature.notification.NotificationsBroadcastReceiver
+import timber.log.Timber
 
 /** Single Activity for the whole app, sets up all the UI elements (Toolbar, Bottom Nav, Side Nav,
  * Snackbar/Toast messages, user Theme and Notification Channel).
@@ -62,6 +64,7 @@ class NavigationActivity : AppCompatActivity() {
         setupNotificationChannel()
         setupWeeklyNotifications()
         enableStrictMode()
+        Timber.tag("~!").d("text: ${applicationContext.packageManager.getInstalledPackages(PackageManager.GET_ACTIVITIES)}")
     }
 
     private val setTopLevelDestinations by lazy {
