@@ -106,7 +106,6 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(false) {
         viewModel.textConnectionState.observe(viewLifecycleOwner) { binding.connectionStateText.text = it }
 
         viewModel.combinedConnectionState.distinctUntilChanged().observe(viewLifecycleOwner) {
-            Timber.tag("~!").d("combinedConnectionState: ${it.javaClass.name}")
             with(binding) {
                 when (it) {
                     CombinedConnectionState.Idle -> {

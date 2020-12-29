@@ -2,13 +2,6 @@ TODO
 
 Bugs:
 
--Hamburger menu button does not work in landscape mode in the Explore and Favorites fragments.
-The menu does slide out and works when pulled from the side. Can be solved by disabling setHasOptionsMenu(false) but then there are no menu options.
-
--Android 11 resolveActivity
-
--Layout title home
-
-
+-CombinedConnectionState is not set to Loading immediately when ExploreFragment opens.
 
 

@@ -14,7 +14,7 @@ interface Dao {
     fun observePhotos(): Flow<List<FavoriteDatabasePhoto>>
 
     @Query("SELECT * FROM favoritedatabasephoto ORDER BY earth_date DESC")
-    suspend fun getAllPhotos(): List<FavoriteDatabasePhoto>
+    suspend fun getAllPhotos(): List<FavoriteDatabasePhoto>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(favoriteDatabasePhoto: FavoriteDatabasePhoto)

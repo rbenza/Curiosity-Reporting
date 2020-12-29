@@ -39,8 +39,8 @@ class Repository(app: Application) {
 
     val favoritePhotos: Flow<List<Photo>> = favoritePhotosDatabase.favoritePhotoDao.observePhotos().map { it.toListOfPhoto() }
 
-    private val _networkRequestState = MutableStateFlow(NetworkRequestState.IDLE)
-    val networkRequestState: StateFlow<NetworkRequestState> get() = _networkRequestState
+    private val _networkRequestState = MutableStateFlow(NetworkRequestState.LOADING)
+    val networkRequestState: StateFlow<NetworkRequestState> = _networkRequestState
 
     private var _mostRecentEarthPhotoDate: String? = null
     val mostRecentEarthPhotoDate get() = _mostRecentEarthPhotoDate
@@ -63,7 +63,7 @@ class Repository(app: Application) {
             val result = NetworkService.RETRO_FIT.getPhotosWithSolOrEarthDate(earthDate, sol, camera, apiKey = apiKey)?.toListOfPhoto()
 
             // Get a list of id's of the favorite photos
-            val favoritePhotosIds: List<Int?> = favoritePhotosDatabase.favoritePhotoDao.getAllPhotos().map { it.id }
+            val favoritePhotosIds: List<Int?> = favoritePhotosDatabase.favoritePhotoDao.getAllPhotos()?.map { it.id } ?: emptyList()
 
             // Mark every Photo that matches an id in favoritePhotosIds as a favorite
             result?.forEach { photo ->
@@ -87,7 +87,7 @@ class Repository(app: Application) {
             val result = NetworkService.RETRO_FIT.getLatestPhotos(apiKey)?.toListOfPhoto()
 
             // Get a list of id's of the favorite photos
-            val favoritePhotosIds: List<Int?> = favoritePhotosDatabase.favoritePhotoDao.getAllPhotos().map { it.id }
+            val favoritePhotosIds: List<Int?> = favoritePhotosDatabase.favoritePhotoDao.getAllPhotos()?.map { it.id } ?: emptyList()
 
             // Mark every Photo that matches an id in favoritePhotosIds as a favorite
             result?.forEach { photo ->
