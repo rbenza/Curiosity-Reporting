@@ -2,10 +2,14 @@ package nl.rvbsoftdev.curiosityreporting.data
 
 import android.app.Application
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import nl.rvbsoftdev.curiosityreporting.R
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.FavoritePhotosDatabase
 import nl.rvbsoftdev.curiosityreporting.feature.favorite.database.getDatabase
@@ -41,6 +45,7 @@ class Repository(app: Application) {
 
     private val _networkRequestState = MutableStateFlow(NetworkRequestState.LOADING)
     val networkRequestState: StateFlow<NetworkRequestState> = _networkRequestState
+
 
     private var _mostRecentEarthPhotoDate: String? = null
     val mostRecentEarthPhotoDate get() = _mostRecentEarthPhotoDate
